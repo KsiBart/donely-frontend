@@ -1,0 +1,416 @@
+{
+  "common": {
+    "error": "Error",
+    "errorWithStatus": "Error {{status}}",
+    "noConnection": "No connection to the server",
+    "verifiedFull": "✓ Verified",
+    "verifiedShort": "✓",
+    "today": "today",
+    "tomorrow": "tomorrow",
+    "notSet": "to be arranged",
+    "dowShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "dowShortAdmin": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "dowFull": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "relTime": {
+      "minutesAgo": "{{count}} min ago",
+      "hoursAgo": "{{count}} h ago",
+      "daysAgo_one": "{{count}} day ago",
+      "daysAgo_other": "{{count}} days ago"
+    },
+    "status": {
+      "PENDING": "Pending",
+      "CONFIRMED": "Confirmed",
+      "AWAITING_APPROVAL": "Awaiting confirmation",
+      "COMPLETED": "Completed",
+      "CANCELLED": "Cancelled",
+      "DECLINED": "Declined"
+    },
+    "businessType": {
+      "short": {
+        "PRIVATE": "Private person",
+        "JDG": "Small business (JDG)"
+      },
+      "long": {
+        "PRIVATE": "Private person — settled by {{appName}}",
+        "JDG": "Small business (JDG) — VAT invoice"
+      }
+    },
+    "documentType": {
+      "RACHUNEK": "Receipt (private person)",
+      "FAKTURA_VAT": "VAT invoice (JDG)"
+    },
+    "documentStatus": {
+      "ISSUED": "Issued",
+      "PAID_OUT": "Paid out"
+    },
+    "paymentMethod": {
+      "P24_BLIK": "BLIK / Przelewy24",
+      "PAYPAL": "PayPal"
+    },
+    "paymentStatus": {
+      "PENDING": "Pending",
+      "HELD": "Held",
+      "CAPTURED": "Captured",
+      "RELEASED": "Released",
+      "REFUNDED": "Refunded",
+      "FAILED": "Failed"
+    },
+    "payoutStatus": {
+      "PENDING": "Pending",
+      "PAID": "Paid"
+    }
+  },
+  "auth": {
+    "welcome": {
+      "titleLine1": "Got a skill?",
+      "titleLine2": "Earn legally.",
+      "subtitle": "Renovation, childcare, event musicians, detailing — private individuals and small businesses. AI matches you with a pro, and we issue the invoice and settle the taxes. Zero paperwork.",
+      "cta": "Log in or create an account",
+      "passwordless": "No password — we'll send you an 8-digit code by e-mail"
+    },
+    "email": {
+      "title": "Enter your e-mail address",
+      "subtitle": "We'll send you a one-time 8-digit code. No passwords to remember.",
+      "placeholder": "you@email.com",
+      "cta": "Send code",
+      "invalid": "Enter a valid e-mail address",
+      "sendFailed": "Couldn't send the code"
+    },
+    "code": {
+      "title": "Enter the code",
+      "subtitle": "We sent an 8-digit code to",
+      "placeholderEmail": "you@email.com",
+      "cta": "Log in",
+      "resendPrompt": "Didn't get it?",
+      "resend": "Send again",
+      "devCode": " · code: {{code}}",
+      "invalid": "The code has 8 digits",
+      "wrongCode": "Incorrect code"
+    },
+    "codeSentToast": "Code sent to {{email}}",
+    "location": {
+      "title": "Where are you?",
+      "subtitle": "We'll show pros who travel to you and calculate the distance to workshops. You can also move the pin manually.",
+      "share": "Share location",
+      "manual": "I'll type the address manually",
+      "pin": "Your location",
+      "setToast": "Location set: {{place}}",
+      "saveFailed": "Couldn't save the location"
+    }
+  },
+  "nav": {
+    "search": "Search",
+    "bookings": "Bookings",
+    "favorites": "Favorites",
+    "profile": "Profile"
+  },
+  "promo": {
+    "installToast": "→ redirecting to the app store",
+    "bannerText": "Get the app to receive <1>push notifications</1> about bookings and quotes",
+    "desktopBannerText": "Got your phone handy? Get the app to receive <1>push notifications</1> about bookings and quotes",
+    "installAppCta": "Get the app",
+    "download": "Get it",
+    "storeCardTitle": "Prefer the app?",
+    "storeCardBody": "The web version has full functionality. The app adds real-time <1>push notifications</1> — for confirmations, quotes and reminders.",
+    "appStoreLine1": "Download on the",
+    "appStoreLine2": "App Store",
+    "googlePlayLine1": "Get it on",
+    "googlePlayLine2": "Google Play"
+  },
+  "home": {
+    "greetingPlain": "Good day",
+    "greetingNamed": "Good day, {{name}}",
+    "searchPlaceholder": "Describe what you need…",
+    "mapSearchPlaceholder": "Describe the problem…",
+    "searchEmptyToast": "First describe what you need",
+    "searchCta": "Search",
+    "sortNearest": "Sort: Nearest ▾",
+    "suggestions": ["Leaking tap", "Evening babysitter", "Musician for a birthday"],
+    "listToggle": "List",
+    "mapToggle": "Map",
+    "featuredTitle": "Recommended near you",
+    "featuredBadge": "FEATURED",
+    "workPhoto": "work photo",
+    "categoriesAll": "All",
+    "providersCount_one": "{{count}} provider nearby",
+    "providersCount_other": "{{count}} providers nearby",
+    "priceFromPrefix": "from"
+  },
+  "aiResults": {
+    "title": "{{appName}} results",
+    "searchError": "Search error"
+  },
+  "providerProfile": {
+    "backToResults": "Back to results",
+    "paymentNoteDesktop": "Online payment at booking — funds frozen until the service is confirmed done. Donely automatically issues the receipt or invoice.",
+    "photoBefore": "photo: before / after",
+    "morePhotosCount": "+12",
+    "respondsIn": "responds in ~{{minutes}} min",
+    "travelRadius": "🚐 Travels up to {{km}} km",
+    "workHours": "Mon–Sat 8:00–18:00",
+    "servicesTitle": "Services",
+    "atClientTag": "🚐 travels to you",
+    "atSpotTag": "📍 at the pro's — {{address}}",
+    "bookInstant": "Book now",
+    "bookQuote": "Request a quote",
+    "reviewsTitle": "Reviews",
+    "defaultCustomerName": "Customer",
+    "addedFavToast": "Added to favorites",
+    "removedFavToast": "Removed from favorites"
+  },
+  "booking": {
+    "windows": ["This week", "This weekend", "Evenings", "Flexible"],
+    "dayToday": "Today",
+    "dayTomorrow": "Tomorrow",
+    "step": "Step {{step}} of 3",
+    "chooseSlotTitle": "Choose a time",
+    "slotNoteAtSpot": "Service performed at the pro's — {{address}}. Times show free slots at the workshop.",
+    "slotNoteAtClient": "Times account for the pro's travel time (30-min buffer) between jobs.",
+    "describeTitle": "Describe the job",
+    "describeSubtitle": "The pro will reply with a quote and a suggested date.",
+    "notesPlaceholderQuote": "What needs doing? Dimensions, condition, access…",
+    "preferredWindowLabel": "Preferred time",
+    "step2TitleAtSpot": "Place and notes",
+    "step2TitleAtClient": "Address and notes",
+    "addressLabel": "Service address",
+    "atSpotBadge": "At the pro's — you'll travel there",
+    "atSpotDistance": "{{distance}} from you · parking on site",
+    "notesLabel": "Notes for the pro (optional)",
+    "notesPlaceholderClient": "e.g. intercom 12, 3rd floor, there's a dog",
+    "notesPlaceholderSpot": "e.g. car make, model, year",
+    "step3TitleQuote": "Review your request",
+    "step3TitleInstant": "Review and confirm",
+    "summary": {
+      "provider": "Pro",
+      "service": "Service",
+      "preferredDate": "Preferred time",
+      "place": "Place",
+      "placeAtSpot": "📍 at the pro's — {{address}}",
+      "placeAtClient": "🚐 at yours — {{address}}",
+      "price": "Price",
+      "date": "Date",
+      "priceQuotePending": "quote after reply"
+    },
+    "infoQuote": "Sending a request is non-binding. The booking is only created once you accept the quote.",
+    "infoInstant": "You pay now online — funds are frozen until the service is confirmed done. Once you approve it, {{appName}} pays the provider the amount minus tax and issues the document. Free cancellation up to 24 hours before the appointment.",
+    "paymentMethodLabel": "Payment method",
+    "paymentMethods": {
+      "p24": { "title": "BLIK / Przelewy24", "subtitle": "Fast BLIK code or bank transfer" },
+      "paypal": { "title": "PayPal", "subtitle": "Card or PayPal balance" }
+    },
+    "cta": {
+      "next": "Next",
+      "sendQuote": "Send request",
+      "confirm": "Confirm booking"
+    },
+    "validation": {
+      "chooseTime": "Choose a time",
+      "describeAndWindow": "Describe the job and choose a time",
+      "choosePaymentMethod": "Choose a payment method"
+    },
+    "createFailed": "Couldn't create the booking",
+    "paymentFailed": "Couldn't start the payment"
+  },
+  "success": {
+    "quoteTitle": "Request sent",
+    "instantTitle": "Booked!",
+    "quoteSub": "{{providerName}} usually replies within ~15 min. You'll get a notification with a quote and a suggested date.",
+    "atSpotSub": "{{providerName}} is expecting you {{when}} — {{address}}.",
+    "atClientSub": "{{providerName}} will arrive {{when}} at {{address}}. We'll remind you a day before.",
+    "frozenNote": "Funds frozen until the service is confirmed done",
+    "viewBookings": "View bookings",
+    "backToSearch": "Back to search",
+    "desktopPromoText": "You can track status here on donely.app — with the app you'll also get <1>push</1> updates."
+  },
+  "payments": {
+    "returnHeld": "Payment confirmed — booking secured",
+    "returnPending": "Payment hasn't finished yet — try again below",
+    "returnFailed": "Payment failed — try again below",
+    "returnCancelled": "Payment cancelled — you can try again below"
+  },
+  "bookings": {
+    "title": "Bookings",
+    "upcomingLabel": "Upcoming",
+    "completedLabel": "Past",
+    "noneUpcoming": "No upcoming bookings",
+    "noneCompleted": "No past bookings",
+    "statusQuoteSent": "Request sent",
+    "statusNeedsPayment": "Payment required",
+    "whenProposal": "proposal: {{window}}",
+    "priceAwaitingQuote": "awaiting quote",
+    "priceQuoted": "quote: {{amount}}",
+    "priceToPay": "To pay: {{amount}}",
+    "pricePaidOnline": "{{price}} · paid online",
+    "frozenBadge": "Funds frozen",
+    "approveCompletionCta": "Confirm completion and release payment",
+    "approveCompletionNote": "The pro marked the job as done. Check it and release the payment to finish the booking.",
+    "approveSuccessToast": "Payment released — thank you!",
+    "detailsCta": "Details →",
+    "decline": "Decline",
+    "accept": "Accept",
+    "cancel": "Cancel",
+    "cancelToast": "Booking #{{id}} cancelled — both parties notified",
+    "quoteAcceptedToast": "Quote accepted — finish the payment to confirm the booking",
+    "payNowCta": "Pay now",
+    "paymentHeldToast": "Payment secured — booking confirmed",
+    "reviewCta": "★ Leave a review",
+    "reviewPlaceholder": "Write a few words…",
+    "reviewSend": "Send review",
+    "reviewEmptyToast": "Write a few words for your review",
+    "reviewAddedToast": "Review added",
+    "locLineAtSpot": "📍 at the pro's: {{address}}",
+    "locLineAtClient": "🚐 at yours: {{address}}"
+  },
+  "favorites": {
+    "title": "Favorites",
+    "empty": "No favorites yet — add a provider with the ♡ icon on their profile",
+    "bookCta": "Book"
+  },
+  "profile": {
+    "rows": {
+      "location": "My location",
+      "savedAddresses": "Saved addresses",
+      "paymentMethods": "Payment methods",
+      "notifications": "Notifications",
+      "notificationsEmail": "Email notifications",
+      "language": "Language"
+    },
+    "notificationsOn": "On",
+    "paymentMethodsVal": "BLIK, PayPal",
+    "defaultLocation": "Mokotów",
+    "logout": "Log out",
+    "providerCardTitle": "Do you offer services?",
+    "providerCardBody": "Earn legally without setting up a company — {{appName}} issues invoices and settles your taxes for you.",
+    "providerCardCta": "Switch to pro mode",
+    "langNamePl": "Polski",
+    "langNameEn": "English",
+    "pushPromoTitle": "Push notifications",
+    "pushPromoBody": "In the browser you'll get e-mails. Real-time push — for confirmations and quotes — requires the app."
+  },
+  "admin": {
+    "common": {
+      "sections": {
+        "dashboard": "Dashboard",
+        "users": "Users",
+        "providers": "Providers",
+        "bookings": "Bookings",
+        "calendars": "Calendars",
+        "categories": "Categories",
+        "billing": "Billing"
+      },
+      "panelLabel": "ADMIN PANEL",
+      "logout": "Log out",
+      "noAccessTitle": "No access",
+      "noAccessBody": "Account {{email}} does not have access to the admin panel.",
+      "language": "Language"
+    },
+    "login": {
+      "emailTitle": "Enter your e-mail address",
+      "emailSubtitle": "We'll send you a one-time 8-digit code. No passwords to remember.",
+      "emailPlaceholder": "admin@donely.app",
+      "sendCode": "Send code",
+      "codeTitle": "Enter the code",
+      "codeSubtitle": "We sent an 8-digit code to",
+      "loginCta": "Log in",
+      "resendPrompt": "Didn't get it?",
+      "resend": "Send again",
+      "devCode": " · code: {{code}}",
+      "invalidEmail": "Enter a valid e-mail address",
+      "sendFailed": "Couldn't send the code",
+      "invalidCode": "The code has 8 digits",
+      "wrongCode": "Incorrect code",
+      "codeSentToast": "Code sent to {{email}}"
+    },
+    "dashboard": {
+      "kpiUsers": "Users",
+      "kpiUsersSub": "+{{count}} this week",
+      "kpiProviders": "Providers",
+      "kpiProvidersSub": "{{count}} awaiting verification",
+      "kpiBookingsToday": "Bookings today",
+      "kpiBookingsTodaySub": "{{count}} cancelled",
+      "kpiRevenue": "Revenue — {{month}}",
+      "kpiRevenueSub": "tax settled: {{tax}}",
+      "pendingTitle": "Providers awaiting verification",
+      "pendingEmpty": "No submissions",
+      "feedTitle": "Recent events"
+    },
+    "users": {
+      "searchPlaceholder": "Search by name or e-mail…",
+      "accountsCount_one": "{{count}} account",
+      "accountsCount_other": "{{count}} accounts",
+      "columns": ["User", "E-mail", "Roles", "Bookings", "Status", ""],
+      "roleCustomer": "Customer",
+      "roleProvider": "Provider",
+      "roleAdmin": "Admin",
+      "statusActive": "Active",
+      "statusBlocked": "Blocked",
+      "block": "Block",
+      "unblock": "Unblock",
+      "blockedToast": "{{name}} blocked",
+      "unblockedToast": "{{name}} unblocked"
+    },
+    "providers": {
+      "queueTitle": "Verification queue ({{count}})",
+      "queueEmpty": "No submissions",
+      "verifiedTitle": "Verified",
+      "columns": ["Provider", "Category", "Type", "Rating", "Status"],
+      "statusActive": "Active",
+      "approve": "Approve",
+      "reject": "Reject",
+      "verifiedBadge": "✓ Verified",
+      "rejectedBadge": "Rejected",
+      "verifiedToast": "{{name}} verified — profile active"
+    },
+    "bookings": {
+      "filters": ["All", "Confirmed", "Pending", "Completed", "Cancelled"],
+      "columns": ["ID", "Customer", "Provider", "Service", "Date", "Price", "Status", ""],
+      "cancel": "Cancel",
+      "cancelToast": "Booking #{{id}} cancelled — both parties notified"
+    },
+    "calendars": {
+      "providerLabel": "Provider calendar:",
+      "loading": "Loading calendar…",
+      "legendBooked": "Booking",
+      "legendBlocked": "Blocked (click to free)",
+      "legendFree": "Free (click to block)",
+      "legendOff": "Outside working hours",
+      "tipBlock": "click to block",
+      "tipOff": "outside working hours",
+      "tipUnblock": "click to free",
+      "offToast": "Outside the provider's working hours",
+      "bookedToast": "Booking: {{label}} — details in the Bookings tab",
+      "slotFreedToast": "Slot freed",
+      "slotBlockedToast": "Slot blocked for {{name}}",
+      "blockedLabel": "blocked"
+    },
+    "categories": {
+      "newPlaceholder": "New category name…",
+      "addCta": "+ Add category",
+      "nameRequiredToast": "Enter a category name",
+      "addedToast": "Category added — visible in the app immediately",
+      "providerCount_one": "{{count}} provider",
+      "providerCount_other": "{{count}} providers"
+    },
+    "billing": {
+      "kpiDocs": "Invoices and receipts — {{month}}",
+      "kpiDocsSub": "issued automatically",
+      "kpiTax": "Tax remitted",
+      "kpiTaxSubCount": "for {{count}} private persons",
+      "kpiTaxSubDefault": "for private persons",
+      "kpiPayout": "Payouts to providers",
+      "kpiPayoutSub": "next batch: {{date}}",
+      "documentsTitle": "Documents",
+      "columns": ["Document no.", "Provider", "Type", "Amount", "Tax", "Status"],
+      "paymentsTitle": "Payments",
+      "paymentsColumns": ["Booking", "Customer", "Provider", "Method", "Amount", "Status"],
+      "noPayments": "No payments",
+      "payoutsTitle": "Payouts",
+      "payoutsColumns": ["Provider", "Gross amount", "Tax", "Net amount", "Status", "Batch"],
+      "noPayouts": "No payouts",
+      "runBatchCta": "Run payouts",
+      "runBatchToast_one": "Payouts run — {{count}} transfer",
+      "runBatchToast_other": "Payouts run — {{count}} transfers",
+      "runBatchEmptyToast": "No payouts to run"
+    }
+  }
+}

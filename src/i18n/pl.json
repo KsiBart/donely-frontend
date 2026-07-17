@@ -1,0 +1,426 @@
+{
+  "common": {
+    "error": "Błąd",
+    "errorWithStatus": "Błąd {{status}}",
+    "noConnection": "Brak połączenia z serwerem",
+    "verifiedFull": "✓ Zweryfikowany",
+    "verifiedShort": "✓",
+    "today": "dziś",
+    "tomorrow": "jutro",
+    "notSet": "do ustalenia",
+    "dowShort": ["nd", "pn", "wt", "śr", "czw", "pt", "sob"],
+    "dowShortAdmin": ["nd", "pn", "wt", "śr", "cz", "pt", "sb"],
+    "dowFull": ["Niedziela", "Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota"],
+    "relTime": {
+      "minutesAgo": "{{count}} min temu",
+      "hoursAgo": "{{count}} godz. temu",
+      "daysAgo_one": "{{count}} dzień temu",
+      "daysAgo_few": "{{count}} dni temu",
+      "daysAgo_many": "{{count}} dni temu",
+      "daysAgo_other": "{{count}} dni temu"
+    },
+    "status": {
+      "PENDING": "Oczekuje",
+      "CONFIRMED": "Potwierdzona",
+      "AWAITING_APPROVAL": "Oczekuje potwierdzenia",
+      "COMPLETED": "Zakończona",
+      "CANCELLED": "Anulowana",
+      "DECLINED": "Odrzucona"
+    },
+    "businessType": {
+      "short": {
+        "PRIVATE": "Osoba prywatna",
+        "JDG": "Mała firma (JDG)"
+      },
+      "long": {
+        "PRIVATE": "Osoba prywatna — rozlicza {{appName}}",
+        "JDG": "Mała firma (JDG) — faktura VAT"
+      }
+    },
+    "documentType": {
+      "RACHUNEK": "Rachunek (os. pryw.)",
+      "FAKTURA_VAT": "Faktura VAT (JDG)"
+    },
+    "documentStatus": {
+      "ISSUED": "Wystawiona",
+      "PAID_OUT": "Wypłacona"
+    },
+    "paymentMethod": {
+      "P24_BLIK": "BLIK / Przelewy24",
+      "PAYPAL": "PayPal"
+    },
+    "paymentStatus": {
+      "PENDING": "Oczekuje",
+      "HELD": "Zamrożona",
+      "CAPTURED": "Pobrana",
+      "RELEASED": "Wypłacona",
+      "REFUNDED": "Zwrócona",
+      "FAILED": "Nieudana"
+    },
+    "payoutStatus": {
+      "PENDING": "Oczekuje",
+      "PAID": "Wypłacona"
+    }
+  },
+  "auth": {
+    "welcome": {
+      "titleLine1": "Umiesz coś?",
+      "titleLine2": "Zarabiaj legalnie.",
+      "subtitle": "Remont, opieka nad dziećmi, muzyk na event, detailing — osoby prywatne i małe firmy. AI dopasuje wykonawcę, a my wystawimy fakturę i rozliczymy podatki. Zero biurokracji.",
+      "cta": "Zaloguj się lub załóż konto",
+      "passwordless": "Bez hasła — wyślemy Ci 8-cyfrowy kod na e-mail"
+    },
+    "email": {
+      "title": "Podaj adres e-mail",
+      "subtitle": "Wyślemy Ci jednorazowy 8-cyfrowy kod. Żadnych haseł do zapamiętania.",
+      "placeholder": "twoj@email.pl",
+      "cta": "Wyślij kod",
+      "invalid": "Podaj poprawny e-mail",
+      "sendFailed": "Nie udało się wysłać kodu"
+    },
+    "code": {
+      "title": "Wpisz kod",
+      "subtitle": "Wysłaliśmy 8-cyfrowy kod na",
+      "placeholderEmail": "twoj@email.pl",
+      "cta": "Zaloguj",
+      "resendPrompt": "Nie dotarł?",
+      "resend": "Wyślij ponownie",
+      "devCode": " · kod: {{code}}",
+      "invalid": "Kod ma 8 cyfr",
+      "wrongCode": "Nieprawidłowy kod"
+    },
+    "codeSentToast": "Kod wysłany na {{email}}",
+    "location": {
+      "title": "Gdzie jesteś?",
+      "subtitle": "Pokażemy fachowców dojeżdżających do Ciebie i policzymy odległość do warsztatów. Możesz też przesunąć pinezkę ręcznie.",
+      "share": "Udostępnij lokalizację",
+      "manual": "Wpiszę adres ręcznie",
+      "pin": "Twoja lokalizacja",
+      "setToast": "Lokalizacja ustawiona: {{place}}",
+      "saveFailed": "Nie udało się zapisać lokalizacji"
+    }
+  },
+  "nav": {
+    "search": "Szukaj",
+    "bookings": "Rezerwacje",
+    "favorites": "Ulubione",
+    "profile": "Profil"
+  },
+  "promo": {
+    "installToast": "→ przekierowanie do sklepu z aplikacją",
+    "bannerText": "Pobierz aplikację, aby dostawać <1>powiadomienia push</1> o rezerwacjach i wycenach",
+    "desktopBannerText": "Masz telefon pod ręką? Pobierz aplikację, aby dostawać <1>powiadomienia push</1> o rezerwacjach i wycenach",
+    "installAppCta": "Pobierz aplikację",
+    "download": "Pobierz",
+    "storeCardTitle": "Wolisz aplikację?",
+    "storeCardBody": "Wersja web ma pełną funkcjonalność. Aplikacja dodaje <1>powiadomienia push</1> w czasie rzeczywistym — o potwierdzeniach, wycenach i przypomnieniach.",
+    "appStoreLine1": "Pobierz w",
+    "appStoreLine2": "App Store",
+    "googlePlayLine1": "Pobierz z",
+    "googlePlayLine2": "Google Play"
+  },
+  "home": {
+    "greetingPlain": "Dzień dobry",
+    "greetingNamed": "Dzień dobry, {{name}}",
+    "searchPlaceholder": "Opisz, czego potrzebujesz…",
+    "mapSearchPlaceholder": "Opisz problem…",
+    "searchEmptyToast": "Opisz najpierw, czego potrzebujesz",
+    "searchCta": "Szukaj",
+    "sortNearest": "Sortuj: Najbliżej ▾",
+    "suggestions": ["Cieknący kran", "Opiekunka na wieczór", "Muzyk na urodziny"],
+    "listToggle": "Lista",
+    "mapToggle": "Mapa",
+    "featuredTitle": "Polecani w Twojej okolicy",
+    "featuredBadge": "PROMOWANE",
+    "workPhoto": "zdjęcie pracy",
+    "categoriesAll": "Wszystkie",
+    "providersCount_one": "{{count}} wykonawca w pobliżu",
+    "providersCount_few": "{{count}} wykonawców w pobliżu",
+    "providersCount_many": "{{count}} wykonawców w pobliżu",
+    "providersCount_other": "{{count}} wykonawców w pobliżu",
+    "priceFromPrefix": "od"
+  },
+  "aiResults": {
+    "title": "Wyniki {{appName}}",
+    "searchError": "Błąd wyszukiwania"
+  },
+  "providerProfile": {
+    "backToResults": "Wróć do wyników",
+    "paymentNoteDesktop": "Płatność online przy rezerwacji — środki zamrożone do potwierdzenia wykonania usługi. Donely automatycznie wystawia rachunek lub fakturę.",
+    "photoBefore": "zdjęcie: przed / po",
+    "morePhotosCount": "+12",
+    "respondsIn": "odpowiada w ~{{minutes}} min",
+    "travelRadius": "🚐 Dojazd do {{km}} km",
+    "workHours": "Pn–Sob 8:00–18:00",
+    "servicesTitle": "Usługi",
+    "atClientTag": "🚐 z dojazdem do Ciebie",
+    "atSpotTag": "📍 u fachowca — {{address}}",
+    "bookInstant": "Zarezerwuj",
+    "bookQuote": "Poproś o wycenę",
+    "reviewsTitle": "Opinie",
+    "defaultCustomerName": "Klient",
+    "addedFavToast": "Dodano do ulubionych",
+    "removedFavToast": "Usunięto z ulubionych"
+  },
+  "booking": {
+    "windows": ["W tym tygodniu", "W weekend", "Wieczorami", "Elastycznie"],
+    "dayToday": "Dziś",
+    "dayTomorrow": "Jutro",
+    "step": "Krok {{step}} z 3",
+    "chooseSlotTitle": "Wybierz termin",
+    "slotNoteAtSpot": "Usługa wykonywana u fachowca — {{address}}. Terminy pokazują wolne godziny w warsztacie.",
+    "slotNoteAtClient": "Terminy uwzględniają czas dojazdu fachowca (bufor 30 min) między zleceniami.",
+    "describeTitle": "Opisz zlecenie",
+    "describeSubtitle": "Fachowiec odpowie wyceną i proponowanym terminem.",
+    "notesPlaceholderQuote": "Co trzeba zrobić? Wymiary, stan, dostęp…",
+    "preferredWindowLabel": "Preferowany termin",
+    "step2TitleAtSpot": "Miejsce i uwagi",
+    "step2TitleAtClient": "Adres i uwagi",
+    "addressLabel": "Adres wykonania usługi",
+    "atSpotBadge": "U fachowca — przyjeżdżasz Ty",
+    "atSpotDistance": "{{distance}} od Ciebie · parking na miejscu",
+    "notesLabel": "Uwagi dla fachowca (opcjonalnie)",
+    "notesPlaceholderClient": "np. domofon 12, piętro 3, jest pies",
+    "notesPlaceholderSpot": "np. marka i model auta, rocznik",
+    "step3TitleQuote": "Sprawdź zapytanie",
+    "step3TitleInstant": "Sprawdź i potwierdź",
+    "summary": {
+      "provider": "Fachowiec",
+      "service": "Usługa",
+      "preferredDate": "Preferowany termin",
+      "place": "Miejsce",
+      "placeAtSpot": "📍 u fachowca — {{address}}",
+      "placeAtClient": "🚐 u Ciebie — {{address}}",
+      "price": "Cena",
+      "date": "Termin",
+      "priceQuotePending": "wycena po odpowiedzi"
+    },
+    "infoQuote": "Wysłanie zapytania jest niezobowiązujące. Rezerwacja powstanie dopiero, gdy zaakceptujesz wycenę.",
+    "infoInstant": "Płacisz teraz online — środki są zamrożone do potwierdzenia wykonania usługi. Po Twojej akceptacji {{appName}} wypłaca wykonawcy kwotę pomniejszoną o podatek i wystawia dokument. Bezpłatne odwołanie do 24 godz. przed terminem.",
+    "paymentMethodLabel": "Metoda płatności",
+    "paymentMethods": {
+      "p24": { "title": "BLIK / Przelewy24", "subtitle": "Szybki kod BLIK lub przelew" },
+      "paypal": { "title": "PayPal", "subtitle": "Karta lub saldo PayPal" }
+    },
+    "cta": {
+      "next": "Dalej",
+      "sendQuote": "Wyślij zapytanie",
+      "confirm": "Potwierdź rezerwację"
+    },
+    "validation": {
+      "chooseTime": "Wybierz godzinę",
+      "describeAndWindow": "Opisz zlecenie i wybierz termin",
+      "choosePaymentMethod": "Wybierz metodę płatności"
+    },
+    "createFailed": "Nie udało się utworzyć rezerwacji",
+    "paymentFailed": "Nie udało się rozpocząć płatności"
+  },
+  "success": {
+    "quoteTitle": "Zapytanie wysłane",
+    "instantTitle": "Zarezerwowano!",
+    "quoteSub": "{{providerName}} zwykle odpowiada w ~15 min. Dostaniesz powiadomienie z wyceną i proponowanym terminem.",
+    "atSpotSub": "{{providerName}} czeka na Ciebie {{when}} — {{address}}.",
+    "atClientSub": "{{providerName}} przyjedzie {{when}} na {{address}}. Przypomnimy Ci dzień wcześniej.",
+    "frozenNote": "Środki zamrożone do potwierdzenia wykonania",
+    "viewBookings": "Zobacz rezerwacje",
+    "backToSearch": "Wróć do szukania",
+    "desktopPromoText": "Status śledzisz tu na donely.app — a z aplikacją dostaniesz też <1>push</1> o zmianach."
+  },
+  "payments": {
+    "returnHeld": "Płatność potwierdzona — rezerwacja zabezpieczona",
+    "returnPending": "Płatność jeszcze nie została dokończona — spróbuj ponownie poniżej",
+    "returnFailed": "Płatność nie powiodła się — spróbuj ponownie poniżej",
+    "returnCancelled": "Płatność anulowana — możesz spróbować ponownie poniżej"
+  },
+  "bookings": {
+    "title": "Rezerwacje",
+    "upcomingLabel": "Nadchodzące",
+    "completedLabel": "Zakończone",
+    "noneUpcoming": "Brak nadchodzących rezerwacji",
+    "noneCompleted": "Brak zakończonych rezerwacji",
+    "statusQuoteSent": "Wysłano zapytanie",
+    "statusNeedsPayment": "Wymaga płatności",
+    "whenProposal": "propozycja: {{window}}",
+    "priceAwaitingQuote": "oczekuje na wycenę",
+    "priceQuoted": "wycena: {{amount}}",
+    "priceToPay": "Do zapłaty: {{amount}}",
+    "pricePaidOnline": "{{price}} · opłacone online",
+    "frozenBadge": "Środki zamrożone",
+    "approveCompletionCta": "Potwierdź wykonanie i zwolnij płatność",
+    "approveCompletionNote": "Fachowiec oznaczył zlecenie jako wykonane. Sprawdź i zwolnij płatność, aby zakończyć rezerwację.",
+    "approveSuccessToast": "Płatność zwolniona — dziękujemy!",
+    "detailsCta": "Szczegóły →",
+    "decline": "Odrzuć",
+    "accept": "Akceptuj",
+    "cancel": "Anuluj",
+    "cancelToast": "Rezerwacja #{{id}} anulowana — powiadomiono obie strony",
+    "quoteAcceptedToast": "Wycena zaakceptowana — dokończ płatność, aby potwierdzić rezerwację",
+    "payNowCta": "Zapłać teraz",
+    "paymentHeldToast": "Płatność zabezpieczona — rezerwacja potwierdzona",
+    "reviewCta": "★ Wystaw opinię",
+    "reviewPlaceholder": "Napisz kilka słów…",
+    "reviewSend": "Wyślij opinię",
+    "reviewEmptyToast": "Napisz kilka słów opinii",
+    "reviewAddedToast": "Opinia dodana",
+    "locLineAtSpot": "📍 u fachowca: {{address}}",
+    "locLineAtClient": "🚐 u Ciebie: {{address}}"
+  },
+  "favorites": {
+    "title": "Ulubione",
+    "empty": "Brak ulubionych — dodaj wykonawcę ikoną ♡ na jego profilu",
+    "bookCta": "Zarezerwuj"
+  },
+  "profile": {
+    "rows": {
+      "location": "Moja lokalizacja",
+      "savedAddresses": "Zapisane adresy",
+      "paymentMethods": "Metody płatności",
+      "notifications": "Powiadomienia",
+      "notificationsEmail": "Powiadomienia e-mail",
+      "language": "Język"
+    },
+    "notificationsOn": "Włączone",
+    "paymentMethodsVal": "BLIK, PayPal",
+    "defaultLocation": "Mokotów",
+    "logout": "Wyloguj",
+    "providerCardTitle": "Świadczysz usługi?",
+    "providerCardBody": "Zarabiaj legalnie bez zakładania firmy — {{appName}} wystawia faktury i rozlicza podatki za Ciebie.",
+    "providerCardCta": "Przełącz na tryb fachowca",
+    "langNamePl": "Polski",
+    "langNameEn": "English",
+    "pushPromoTitle": "Powiadomienia push",
+    "pushPromoBody": "W przeglądarce dostaniesz e-maile. Push w czasie rzeczywistym — o potwierdzeniach i wycenach — wymaga aplikacji."
+  },
+  "admin": {
+    "common": {
+      "sections": {
+        "dashboard": "Pulpit",
+        "users": "Użytkownicy",
+        "providers": "Wykonawcy",
+        "bookings": "Rezerwacje",
+        "calendars": "Kalendarze",
+        "categories": "Kategorie",
+        "billing": "Rozliczenia"
+      },
+      "panelLabel": "PANEL ADMINA",
+      "logout": "Wyloguj",
+      "noAccessTitle": "Brak uprawnień",
+      "noAccessBody": "Konto {{email}} nie ma dostępu do panelu admina.",
+      "language": "Język"
+    },
+    "login": {
+      "emailTitle": "Podaj adres e-mail",
+      "emailSubtitle": "Wyślemy Ci jednorazowy 8-cyfrowy kod. Żadnych haseł do zapamiętania.",
+      "emailPlaceholder": "admin@donely.app",
+      "sendCode": "Wyślij kod",
+      "codeTitle": "Wpisz kod",
+      "codeSubtitle": "Wysłaliśmy 8-cyfrowy kod na",
+      "loginCta": "Zaloguj",
+      "resendPrompt": "Nie dotarł?",
+      "resend": "Wyślij ponownie",
+      "devCode": " · kod: {{code}}",
+      "invalidEmail": "Podaj poprawny e-mail",
+      "sendFailed": "Nie udało się wysłać kodu",
+      "invalidCode": "Kod ma 8 cyfr",
+      "wrongCode": "Nieprawidłowy kod",
+      "codeSentToast": "Kod wysłany na {{email}}"
+    },
+    "dashboard": {
+      "kpiUsers": "Użytkownicy",
+      "kpiUsersSub": "+{{count}} w tym tygodniu",
+      "kpiProviders": "Wykonawcy",
+      "kpiProvidersSub": "{{count}} czeka na weryfikację",
+      "kpiBookingsToday": "Rezerwacje dziś",
+      "kpiBookingsTodaySub": "{{count}} anulowane",
+      "kpiRevenue": "Obrót — {{month}}",
+      "kpiRevenueSub": "podatki rozliczone: {{tax}}",
+      "pendingTitle": "Wykonawcy do weryfikacji",
+      "pendingEmpty": "Brak zgłoszeń",
+      "feedTitle": "Ostatnie zdarzenia"
+    },
+    "users": {
+      "searchPlaceholder": "Szukaj po imieniu lub e-mailu…",
+      "accountsCount_one": "{{count}} konto",
+      "accountsCount_few": "{{count}} konta",
+      "accountsCount_many": "{{count}} kont",
+      "accountsCount_other": "{{count}} konta",
+      "columns": ["Użytkownik", "E-mail", "Role", "Rezerw.", "Status", ""],
+      "roleCustomer": "Klient",
+      "roleProvider": "Wykonawca",
+      "roleAdmin": "Admin",
+      "statusActive": "Aktywny",
+      "statusBlocked": "Zablokowany",
+      "block": "Zablokuj",
+      "unblock": "Odblokuj",
+      "blockedToast": "{{name}} zablokowany",
+      "unblockedToast": "{{name}} odblokowany"
+    },
+    "providers": {
+      "queueTitle": "Kolejka weryfikacji ({{count}})",
+      "queueEmpty": "Brak zgłoszeń",
+      "verifiedTitle": "Zweryfikowani",
+      "columns": ["Wykonawca", "Kategoria", "Forma", "Ocena", "Status"],
+      "statusActive": "Aktywny",
+      "approve": "Zatwierdź",
+      "reject": "Odrzuć",
+      "verifiedBadge": "✓ Zweryfikowany",
+      "rejectedBadge": "Odrzucono",
+      "verifiedToast": "{{name}} zweryfikowany — profil aktywny"
+    },
+    "bookings": {
+      "filters": ["Wszystkie", "Potwierdzone", "Oczekujące", "Zakończone", "Anulowane"],
+      "columns": ["ID", "Klient", "Wykonawca", "Usługa", "Termin", "Cena", "Status", ""],
+      "cancel": "Anuluj",
+      "cancelToast": "Rezerwacja #{{id}} anulowana — powiadomiono obie strony"
+    },
+    "calendars": {
+      "providerLabel": "Kalendarz wykonawcy:",
+      "loading": "Ładowanie kalendarza…",
+      "legendBooked": "Rezerwacja",
+      "legendBlocked": "Blokada (kliknij, aby zwolnić)",
+      "legendFree": "Wolne (kliknij, aby zablokować)",
+      "legendOff": "Poza godzinami pracy",
+      "tipBlock": "kliknij, aby zablokować",
+      "tipOff": "poza godzinami pracy",
+      "tipUnblock": "kliknij, aby zwolnić",
+      "offToast": "Poza godzinami pracy wykonawcy",
+      "bookedToast": "Rezerwacja: {{label}} — szczegóły w zakładce Rezerwacje",
+      "slotFreedToast": "Slot zwolniony",
+      "slotBlockedToast": "Slot zablokowany dla {{name}}",
+      "blockedLabel": "blokada"
+    },
+    "categories": {
+      "newPlaceholder": "Nazwa nowej kategorii…",
+      "addCta": "+ Dodaj kategorię",
+      "nameRequiredToast": "Podaj nazwę kategorii",
+      "addedToast": "Kategoria dodana — widoczna w aplikacji od razu",
+      "providerCount_one": "{{count}} wykonawca",
+      "providerCount_few": "{{count}} wykonawcy",
+      "providerCount_many": "{{count}} wykonawców",
+      "providerCount_other": "{{count}} wykonawców"
+    },
+    "billing": {
+      "kpiDocs": "Faktury i rachunki — {{month}}",
+      "kpiDocsSub": "wystawione automatycznie",
+      "kpiTax": "Podatek odprowadzony",
+      "kpiTaxSubCount": "za {{count}} osób prywatnych",
+      "kpiTaxSubDefault": "za osoby prywatne",
+      "kpiPayout": "Wypłaty do wykonawców",
+      "kpiPayoutSub": "następna partia: {{date}}",
+      "documentsTitle": "Dokumenty",
+      "columns": ["Nr dokumentu", "Wykonawca", "Typ", "Kwota", "Podatek", "Status"],
+      "paymentsTitle": "Płatności",
+      "paymentsColumns": ["Rezerwacja", "Klient", "Wykonawca", "Metoda", "Kwota", "Status"],
+      "noPayments": "Brak płatności",
+      "payoutsTitle": "Wypłaty",
+      "payoutsColumns": ["Wykonawca", "Kwota brutto", "Podatek", "Kwota netto", "Status", "Partia"],
+      "noPayouts": "Brak wypłat",
+      "runBatchCta": "Uruchom wypłaty",
+      "runBatchToast_one": "Uruchomiono wypłaty — {{count}} zlecenie",
+      "runBatchToast_few": "Uruchomiono wypłaty — {{count}} zlecenia",
+      "runBatchToast_many": "Uruchomiono wypłaty — {{count}} zleceń",
+      "runBatchToast_other": "Uruchomiono wypłaty — {{count}} zlecenia",
+      "runBatchEmptyToast": "Brak wypłat do uruchomienia"
+    }
+  }
+}
