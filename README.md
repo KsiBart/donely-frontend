@@ -12,7 +12,7 @@ All data comes from the real API (`donely-backend`, port 3001) via the contract 
 ## Requirements
 
 - Node 20+
-- `donely-backend` running on `http://localhost:3001` (see its README: `npm ci && npx prisma generate && npx prisma db push && npm run seed && npm run start:dev`)
+- `donely-backend` running on `http://localhost:3001` (see its README: `docker compose up -d && npm ci && npx prisma generate && npx prisma migrate deploy && npm run seed && npm run start:dev`)
 
 ## Setup & run
 

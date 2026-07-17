@@ -152,3 +152,44 @@ textarea::placeholder {
 .dw-card-hover:hover {
   box-shadow: 0 10px 28px rgba(74, 52, 102, 0.2);
 }
+
+/* Phase 2.5 — desktop auth/welcome/location. No dedicated design mock exists for the
+   logged-out screens, so on >=1024px we present the existing auth flow as an elevated
+   card on a full-viewport branded backdrop (instead of a bare phone card floating on
+   the page background). The inner auth components are reused byte-for-byte. */
+.auth-desktop-page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--page-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+.auth-desktop-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 22% 28%, rgba(122, 79, 192, 0.14), transparent 45%),
+    radial-gradient(circle at 82% 72%, rgba(181, 138, 230, 0.16), transparent 48%);
+  pointer-events: none;
+}
+.auth-desktop-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 460px;
+  height: 720px;
+  max-height: 92vh;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(74, 52, 102, 0.24);
+}

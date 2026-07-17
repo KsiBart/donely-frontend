@@ -80,25 +80,63 @@ export default function MobileApp() {
     );
   }
 
+  // Not authenticated yet: loader → auth (email/code) → location ask. The same inner
+  // components render on mobile and desktop; only the surrounding chrome differs.
+  const authContent = loading ? (
+    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <span style={{ animation: 'ptpulse 1.6s infinite' }}>
+        <Logo size={54} />
+      </span>
+    </div>
+  ) : !me ? (
+    <AuthFlow />
+  ) : !me.locationLabel ? (
+    <LocationScreen />
+  ) : null;
+
+  // authed === false here means authContent is non-null (loader/auth/location).
+  if (!authed && isDesktop) {
+    return (
+      <div className="auth-desktop-page">
+        <div className="auth-desktop-card">
+          {authContent}
+          {toast && (
+            <div
+              style={{
+                position: 'absolute',
+                left: 20,
+                right: 20,
+                bottom: 24,
+                background: 'var(--text)',
+                color: 'var(--bg)',
+                borderRadius: 16,
+                padding: '12px 16px',
+                fontSize: 13,
+                fontWeight: 600,
+                textAlign: 'center',
+                animation: 'dwfade .25s ease',
+                zIndex: 10,
+              }}
+            >
+              {toast}
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mobile-page">
       <div className="mobile-shell">
-        {loading ? (
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ animation: 'ptpulse 1.6s infinite' }}>
-              <Logo size={54} />
-            </span>
-          </div>
-        ) : !me ? (
-          <AuthFlow />
-        ) : !me.locationLabel ? (
-          <LocationScreen />
-        ) : (
+        {authed ? (
           <>
             <InstallBanner />
             {routes}
             {showNav && <BottomNav />}
           </>
+        ) : (
+          authContent
         )}
         {toast && (
           <div
