@@ -131,7 +131,9 @@ export default function Landing() {
     ...c,
     sA: CAT_GRADIENTS[i % CAT_GRADIENTS.length][0],
     sB: CAT_GRADIENTS[i % CAT_GRADIENTS.length][1],
-    dir: REVEAL_DIRS[i % 3],
+    // Slide in from alternating sides so the grid converges/aligns as it reveals (even cards from
+    // the left, odd from the right) — reverses on scroll-up via `data-reveal-repeat` below.
+    dir: i % 2 === 0 ? 'left' : 'right',
   }));
 
   return (
@@ -365,8 +367,19 @@ export default function Landing() {
               key={c.name}
               {...clickable(goLogin)}
               data-reveal={c.dir}
+              data-reveal-repeat=""
               className="dt-card"
-              style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 22, overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .25s ease, border-color .25s ease' }}
+              style={{
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: 22,
+                overflow: 'hidden',
+                cursor: 'pointer',
+                // Must include opacity+transform here (inline overrides the [data-reveal] stylesheet
+                // transition): without them the reveal snapped instead of sliding.
+                transition:
+                  'opacity .55s ease, transform .7s cubic-bezier(.2,.75,.3,1), box-shadow .25s ease, border-color .25s ease',
+              }}
             >
               <div
                 style={{

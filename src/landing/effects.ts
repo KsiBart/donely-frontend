@@ -26,9 +26,15 @@ export function useScrollReveal(deps: readonly unknown[] = []): void {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          // `data-reveal-repeat` elements (e.g. the category cards) animate BOTH ways: they slide in
+          // when they enter and slide back out (reverse) when they leave the viewport, so scrolling
+          // up un-reveals them. Everything else reveals once and is unobserved.
+          const repeat = entry.target.hasAttribute('data-reveal-repeat');
           if (entry.isIntersecting) {
             entry.target.classList.add('is-revealed');
-            observer.unobserve(entry.target);
+            if (!repeat) observer.unobserve(entry.target);
+          } else if (repeat) {
+            entry.target.classList.remove('is-revealed');
           }
         });
       },
