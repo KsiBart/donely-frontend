@@ -10,6 +10,7 @@ import { useIsDesktop } from '../../lib/useIsDesktop';
 import { BRICO, ddmm, formatKm, isoDay } from '../../lib/format';
 import { useAuth } from '../../state/AuthContext';
 import { useToast } from '../../state/ToastContext';
+import { clickable } from '../../lib/a11y';
 
 interface WizardDay {
   label: string;
@@ -227,7 +228,7 @@ export default function BookingWizard() {
       <div style={{ padding: isDesktop ? '20px 24px 0' : '20px 20px 0', flex: 'none' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <span
-            onClick={bookBack}
+            {...clickable(bookBack, { label: t('a11y.back', 'Wstecz') })}
             style={{
               width: 34,
               height: 34,
@@ -258,14 +259,14 @@ export default function BookingWizard() {
       <div style={isDesktop ? { padding: '16px 24px 22px' } : { flex: 1, overflow: 'auto', padding: '14px 20px 20px' }}>
         {step === 1 && !isQuote && (
           <>
-            <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, marginBottom: 14 }}>{t('booking.chooseSlotTitle')}</div>
-            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+            <h1 style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, margin: 0, marginBottom: 14 }}>{t('booking.chooseSlotTitle')}</h1>
+            <div role="radiogroup" aria-label={t('booking.chooseSlotTitle')} style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
               {days.map((d, i) => {
                 const sel = i === slotDay;
                 return (
                   <span
                     key={d.sub}
-                    onClick={() => setSlotDay(i)}
+                    {...clickable(() => setSlotDay(i), { pressed: sel })}
                     style={{
                       flex: 1,
                       textAlign: 'center',
@@ -286,16 +287,14 @@ export default function BookingWizard() {
                 );
               })}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 9 }}>
+            <div role="radiogroup" aria-label={t('a11y.timePicker', 'Wybierz godzinę')} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 9 }}>
               {times.map((tm) => {
                 const disabled = !tm.available;
                 const sel = tm.label === slotTime;
                 return (
                   <span
                     key={tm.label}
-                    onClick={() => {
-                      if (!disabled) setSlotTime(tm.label);
-                    }}
+                    {...clickable(() => setSlotTime(tm.label), { pressed: sel, disabled })}
                     style={{
                       textAlign: 'center',
                       borderRadius: 14,
@@ -324,12 +323,13 @@ export default function BookingWizard() {
 
         {step === 1 && isQuote && (
           <>
-            <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, marginBottom: 6 }}>{t('booking.describeTitle')}</div>
+            <h1 style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, margin: 0, marginBottom: 6 }}>{t('booking.describeTitle')}</h1>
             <div style={{ fontSize: 12.5, color: 'var(--muted)', marginBottom: 14 }}>{t('booking.describeSubtitle')}</div>
             <textarea
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={t('booking.notesPlaceholderQuote') ?? ''}
+              aria-label={t('booking.notesPlaceholderQuote') ?? ''}
               style={{
                 width: '100%',
                 boxSizing: 'border-box',
@@ -369,7 +369,7 @@ export default function BookingWizard() {
                 return (
                   <span
                     key={w}
-                    onClick={() => setWindowSel(w)}
+                    {...clickable(() => setWindowSel(w), { pressed: sel })}
                     style={{
                       borderRadius: 14,
                       padding: '9px 13px',
@@ -391,13 +391,14 @@ export default function BookingWizard() {
 
         {step === 2 && (
           <>
-            <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, marginBottom: 14 }}>
+            <h1 style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, margin: 0, marginBottom: 14 }}>
               {atSpot ? t('booking.step2TitleAtSpot') : t('booking.step2TitleAtClient')}
-            </div>
+            </h1>
             {!atSpot && (
               <>
-                <div style={{ ...uppercaseLabel, marginBottom: 8 }}>{t('booking.addressLabel')}</div>
+                <label htmlFor="booking-address" style={{ ...uppercaseLabel, marginBottom: 8, display: 'block' }}>{t('booking.addressLabel')}</label>
                 <input
+                  id="booking-address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   style={{
@@ -417,7 +418,7 @@ export default function BookingWizard() {
                     {(me?.savedAddresses ?? []).map((a) => (
                       <span
                         key={a.label}
-                        onClick={() => setAddress(a.addr)}
+                        {...clickable(() => setAddress(a.addr))}
                         style={{
                           background: 'var(--surface2)',
                           borderRadius: 12,
@@ -465,8 +466,9 @@ export default function BookingWizard() {
                 </div>
               </div>
             )}
-            <div style={{ ...uppercaseLabel, margin: '18px 0 8px' }}>{t('booking.notesLabel')}</div>
+            <label htmlFor="booking-notes" style={{ ...uppercaseLabel, margin: '18px 0 8px', display: 'block' }}>{t('booking.notesLabel')}</label>
             <textarea
+              id="booking-notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder={(atSpot ? t('booking.notesPlaceholderSpot') : t('booking.notesPlaceholderClient')) ?? ''}
@@ -489,9 +491,9 @@ export default function BookingWizard() {
 
         {step === 3 && (
           <>
-            <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, marginBottom: 14 }}>
+            <h1 style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, margin: 0, marginBottom: 14 }}>
               {isQuote ? t('booking.step3TitleQuote') : t('booking.step3TitleInstant')}
-            </div>
+            </h1>
             <div style={{ background: 'var(--surface)', borderRadius: 20, boxShadow: 'var(--shadow)', overflow: 'hidden' }}>
               {summary.map((r) => (
                 <div key={r.k} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, padding: '13px 16px', borderBottom: '1px solid var(--border)' }}>
@@ -504,14 +506,14 @@ export default function BookingWizard() {
             {!isQuote && (
               <>
                 <div style={{ ...uppercaseLabel, margin: '18px 0 8px' }}>{t('booking.paymentMethodLabel')}</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+                <div role="radiogroup" aria-label={t('booking.paymentMethodLabel')} style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
                   {brand.paymentMethods.map((m) => {
                     const sel = m === method;
                     const key = METHOD_KEY[m];
                     return (
                       <div
                         key={m}
-                        onClick={() => setMethod(m)}
+                        {...clickable(() => setMethod(m), { pressed: sel })}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -546,6 +548,7 @@ export default function BookingWizard() {
 
             <div style={{ display: 'flex', gap: 10, background: 'var(--surface2)', borderRadius: 16, padding: '12px 14px', marginTop: 14, alignItems: 'center' }}>
               <span
+                aria-hidden="true"
                 style={{
                   width: 30,
                   height: 30,
@@ -571,7 +574,7 @@ export default function BookingWizard() {
 
       <div style={{ flex: 'none', padding: isDesktop ? '14px 24px 22px' : '12px 20px 20px', background: 'var(--surface)', borderTop: '1px solid var(--border)' }}>
         <div
-          onClick={nextStep}
+          {...clickable(nextStep)}
           style={{
             textAlign: 'center',
             background: canNext ? 'var(--accent)' : 'var(--surface2)',

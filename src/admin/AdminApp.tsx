@@ -7,6 +7,7 @@ import { useBrand } from '../brand';
 import { SUPPORTED_LANGS, toIntlLocale, type Lang } from '../i18n';
 import { Logo, stripes } from '../components/ui';
 import { BRICO, headerDate } from '../lib/format';
+import { clickable } from '../lib/a11y';
 import { useAuth } from '../state/AuthContext';
 import { useToast } from '../state/ToastContext';
 import AdminLogin from './AdminLogin';
@@ -109,6 +110,9 @@ export default function AdminApp() {
         <span style={{ animation: 'ptpulse 1.6s infinite' }}>
           <Logo size={54} />
         </span>
+        <span className="sr-only" role="status">
+          {t('a11y.loading', 'Ładowanie…')}
+        </span>
       </div>
     );
   }
@@ -120,12 +124,12 @@ export default function AdminApp() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
         <div style={{ background: 'var(--surface)', borderRadius: 20, boxShadow: 'var(--shadow)', padding: '32px 36px', maxWidth: 420, textAlign: 'center' }}>
           <Logo size={40} />
-          <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, margin: '14px 0 8px' }}>{t('admin.common.noAccessTitle')}</div>
+          <h1 style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, margin: '14px 0 8px' }}>{t('admin.common.noAccessTitle')}</h1>
           <div style={{ fontSize: 13.5, color: 'var(--muted2)', lineHeight: 1.5, marginBottom: 18 }}>
             {t('admin.common.noAccessBody', { email: me.email })}
           </div>
           <div
-            onClick={logout}
+            {...clickable(logout)}
             style={{ display: 'inline-block', background: 'var(--accent)', color: '#fff', borderRadius: 14, padding: '10px 22px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
           >
             {t('admin.common.logout')}
@@ -147,7 +151,8 @@ export default function AdminApp() {
     <PendingCtx.Provider value={pendingValue}>
       <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
         {/* Sidebar */}
-        <div
+        <nav
+          aria-label={t('a11y.adminNav', 'Menu administratora')}
           style={{
             flex: 'none',
             width: 224,
@@ -172,7 +177,7 @@ export default function AdminApp() {
               return (
                 <div
                   key={s.path || 'dashboard'}
-                  onClick={() => navigate(s.path ? `/admin/${s.path}` : '/admin')}
+                  {...clickable(() => navigate(s.path ? `/admin/${s.path}` : '/admin'), { pressed: active })}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
@@ -210,7 +215,7 @@ export default function AdminApp() {
           </div>
           <div style={{ marginTop: 'auto' }}>
             <div
-              onClick={toggleLang}
+              {...clickable(toggleLang)}
               title={t('admin.common.language') ?? ''}
               style={{
                 display: 'flex',
@@ -257,12 +262,16 @@ export default function AdminApp() {
                 <div style={{ fontSize: 12.5, fontWeight: 700 }}>Admin</div>
                 <div style={{ fontSize: 10.5, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{me.email}</div>
               </div>
-              <span onClick={logout} title={t('admin.common.logout') ?? ''} style={{ fontSize: 11, fontWeight: 700, color: '#d64550', cursor: 'pointer' }}>
-                ⎋
+              <span
+                {...clickable(logout, { label: t('admin.common.logout') })}
+                title={t('admin.common.logout') ?? ''}
+                style={{ fontSize: 11, fontWeight: 700, color: '#d64550', cursor: 'pointer' }}
+              >
+                <span aria-hidden="true">⎋</span>
               </span>
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* Main column */}
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
@@ -277,10 +286,10 @@ export default function AdminApp() {
               borderBottom: '1px solid var(--border)',
             }}
           >
-            <span style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700 }}>{sectionTitle}</span>
+            <h1 style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, margin: 0 }}>{sectionTitle}</h1>
             <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--muted)' }}>{headerDate(toIntlLocale(i18n.language))}</span>
           </div>
-          <div style={{ flex: 1, overflow: 'auto', padding: '24px 28px', position: 'relative' }}>
+          <main style={{ flex: 1, overflow: 'auto', padding: '24px 28px', position: 'relative' }}>
             <Routes>
               <Route index element={<Dashboard />} />
               <Route path="users" element={<Users />} />
@@ -291,7 +300,7 @@ export default function AdminApp() {
               <Route path="billing" element={<Billing />} />
               <Route path="*" element={<Navigate to="/admin" replace />} />
             </Routes>
-          </div>
+          </main>
         </div>
 
         {toast && (

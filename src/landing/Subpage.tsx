@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { BRICO } from '../lib/format';
+import { clickable } from '../lib/a11y';
 import { CAT_GRADIENTS } from './palette';
 import { SiteFooter, SiteHeader } from './SiteChrome';
 import { useSiteTheme } from '../state/SiteThemeContext';
@@ -69,10 +70,10 @@ export default function Subpage({ pageKey }: { pageKey: string }) {
       <section style={{ background: 'var(--tint)', borderBottom: '1px solid var(--border)' }}>
         <div style={{ maxWidth: 920, margin: '0 auto', padding: 'clamp(36px,5vw,64px) 22px' }}>
           <span
-            onClick={() => navigate('/')}
+            {...clickable(() => navigate('/'))}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}
           >
-            ‹ {t('landing.backHome')}
+            <span aria-hidden="true">‹</span> {t('landing.backHome')}
           </span>
           <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(34px,5vw,52px)', fontWeight: 800, color: 'var(--ink)', margin: '14px 0 0', letterSpacing: '-.01em' }}>
             {page.title}
@@ -116,7 +117,7 @@ function CardsBlock({ items }: { items: CardItem[] }) {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16 }}>
       {items.map((it) => (
         <div key={it.t} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-          <div style={{ width: 46, height: 46, borderRadius: 13, background: 'var(--tint)', color: 'var(--acc)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
+          <div aria-hidden="true" style={{ width: 46, height: 46, borderRadius: 13, background: 'var(--tint)', color: 'var(--acc)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
             {it.icon}
           </div>
           <div style={{ fontFamily: BRICO, fontSize: 18, fontWeight: 700, color: 'var(--ink)', marginTop: 14 }}>{it.t}</div>
@@ -180,11 +181,20 @@ function FaqBlock({ items }: { items: FaqItem[] }) {
         const isOpen = open === i;
         return (
           <div key={it.q} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
-            <div onClick={() => setOpen(isOpen ? null : i)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '15px 18px', cursor: 'pointer' }}>
+            <div
+              {...clickable(() => setOpen(isOpen ? null : i), { expanded: isOpen })}
+              id={`faq-q-${i}`}
+              aria-controls={`faq-a-${i}`}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '15px 18px', cursor: 'pointer' }}
+            >
               <span style={{ flex: 1, fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>{it.q}</span>
-              <span style={{ color: 'var(--acc)', fontSize: 18, fontWeight: 800, width: 20, textAlign: 'center' }}>{isOpen ? '−' : '+'}</span>
+              <span aria-hidden="true" style={{ color: 'var(--acc)', fontSize: 18, fontWeight: 800, width: 20, textAlign: 'center' }}>{isOpen ? '−' : '+'}</span>
             </div>
-            {isOpen && <div style={{ padding: '0 18px 16px', fontSize: 14, color: 'var(--muted)', lineHeight: 1.6, animation: 'dfade .25s ease' }}>{it.a}</div>}
+            {isOpen && (
+              <div id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} style={{ padding: '0 18px 16px', fontSize: 14, color: 'var(--muted)', lineHeight: 1.6, animation: 'dfade .25s ease' }}>
+                {it.a}
+              </div>
+            )}
           </div>
         );
       })}
@@ -220,7 +230,7 @@ function ContactForm() {
   if (sent) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--okbg)', color: 'var(--okfg)', borderRadius: 16, padding: '16px 18px', fontSize: 14.5, fontWeight: 700, maxWidth: 560 }}>
-        ✓ {t('landing.form.thanks')}
+        <span aria-hidden="true">✓</span> {t('landing.form.thanks')}
       </div>
     );
   }
@@ -239,18 +249,17 @@ function ContactForm() {
 
   return (
     <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24, maxWidth: 560, display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('landing.form.name')} style={inputStyle} />
-      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder={t('landing.form.email')} style={inputStyle} />
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('landing.form.name')} aria-label={t('landing.form.name')} style={inputStyle} />
+      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder={t('landing.form.email')} aria-label={t('landing.form.email')} style={inputStyle} />
       <textarea
         value={msg}
         onChange={(e) => setMsg(e.target.value)}
         placeholder={t('landing.form.msg')}
+        aria-label={t('landing.form.msg')}
         style={{ ...inputStyle, height: 110, resize: 'none', font: "500 14px 'Figtree', sans-serif" }}
       />
       <div
-        onClick={() => {
-          if (ok) setSent(true);
-        }}
+        {...clickable(() => setSent(true), { disabled: !ok })}
         style={{
           textAlign: 'center',
           background: ok ? 'var(--acc)' : 'var(--surface2)',

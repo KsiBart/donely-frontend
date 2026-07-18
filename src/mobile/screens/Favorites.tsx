@@ -9,6 +9,7 @@ import { AvatarTile } from '../../components/ui';
 import { BRICO } from '../../lib/format';
 import { useToast } from '../../state/ToastContext';
 import { providerMeta } from '../shared';
+import { clickable } from '../../lib/a11y';
 
 export default function Favorites() {
   const { t, i18n } = useTranslation();
@@ -38,7 +39,7 @@ export default function Favorites() {
           : { flex: 1, overflow: 'auto', padding: '20px 20px 18px' }
       }
     >
-      <div style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: '8px 0 18px' }}>{t('favorites.title')}</div>
+      <h1 style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: '8px 0 18px' }}>{t('favorites.title')}</h1>
       <div style={isDesktop ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 } : { display: 'flex', flexDirection: 'column', gap: 10 }}>
         {loaded && favs.length === 0 && (
           <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('favorites.empty')}</div>
@@ -62,7 +63,7 @@ export default function Favorites() {
               <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>{providerMeta(p, locale)}</div>
             </div>
             <span
-              onClick={() => navigate(`/provider/${p.id}`)}
+              {...clickable(() => navigate(`/provider/${p.id}`))}
               style={{
                 flex: 'none',
                 background: 'var(--accent)',

@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { stripes } from '../components/ui';
 import { bizShort, initials } from '../lib/format';
+import { clickable } from '../lib/a11y';
 import { CRM_SHADOW } from './ui';
 import type { PendingItem } from './AdminApp';
 
@@ -71,7 +72,7 @@ export function PendingRow({
       {isNew ? (
         <>
           <span
-            onClick={() => onReject(p)}
+            {...clickable(() => onReject(p))}
             style={{
               border: '1.5px solid var(--border)',
               borderRadius: 11,
@@ -85,7 +86,7 @@ export function PendingRow({
             {t('admin.providers.reject')}
           </span>
           <span
-            onClick={() => onApprove(p)}
+            {...clickable(() => onApprove(p))}
             style={{
               background: 'var(--accent)',
               color: '#fff',

@@ -1,5 +1,29 @@
 {
+  "a11y": {
+    "adminNav": "Menu administratora",
+    "back": "Wstecz",
+    "dismiss": "Zamknij",
+    "favorite": "Ulubione",
+    "loading": "Ładowanie…",
+    "otpDigit": "Cyfra kodu {{n}}",
+    "primaryNav": "Nawigacja",
+    "starLabel": "{{n}} z 5 gwiazdek",
+    "starRating": "Ocena w gwiazdkach",
+    "timePicker": "Wybierz godzinę",
+    "toggleActive": "Aktywna"
+  },
+  "title": {
+    "home": "Znajdź fachowca",
+    "login": "Zaloguj się",
+    "bookings": "Rezerwacje",
+    "favorites": "Ulubione",
+    "profile": "Profil",
+    "provider": "Wykonawca",
+    "book": "Rezerwacja",
+    "admin": "Panel administratora"
+  },
   "common": {
+    "skipToContent": "Przejdź do treści",
     "error": "Błąd",
     "errorWithStatus": "Błąd {{status}}",
     "noConnection": "Brak połączenia z serwerem",

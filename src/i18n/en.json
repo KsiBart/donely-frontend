@@ -1,5 +1,29 @@
 {
+  "a11y": {
+    "adminNav": "Admin menu",
+    "back": "Back",
+    "dismiss": "Dismiss",
+    "favorite": "Favorite",
+    "loading": "Loading…",
+    "otpDigit": "Code digit {{n}}",
+    "primaryNav": "Navigation",
+    "starLabel": "{{n}} of 5 stars",
+    "starRating": "Star rating",
+    "timePicker": "Choose a time",
+    "toggleActive": "Active"
+  },
+  "title": {
+    "home": "Find a pro",
+    "login": "Sign in",
+    "bookings": "Bookings",
+    "favorites": "Favorites",
+    "profile": "Profile",
+    "provider": "Provider",
+    "book": "Booking",
+    "admin": "Admin panel"
+  },
   "common": {
+    "skipToContent": "Skip to content",
     "error": "Error",
     "errorWithStatus": "Error {{status}}",
     "noConnection": "No connection to the server",

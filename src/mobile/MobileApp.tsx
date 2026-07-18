@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../state/AuthContext';
 import { useToast } from '../state/ToastContext';
 import { useIsDesktop } from '../lib/useIsDesktop';
@@ -21,6 +22,7 @@ import ProfileTab from './screens/Profile';
 const NAV_PATHS = ['/', '/bookings', '/favorites', '/profile'];
 
 export default function MobileApp() {
+  const { t } = useTranslation();
   const { me, loading } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
@@ -51,9 +53,14 @@ export default function MobileApp() {
     return (
       <div className="desktop-page">
         <div className="desktop-shell">
+          <a href="#main" className="skip-link">
+            {t('common.skipToContent')}
+          </a>
           <DesktopPromoBanner />
           <TopNav />
-          <div className="desktop-content">{routes}</div>
+          <main id="main" className="desktop-content">
+            {routes}
+          </main>
           {toast && (
             <div
               style={{
@@ -152,8 +159,13 @@ export default function MobileApp() {
       <div className="mobile-shell">
         {authed ? (
           <>
+            <a href="#main" className="skip-link">
+              {t('common.skipToContent')}
+            </a>
             <InstallBanner />
-            {routes}
+            <main id="main" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+              {routes}
+            </main>
             {showNav && <BottomNav />}
           </>
         ) : (

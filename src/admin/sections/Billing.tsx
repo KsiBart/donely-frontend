@@ -4,6 +4,7 @@ import { api } from '../../api/client';
 import type { AdminBilling, AdminDocument, AdminPaymentRow, AdminPayoutRow } from '../../api/types';
 import { toIntlLocale } from '../../i18n';
 import { formatZl, monthName, paymentMethodLabel, paymentStatusLabel, payoutStatusLabel } from '../../lib/format';
+import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
 import { KpiCard, StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
 
@@ -102,7 +103,7 @@ export default function Billing() {
         />
       </div>
 
-      <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.billing.documentsTitle')}</div>
+      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.billing.documentsTitle')}</h2>
       <div style={{ ...cardStyle, overflow: 'hidden', marginBottom: 24 }}>
         <TableHead cols={DOC_COLS} columns={docColumns} />
         {(billing?.documents ?? []).map((d) => {
@@ -122,7 +123,7 @@ export default function Billing() {
         })}
       </div>
 
-      <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.billing.paymentsTitle')}</div>
+      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.billing.paymentsTitle')}</h2>
       <div style={{ ...cardStyle, overflow: 'hidden', marginBottom: 24 }}>
         <TableHead cols={PAYMENT_COLS} columns={paymentColumns} />
         {payments.length === 0 && <div style={{ padding: '14px 18px', fontSize: 12.5, color: 'var(--muted)' }}>{t('admin.billing.noPayments')}</div>}
@@ -144,9 +145,9 @@ export default function Billing() {
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <span style={{ fontWeight: 700, fontSize: 14.5 }}>{t('admin.billing.payoutsTitle')}</span>
+        <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: 0 }}>{t('admin.billing.payoutsTitle')}</h2>
         <span
-          onClick={() => void runBatch()}
+          {...clickable(() => void runBatch())}
           style={{
             background: 'var(--accent)',
             color: '#fff',

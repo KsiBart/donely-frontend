@@ -6,6 +6,7 @@ import { BRICO } from '../lib/format';
 import { useAuth } from '../state/AuthContext';
 import { useSiteTheme } from '../state/SiteThemeContext';
 import { useToast } from '../state/ToastContext';
+import { clickable } from '../lib/a11y';
 import { DarkModeToggle, LangToggle, ToastBubble } from './shared';
 
 type Step = 'email' | 'code' | 'done';
@@ -18,6 +19,7 @@ const EMPTY_DIGITS = () => Array(8).fill('');
  * `input` event under the hood for text inputs, identical behavior).
  */
 function OtpBoxes({ digits, setDigits }: { digits: string[]; setDigits: (d: string[]) => void }) {
+  const { t } = useTranslation();
   const refs = useRef<(HTMLInputElement | null)[]>([]);
 
   const focusBox = (i: number) => {
@@ -39,6 +41,7 @@ function OtpBoxes({ digits, setDigits }: { digits: string[]; setDigits: (d: stri
           value={d}
           inputMode="numeric"
           maxLength={1}
+          aria-label={t('a11y.otpDigit', 'Cyfra kodu {{n}}', { n: i + 1 })}
           onChange={(e) => {
             const v = (e.target.value || '').replace(/[^0-9]/g, '');
             const next = [...digits];
@@ -175,16 +178,16 @@ export default function AuthPage() {
         <div style={{ position: 'absolute', right: -120, bottom: -140, width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,140,77,.28), transparent 68%)' }} />
         <div style={{ position: 'absolute', right: -90, top: -90, width: 340, height: 340, borderRadius: '50%', background: 'rgba(255,255,255,.12)' }} />
         <span
-          onClick={backToSite}
+          {...clickable(backToSite, { label: t('landing.backHome') })}
           style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer', width: 'fit-content' }}
         >
           <Logo size={36} />
           <Wordmark size={24} variant="onDark" />
         </span>
         <div style={{ position: 'relative' }}>
-          <div style={{ fontFamily: BRICO, fontSize: 'clamp(26px,3.4vw,40px)', fontWeight: 800, color: '#fff', lineHeight: 1.1, letterSpacing: '-.01em' }}>
+          <h2 style={{ fontFamily: BRICO, fontSize: 'clamp(26px,3.4vw,40px)', fontWeight: 800, color: '#fff', lineHeight: 1.1, letterSpacing: '-.01em', margin: 0 }}>
             {t('landing.auth.brandTitle')}
-          </div>
+          </h2>
           <div style={{ fontSize: 'clamp(15px,1.6vw,18px)', color: 'rgba(255,255,255,.9)', lineHeight: 1.5, marginTop: 14, maxWidth: 420 }}>
             {t('landing.auth.brandSub')}
           </div>
@@ -201,8 +204,8 @@ export default function AuthPage() {
       {/* FORM PANEL — first (left on desktop) via order. */}
       <div style={{ order: 1, flex: '1 1 440px', display: 'flex', flexDirection: 'column', padding: 'clamp(24px,4vw,48px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-          <span onClick={backToSite} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
-            ‹ {t('landing.backHome')}
+          <span {...clickable(backToSite)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
+            <span aria-hidden="true">‹</span> {t('landing.backHome')}
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
             <DarkModeToggle />
@@ -217,10 +220,11 @@ export default function AuthPage() {
                 {t('landing.auth.email.title')}
               </h1>
               <p style={{ fontSize: 15.5, color: 'var(--muted)', lineHeight: 1.5, margin: '12px 0 0' }}>{t('landing.auth.email.sub')}</p>
-              <label style={{ display: 'block', fontSize: 12.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: 'var(--muted2)', margin: '28px 0 8px' }}>
+              <label htmlFor="auth-email-input" style={{ display: 'block', fontSize: 12.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: 'var(--muted2)', margin: '28px 0 8px' }}>
                 {t('landing.auth.email.label')}
               </label>
               <input
+                id="auth-email-input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => {
@@ -242,7 +246,7 @@ export default function AuthPage() {
                 }}
               />
               <div
-                onClick={() => void sendCode()}
+                {...clickable(() => void sendCode(), { disabled: !emailOk || busy })}
                 style={{
                   marginTop: 14,
                   textAlign: 'center',
@@ -265,10 +269,10 @@ export default function AuthPage() {
           {step === 'code' && (
             <div style={{ animation: 'dfade .3s ease' }}>
               <span
-                onClick={() => setStep('email')}
+                {...clickable(() => setStep('email'))}
                 style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer', marginBottom: 18 }}
               >
-                ‹ {t('landing.auth.code.changeEmail')}
+                <span aria-hidden="true">‹</span> {t('landing.auth.code.changeEmail')}
               </span>
               <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(28px,3.4vw,36px)', fontWeight: 800, color: 'var(--ink)', margin: 0, letterSpacing: '-.01em' }}>
                 {t('landing.auth.code.title')}
@@ -278,7 +282,7 @@ export default function AuthPage() {
               </p>
               <OtpBoxes digits={digits} setDigits={setDigits} />
               <div
-                onClick={() => void verifyCode()}
+                {...clickable(() => void verifyCode(), { disabled: !codeFilled || busy })}
                 style={{
                   marginTop: 22,
                   textAlign: 'center',
@@ -296,7 +300,7 @@ export default function AuthPage() {
               </div>
               <div style={{ textAlign: 'center', fontSize: 13, color: 'var(--muted2)', marginTop: 16 }}>
                 {t('landing.auth.code.resendA')}{' '}
-                <span onClick={() => void sendCode()} style={{ color: 'var(--acc)', fontWeight: 800, cursor: 'pointer' }}>
+                <span {...clickable(() => void sendCode())} style={{ color: 'var(--acc)', fontWeight: 800, cursor: 'pointer' }}>
                   {t('landing.auth.code.resend')}
                 </span>
               </div>
@@ -307,6 +311,7 @@ export default function AuthPage() {
           {step === 'done' && (
             <div style={{ textAlign: 'center', animation: 'dfade .4s ease' }}>
               <div
+                aria-hidden="true"
                 style={{
                   width: 88,
                   height: 88,
@@ -328,12 +333,12 @@ export default function AuthPage() {
               </h1>
               <p style={{ fontSize: 15.5, color: 'var(--muted)', lineHeight: 1.55, margin: '12px 0 26px' }}>{t('landing.auth.done.sub')}</p>
               <div
-                onClick={() => navigate('/')}
+                {...clickable(() => navigate('/'))}
                 style={{ textAlign: 'center', background: 'var(--accGrad)', color: 'var(--onacc)', borderRadius: 16, padding: 16, fontSize: 16, fontWeight: 800, cursor: 'pointer', boxShadow: '0 8px 22px rgba(122,79,192,.32)' }}
               >
-                {t('landing.auth.done.cta')} →
+                {t('landing.auth.done.cta')} <span aria-hidden="true">→</span>
               </div>
-              <div onClick={() => navigate('/')} style={{ marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
+              <div {...clickable(() => navigate('/'))} style={{ marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
                 {t('landing.auth.done.back')}
               </div>
             </div>

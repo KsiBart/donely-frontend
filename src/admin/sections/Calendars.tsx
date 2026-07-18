@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../../api/client';
 import type { AdminCalendarCell, AdminCalendarResponse, AdminProvider } from '../../api/types';
 import { isoDay } from '../../lib/format';
+import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
 import { FilterChip, cardStyle } from '../ui';
 
@@ -151,10 +152,11 @@ export default function Calendars() {
       label = t('admin.calendars.blockedLabel');
       tip = t('admin.calendars.tipUnblock');
     }
+    const dayLabel = heads[dayIdx] ?? '';
     return (
       <div
         key={`${hour}-${dayIdx}`}
-        onClick={() => void onCell(cell, dayIdx, hour)}
+        {...clickable(() => void onCell(cell, dayIdx, hour), { label: `${dayLabel} ${hour}:00 — ${tip}` })}
         title={tip}
         style={{
           height: 34,

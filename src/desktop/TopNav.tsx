@@ -4,6 +4,7 @@ import { Logo, stripes, Wordmark } from '../components/ui';
 import { useAuth } from '../state/AuthContext';
 import { useInstallAction } from '../mobile/AppPromo';
 import { initials } from '../lib/format';
+import { clickable } from '../lib/a11y';
 
 const LINKS: { key: string; path: string }[] = [
   { key: 'nav.search', path: '/' },
@@ -22,17 +23,20 @@ export default function TopNav() {
   return (
     <div style={{ flex: 'none', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 26, padding: '14px 28px' }}>
-        <div onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: 9, flex: 'none', cursor: 'pointer' }}>
+        <div
+          {...clickable(() => navigate('/'))}
+          style={{ display: 'flex', alignItems: 'center', gap: 9, flex: 'none', cursor: 'pointer' }}
+        >
           <Logo size={30} />
           <Wordmark size={19} />
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           {LINKS.map((link) => {
             const active = pathname === link.path;
             return (
               <span
                 key={link.path}
-                onClick={() => navigate(link.path)}
+                {...clickable(() => navigate(link.path))}
                 className="dw-nav-pill"
                 style={{
                   padding: '8px 14px',
@@ -48,11 +52,13 @@ export default function TopNav() {
               </span>
             );
           })}
-        </div>
+        </nav>
         <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 16 }}>
-          <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>◉ {me?.locationLabel || t('profile.defaultLocation')}</span>
+          <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>
+            <span aria-hidden="true">◉</span> {me?.locationLabel || t('profile.defaultLocation')}
+          </span>
           <span
-            onClick={install}
+            {...clickable(install)}
             className="dw-install-btn"
             style={{
               border: '1.5px solid var(--accent)',
@@ -67,7 +73,7 @@ export default function TopNav() {
             {t('promo.installAppCta')}
           </span>
           <div
-            onClick={() => navigate('/profile')}
+            {...clickable(() => navigate('/profile'), { label: t('title.profile') })}
             style={{
               width: 36,
               height: 36,

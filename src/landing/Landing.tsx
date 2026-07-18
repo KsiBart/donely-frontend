@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SparkleIcon } from '../components/ui';
 import { BRICO } from '../lib/format';
+import { clickable } from '../lib/a11y';
 import { useToast } from '../state/ToastContext';
 import { useSiteTheme } from '../state/SiteThemeContext';
 import { useInstallAction } from '../mobile/AppPromo';
@@ -191,7 +192,7 @@ export default function Landing() {
 
         <div style={{ flex: '1 1 440px', minWidth: 0, position: 'relative', zIndex: 1, animation: 'dfade .5s ease' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--tint)', color: 'var(--accInk)', borderRadius: 99, padding: '7px 14px', fontSize: 13, fontWeight: 700 }}>
-            <span style={{ background: 'var(--okbg)', color: 'var(--okfg)', borderRadius: 7, padding: '2px 7px', fontSize: 11, fontWeight: 800 }}>✓</span>
+            <span aria-hidden="true" style={{ background: 'var(--okbg)', color: 'var(--okfg)', borderRadius: 7, padding: '2px 7px', fontSize: 11, fontWeight: 800 }}>✓</span>
             {t('landing.hero.badge')}
           </div>
           <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(40px,6.2vw,74px)', fontWeight: 800, lineHeight: 1.02, letterSpacing: '-.02em', color: 'var(--ink)', margin: '20px 0 0' }}>
@@ -215,7 +216,7 @@ export default function Landing() {
                 marginBottom: 10,
               }}
             >
-              ✨ {t('landing.hero.aiBadge')}
+              <span aria-hidden="true">✨</span> {t('landing.hero.aiBadge')}
             </div>
             <div style={{ background: 'var(--surface)', border: '1.5px solid var(--acc)', borderRadius: 20, padding: '7px 7px 7px 16px', display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 12px 30px rgba(74,52,102,.15)' }}>
               <SparkleIcon size={18} />
@@ -228,8 +229,8 @@ export default function Landing() {
                 placeholder={t('landing.hero.searchPlaceholder')}
                 style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', color: 'var(--ink)', font: "600 15px 'Figtree', sans-serif", outline: 'none', padding: '9px 0' }}
               />
-              <span onClick={goLogin} className="dt-btn-accent" style={{ flex: 'none', background: 'var(--accGrad)', color: 'var(--onacc)', borderRadius: 14, padding: '12px 20px', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}>
-                {t('landing.hero.searchBtn')} →
+              <span {...clickable(goLogin)} className="dt-btn-accent" style={{ flex: 'none', background: 'var(--accGrad)', color: 'var(--onacc)', borderRadius: 14, padding: '12px 20px', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}>
+                {t('landing.hero.searchBtn')} <span aria-hidden="true">→</span>
               </span>
             </div>
             <div style={{ fontSize: 13.5, color: 'var(--soft)', lineHeight: 1.5, marginTop: 10 }}>{t('landing.hero.aiHint')}</div>
@@ -237,7 +238,7 @@ export default function Landing() {
               {searchChips.map((c) => (
                 <span
                   key={c}
-                  onClick={() => setQuery(c.split(' ').slice(1).join(' '))}
+                  {...clickable(() => setQuery(c.split(' ').slice(1).join(' ')))}
                   className="dt-chip"
                   style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 99, padding: '8px 13px', fontSize: 13, fontWeight: 600, color: 'var(--muted)', cursor: 'pointer' }}
                 >
@@ -248,17 +249,17 @@ export default function Landing() {
           </div>
 
           <div style={{ marginTop: 20 }}>
-            <span onClick={() => document.getElementById('pros')?.scrollIntoView({ behavior: 'smooth' })} style={{ fontSize: 15, fontWeight: 800, color: 'var(--acc)', cursor: 'pointer' }}>
-              {t('landing.hero.cta2')} →
+            <span {...clickable(() => document.getElementById('pros')?.scrollIntoView({ behavior: 'smooth' }))} style={{ fontSize: 15, fontWeight: 800, color: 'var(--acc)', cursor: 'pointer' }}>
+              {t('landing.hero.cta2')} <span aria-hidden="true">→</span>
             </span>
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 18, marginTop: 26, fontSize: 14, color: 'var(--soft)' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-              <span style={{ color: '#e8a13c', letterSpacing: 1 }}>★★★★★</span> {t('landing.hero.rating')}
+              <span aria-hidden="true" style={{ color: '#e8a13c', letterSpacing: 1 }}>★★★★★</span> {t('landing.hero.rating')}
             </span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-              <span style={{ color: 'var(--okfg)' }}>✓</span> {t('landing.hero.trust2')}
+              <span aria-hidden="true" style={{ color: 'var(--okfg)' }}>✓</span> {t('landing.hero.trust2')}
             </span>
           </div>
         </div>
@@ -269,7 +270,7 @@ export default function Landing() {
             <div style={{ position: 'relative', background: 'var(--surface)', borderRadius: 28, padding: 20, boxShadow: '0 30px 70px rgba(74,52,102,.26)', animation: 'dfloat 6s ease-in-out infinite' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'var(--tint)', color: 'var(--accInk)', borderRadius: 99, padding: '6px 12px', fontSize: 12.5, fontWeight: 800 }}>
-                  ✨ {t('landing.hero.matchedTitle')}
+                  <span aria-hidden="true">✨</span> {t('landing.hero.matchedTitle')}
                 </span>
                 <span style={{ fontSize: 12, color: 'var(--soft)' }}>{t('landing.hero.matchedNote')}</span>
               </div>
@@ -295,13 +296,14 @@ export default function Landing() {
                   >
                     <div style={{ position: 'relative', width: 48, height: 48, flex: 'none' }}>
                       <div style={{ width: 48, height: 48, borderRadius: 14, overflow: 'hidden', background: p.bg }}>
-                        <svg viewBox="0 0 64 64" style={{ width: '100%', height: '100%', display: 'block' }}>
+                        <svg aria-hidden="true" viewBox="0 0 64 64" style={{ width: '100%', height: '100%', display: 'block' }}>
                           <circle cx="32" cy="25" r="12" fill="rgba(255,255,255,.92)" />
                           <path d="M11 60c1-13 10-20 21-20s20 7 21 20z" fill="rgba(255,255,255,.92)" />
                         </svg>
                       </div>
                       {p.verified && (
                         <span
+                          aria-hidden="true"
                           style={{
                             position: 'absolute',
                             right: -4,
@@ -361,7 +363,7 @@ export default function Landing() {
           {cats.map((c) => (
             <div
               key={c.name}
-              onClick={goLogin}
+              {...clickable(goLogin)}
               data-reveal={c.dir}
               className="dt-card"
               style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 22, overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .25s ease, border-color .25s ease' }}
@@ -380,7 +382,7 @@ export default function Landing() {
                 <div style={{ position: 'absolute', right: -30, top: -30, width: 110, height: 110, borderRadius: '50%', background: 'rgba(255,255,255,.16)' }} />
                 <div style={{ position: 'absolute', left: -24, bottom: -24, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,.12)' }} />
                 <div style={{ position: 'absolute', inset: 0, opacity: 0.1, background: 'repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 14px)' }} />
-                <span style={{ position: 'relative', fontSize: 46, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,.18))' }}>{c.icon}</span>
+                <span aria-hidden="true" style={{ position: 'relative', fontSize: 46, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,.18))' }}>{c.icon}</span>
               </div>
               <div style={{ padding: '16px 20px 20px' }}>
                 <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, color: 'var(--ink)' }}>{c.name}</div>
@@ -434,7 +436,7 @@ export default function Landing() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 18 }}>
           {values.map((v, i) => (
             <div key={v.t} data-reveal={REVEAL_DIRS[i % 3]} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 22, padding: 26 }}>
-              <div style={{ width: 48, height: 48, borderRadius: 14, background: v.bg, color: v.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{v.icon}</div>
+              <div aria-hidden="true" style={{ width: 48, height: 48, borderRadius: 14, background: v.bg, color: v.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{v.icon}</div>
               <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, color: 'var(--ink)', marginTop: 16 }}>{v.t}</div>
               <div style={{ fontSize: 15, color: 'var(--muted)', lineHeight: 1.55, marginTop: 8 }}>{v.d}</div>
             </div>
@@ -465,11 +467,11 @@ export default function Landing() {
                     unchanged in light mode; only in dark mode does it pick up the theme's gradient CTA
                     fill (with the theme's dark on-accent ink for contrast) to match the other primary CTAs. */}
                 <span
-                  onClick={goLogin}
+                  {...clickable(goLogin)}
                   className="dt-btn-ghost"
                   style={{ background: dark ? 'var(--accGrad)' : '#fff', color: dark ? 'var(--onacc)' : '#2a2430', borderRadius: 15, padding: '15px 26px', fontSize: 16, fontWeight: 800, cursor: 'pointer' }}
                 >
-                  {t('landing.pros.cta')} →
+                  {t('landing.pros.cta')} <span aria-hidden="true">→</span>
                 </span>
                 <span style={{ color: 'var(--bandSoft)', fontSize: 14 }}>{t('landing.pros.note')}</span>
               </div>
@@ -479,12 +481,13 @@ export default function Landing() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{ position: 'relative', width: 52, height: 52, flex: 'none' }}>
                     <div style={{ width: 52, height: 52, borderRadius: 15, overflow: 'hidden', background: 'var(--acc)' }}>
-                      <svg viewBox="0 0 64 64" style={{ width: '100%', height: '100%', display: 'block' }}>
+                      <svg aria-hidden="true" viewBox="0 0 64 64" style={{ width: '100%', height: '100%', display: 'block' }}>
                         <circle cx="32" cy="25" r="12" fill="rgba(255,255,255,.92)" />
                         <path d="M11 60c1-13 10-20 21-20s20 7 21 20z" fill="rgba(255,255,255,.92)" />
                       </svg>
                     </div>
                     <span
+                      aria-hidden="true"
                       style={{
                         position: 'absolute',
                         right: -4,
@@ -526,7 +529,7 @@ export default function Landing() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 9, background: 'var(--okbg)', borderRadius: 14, padding: '11px 14px', marginTop: 12 }}>
-                  <span style={{ width: 24, height: 24, borderRadius: '50%', background: '#fff', color: 'var(--okfg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, flex: 'none' }}>✓</span>
+                  <span aria-hidden="true" style={{ width: 24, height: 24, borderRadius: '50%', background: '#fff', color: 'var(--okfg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, flex: 'none' }}>✓</span>
                   <span style={{ fontSize: 12.5, color: 'var(--okfg)', fontWeight: 700 }}>{t('landing.pros.card.tax')}</span>
                 </div>
               </div>
@@ -554,11 +557,11 @@ export default function Landing() {
             <h2 style={{ fontFamily: BRICO, fontSize: 'clamp(28px,3.6vw,40px)', fontWeight: 800, color: 'var(--ink)', margin: 0, letterSpacing: '-.01em' }}>{t('landing.app.title')}</h2>
             <p style={{ fontSize: 16.5, color: 'var(--muted)', lineHeight: 1.55, margin: '14px 0 0', maxWidth: 480 }}>{t('landing.app.sub')}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 24 }}>
-              <div onClick={install} style={{ background: '#17141c', color: '#fff', borderRadius: 14, padding: '11px 20px', cursor: 'pointer' }}>
+              <div {...clickable(install)} style={{ background: '#17141c', color: '#fff', borderRadius: 14, padding: '11px 20px', cursor: 'pointer' }}>
                 <div style={{ fontSize: 10, color: '#a89fb8' }}>{t('landing.app.dlOn')}</div>
                 <div style={{ fontSize: 18, fontWeight: 800 }}>App Store</div>
               </div>
-              <div onClick={install} style={{ background: '#17141c', color: '#fff', borderRadius: 14, padding: '11px 20px', cursor: 'pointer' }}>
+              <div {...clickable(install)} style={{ background: '#17141c', color: '#fff', borderRadius: 14, padding: '11px 20px', cursor: 'pointer' }}>
                 <div style={{ fontSize: 10, color: '#a89fb8' }}>{t('landing.app.dlFrom')}</div>
                 <div style={{ fontSize: 18, fontWeight: 800 }}>Google Play</div>
               </div>
@@ -578,7 +581,7 @@ export default function Landing() {
               boxShadow: '0 20px 44px rgba(74,52,102,.3)',
             }}
           >
-            <svg viewBox="0 0 48 48" style={{ width: 64, color: '#fff' }}>
+            <svg aria-hidden="true" viewBox="0 0 48 48" style={{ width: 64, color: '#fff' }}>
               <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
               <path d="M15 24.5l6.5 6.5L34 18" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M40 2l1.7 5.3L47 9l-5.3 1.7L40 16l-1.7-5.3L34 9l5.3-1.7z" fill="currentColor" opacity=".85" />

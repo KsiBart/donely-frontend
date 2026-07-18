@@ -6,6 +6,7 @@ import { useIsDesktop } from '../../lib/useIsDesktop';
 import { BRICO, initials } from '../../lib/format';
 import { useAuth } from '../../state/AuthContext';
 import { useInstallAction } from '../AppPromo';
+import { clickable } from '../../lib/a11y';
 
 export default function ProfileTab() {
   const { t, i18n } = useTranslation();
@@ -40,7 +41,7 @@ export default function ProfileTab() {
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '8px 0 22px' }}>
         <AvatarTile init={initials(me?.name)} size={60} fontSize={20} round />
         <div>
-          <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700 }}>{me?.name ?? ''}</div>
+          <h1 style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, margin: 0 }}>{me?.name ?? ''}</h1>
           <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>{me?.email ?? ''}</div>
         </div>
       </div>
@@ -49,7 +50,7 @@ export default function ProfileTab() {
         {rows.map((r) => (
           <div
             key={r.label}
-            onClick={r.onClick}
+            {...(r.onClick ? clickable(r.onClick) : {})}
             style={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -60,10 +61,10 @@ export default function ProfileTab() {
             }}
           >
             <span style={{ fontSize: 14, fontWeight: 600 }}>{r.label}</span>
-            <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>{r.val} ›</span>
+            <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>{r.val} <span aria-hidden="true">›</span></span>
           </div>
         ))}
-        <div onClick={logout} style={{ padding: '14px 16px', cursor: 'pointer' }}>
+        <div {...clickable(logout)} style={{ padding: '14px 16px', cursor: 'pointer' }}>
           <span style={{ fontSize: 14, fontWeight: 600, color: '#d64550' }}>{t('profile.logout')}</span>
         </div>
       </div>
@@ -73,7 +74,7 @@ export default function ProfileTab() {
           <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{t('profile.pushPromoTitle')}</div>
           <div style={{ fontSize: 12.5, color: 'var(--muted2)', lineHeight: 1.45, marginBottom: 12 }}>{t('profile.pushPromoBody')}</div>
           <div
-            onClick={install}
+            {...clickable(install)}
             style={{ textAlign: 'center', background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
           >
             {t('promo.installAppCta')}
@@ -87,7 +88,7 @@ export default function ProfileTab() {
           {t('profile.providerCardBody', { appName: brand.appName })}
         </div>
         <div
-          onClick={install}
+          {...clickable(install)}
           style={{
             textAlign: 'center',
             background: 'var(--accent)',

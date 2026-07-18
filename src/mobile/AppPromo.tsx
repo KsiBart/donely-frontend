@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { Logo } from '../components/ui';
 import { useToast } from '../state/ToastContext';
+import { clickable } from '../lib/a11y';
 
 const BANNER_KEY = 'donely_install_banner_dismissed';
 const DESKTOP_BANNER_KEY = 'donely_install_banner_dismissed_desktop';
@@ -54,11 +55,11 @@ export function InstallBanner() {
           Pobierz aplikację, aby dostawać <b>powiadomienia push</b> o rezerwacjach i wycenach
         </Trans>
       </span>
-      <span onClick={install} style={{ flex: 'none', color: 'var(--accent)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+      <span {...clickable(install)} style={{ flex: 'none', color: 'var(--accent)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
         {t('promo.download')}
       </span>
       <span
-        onClick={dismiss}
+        {...clickable(dismiss, { label: t('a11y.dismiss', 'Zamknij') })}
         style={{ flex: 'none', color: 'var(--navmuted)', fontSize: 14, cursor: 'pointer', padding: '2px 2px 2px 6px' }}
       >
         ✕
@@ -110,11 +111,11 @@ export function DesktopPromoBanner() {
           Masz telefon pod ręką? Pobierz aplikację, aby dostawać <b>powiadomienia push</b> o rezerwacjach i wycenach
         </Trans>
       </span>
-      <span onClick={install} style={{ flex: 'none', color: 'var(--accent)', fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
+      <span {...clickable(install)} style={{ flex: 'none', color: 'var(--accent)', fontSize: 12.5, fontWeight: 700, cursor: 'pointer' }}>
         {t('promo.download')}
       </span>
       <span
-        onClick={dismiss}
+        {...clickable(dismiss, { label: t('a11y.dismiss', 'Zamknij') })}
         style={{ flex: 'none', color: 'var(--navmuted)', fontSize: 14, cursor: 'pointer', padding: '2px 2px 2px 10px' }}
       >
         ✕
@@ -150,11 +151,11 @@ export function StoreCard() {
         </div>
       </div>
       <div style={{ display: 'flex', gap: 8, marginTop: 12 }}>
-        <div onClick={install} style={{ flex: 1, background: '#17141c', color: '#fff', borderRadius: 12, padding: '7px 11px', cursor: 'pointer' }}>
+        <div {...clickable(install)} style={{ flex: 1, background: '#17141c', color: '#fff', borderRadius: 12, padding: '7px 11px', cursor: 'pointer' }}>
           <div style={{ fontSize: 9, color: '#a89fb8' }}>{t('promo.appStoreLine1')}</div>
           <div style={{ fontSize: 13, fontWeight: 700 }}>{t('promo.appStoreLine2')}</div>
         </div>
-        <div onClick={install} style={{ flex: 1, background: '#17141c', color: '#fff', borderRadius: 12, padding: '7px 11px', cursor: 'pointer' }}>
+        <div {...clickable(install)} style={{ flex: 1, background: '#17141c', color: '#fff', borderRadius: 12, padding: '7px 11px', cursor: 'pointer' }}>
           <div style={{ fontSize: 9, color: '#a89fb8' }}>{t('promo.googlePlayLine1')}</div>
           <div style={{ fontSize: 13, fontWeight: 700 }}>{t('promo.googlePlayLine2')}</div>
         </div>

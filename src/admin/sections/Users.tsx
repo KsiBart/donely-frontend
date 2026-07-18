@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { api } from '../../api/client';
 import type { AdminUser } from '../../api/types';
+import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
 import { StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
 
@@ -51,6 +52,7 @@ export default function Users() {
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={t('admin.users.searchPlaceholder') ?? ''}
+          aria-label={t('admin.users.searchPlaceholder') ?? ''}
           style={{
             flex: 1,
             maxWidth: 340,
@@ -79,7 +81,7 @@ export default function Users() {
               {u.blocked ? t('admin.users.statusBlocked') : t('admin.users.statusActive')}
             </StatusChip>
             <span
-              onClick={() => void toggle(u)}
+              {...clickable(() => void toggle(u))}
               style={{ fontSize: 12, fontWeight: 700, color: u.blocked ? '#3e7a48' : '#d64550', cursor: 'pointer', justifySelf: 'end' }}
             >
               {u.blocked ? t('admin.users.unblock') : t('admin.users.block')}

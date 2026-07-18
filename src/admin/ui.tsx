@@ -1,5 +1,6 @@
 import React from 'react';
 import { BRICO } from '../lib/format';
+import { clickable } from '../lib/a11y';
 
 export const CRM_SHADOW = '0 4px 14px rgba(74,52,102,.08)';
 
@@ -77,7 +78,7 @@ export function StatusChip({ bg, fg, children }: { bg: string; fg: string; child
 export function FilterChip({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) {
   return (
     <span
-      onClick={onClick}
+      {...clickable(onClick, { pressed: active })}
       style={{
         borderRadius: 13,
         padding: '8px 14px',

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../../api/client';
 import type { AdminBookingRow, BookingStatus } from '../../api/types';
 import { bookingStatusLabel, statusChipColors, whenLabel } from '../../lib/format';
+import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
 import { FilterChip, StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
 
@@ -61,7 +62,7 @@ export default function Bookings() {
               </StatusChip>
               {canCancel ? (
                 <span
-                  onClick={() => void cancel(b)}
+                  {...clickable(() => void cancel(b))}
                   style={{ fontSize: 12, fontWeight: 700, color: '#d64550', cursor: 'pointer', justifySelf: 'end' }}
                 >
                   {t('admin.bookings.cancel')}

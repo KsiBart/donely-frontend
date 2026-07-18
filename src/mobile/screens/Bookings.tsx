@@ -7,6 +7,7 @@ import { useIsDesktop } from '../../lib/useIsDesktop';
 import { AvatarTile } from '../../components/ui';
 import { BRICO, bookingStatusLabel, dayLabel, formatZl, initials, paymentMethodLabel, toIntlLocale, whenLabel } from '../../lib/format';
 import { useToast } from '../../state/ToastContext';
+import { clickable } from '../../lib/a11y';
 
 function providerName(b: Booking): string {
   return b.providerName ?? b.provider?.name ?? '';
@@ -165,7 +166,7 @@ export default function BookingsTab() {
           : { flex: 1, overflow: 'auto', padding: '20px 20px 18px' }
       }
     >
-      <div style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: '8px 0 18px' }}>{t('bookings.title')}</div>
+      <h1 style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: '8px 0 18px' }}>{t('bookings.title')}</h1>
 
       <div style={sectionLabel}>{t('bookings.upcomingLabel')}</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 22 }}>
@@ -252,14 +253,14 @@ export default function BookingsTab() {
                       color: 'var(--accent)',
                     }}
                   >
-                    🔒 {t('bookings.frozenBadge')}
+                    <span aria-hidden="true">🔒</span> {t('bookings.frozenBadge')}
                   </span>
                 </div>
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 11, paddingTop: 11, borderTop: '1px solid var(--border)' }}>
                 <span style={{ fontSize: 13, color: 'var(--muted2)' }}>{price}</span>
                 <span
-                  onClick={() => setExpanded(isExpanded ? null : b.id)}
+                  {...clickable(() => setExpanded(isExpanded ? null : b.id), { expanded: isExpanded })}
                   style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--accent)', cursor: 'pointer' }}
                 >
                   {t('bookings.detailsCta')}
@@ -268,13 +269,13 @@ export default function BookingsTab() {
               {quoted && (
                 <div style={{ display: 'flex', gap: 9, marginTop: 12 }}>
                   <span
-                    onClick={() => void declineQuote(b)}
+                    {...clickable(() => void declineQuote(b))}
                     style={{ flex: 1, textAlign: 'center', border: '1.5px solid var(--border)', color: 'var(--muted2)', borderRadius: 14, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
                   >
                     {t('bookings.decline')}
                   </span>
                   <span
-                    onClick={() => void acceptQuote(b)}
+                    {...clickable(() => void acceptQuote(b))}
                     style={{ flex: 2, textAlign: 'center', background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
                   >
                     {t('bookings.accept')}
@@ -297,13 +298,13 @@ export default function BookingsTab() {
                       >
                         {t('booking.paymentMethodLabel')}
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 10 }}>
+                      <div role="radiogroup" aria-label={t('booking.paymentMethodLabel')} style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 10 }}>
                         {brand.paymentMethods.map((m) => {
                           const sel = m === payMethod;
                           return (
                             <div
                               key={m}
-                              onClick={() => setPayMethod(m)}
+                              {...clickable(() => setPayMethod(m), { pressed: sel })}
                               style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -329,7 +330,7 @@ export default function BookingsTab() {
                         })}
                       </div>
                       <div
-                        onClick={() => void payNow(b)}
+                        {...clickable(() => void payNow(b))}
                         style={{
                           textAlign: 'center',
                           background: payMethod ? 'var(--accent)' : 'var(--surface2)',
@@ -348,7 +349,7 @@ export default function BookingsTab() {
                     </>
                   ) : (
                     <div
-                      onClick={() => setPayFor(b.id)}
+                      {...clickable(() => setPayFor(b.id))}
                       style={{
                         textAlign: 'center',
                         background: 'var(--accent)',
@@ -372,7 +373,7 @@ export default function BookingsTab() {
                     {t('bookings.approveCompletionNote')}
                   </div>
                   <div
-                    onClick={() => void approveCompletion(b)}
+                    {...clickable(() => void approveCompletion(b))}
                     style={{
                       textAlign: 'center',
                       background: 'var(--accent)',
@@ -395,7 +396,7 @@ export default function BookingsTab() {
                   {b.notes && <div style={{ marginBottom: 8 }}>{b.notes}</div>}
                   {(b.status === 'CONFIRMED' || b.status === 'PENDING') && (
                     <div
-                      onClick={() => void cancel(b)}
+                      {...clickable(() => void cancel(b))}
                       style={{ textAlign: 'center', border: '1.5px solid #d64550', color: '#d64550', borderRadius: 14, padding: 9, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
                     >
                       {t('bookings.cancel')}
@@ -442,7 +443,7 @@ export default function BookingsTab() {
               </div>
               {canReview && !isReviewing && (
                 <div
-                  onClick={() => setReviewFor(b.id)}
+                  {...clickable(() => setReviewFor(b.id))}
                   style={{ marginTop: 11, textAlign: 'center', border: '1.5px solid var(--accent)', color: 'var(--accent)', borderRadius: 14, padding: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
                 >
                   {t('bookings.reviewCta')}
@@ -450,11 +451,14 @@ export default function BookingsTab() {
               )}
               {canReview && isReviewing && (
                 <div style={{ marginTop: 11, paddingTop: 11, borderTop: '1px solid var(--border)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 10 }}>
+                  <div role="radiogroup" aria-label={t('a11y.starRating', 'Ocena w gwiazdkach')} style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 10 }}>
                     {[1, 2, 3, 4, 5].map((n) => (
                       <span
                         key={n}
-                        onClick={() => setReviewRating(n)}
+                        {...clickable(() => setReviewRating(n), {
+                          pressed: n <= reviewRating,
+                          label: t('a11y.starLabel', '{{n}} z 5 gwiazdek', { n }),
+                        })}
                         style={{ fontSize: 26, cursor: 'pointer', color: n <= reviewRating ? '#e8a13c' : 'var(--border)' }}
                       >
                         ★
@@ -465,6 +469,7 @@ export default function BookingsTab() {
                     value={reviewText}
                     onChange={(e) => setReviewText(e.target.value)}
                     placeholder={t('bookings.reviewPlaceholder') ?? ''}
+                    aria-label={t('bookings.reviewPlaceholder') ?? ''}
                     style={{
                       width: '100%',
                       boxSizing: 'border-box',
@@ -480,7 +485,7 @@ export default function BookingsTab() {
                     }}
                   />
                   <div
-                    onClick={() => void sendReview(b)}
+                    {...clickable(() => void sendReview(b))}
                     style={{ marginTop: 10, textAlign: 'center', background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: 9, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
                   >
                     {t('bookings.reviewSend')}

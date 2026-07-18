@@ -13,6 +13,7 @@ import { useAuth } from '../../state/AuthContext';
 import { useToast } from '../../state/ToastContext';
 import { StoreCard } from '../AppPromo';
 import { providerMeta } from '../shared';
+import { clickable } from '../../lib/a11y';
 
 function shortCatLabel(name: string): string {
   return name.split(/ \/ | nad /)[0];
@@ -91,10 +92,10 @@ export default function Home() {
 
   const segToggle = (
     <div style={{ flex: 'none', display: 'flex', background: mapOn ? 'var(--surface)' : 'var(--surface2)', borderRadius: 14, padding: 3, boxShadow: mapOn ? 'var(--shadow)' : 'none' }}>
-      <span onClick={() => setMapOn(false)} style={seg(!mapOn)}>
+      <span {...clickable(() => setMapOn(false), { pressed: !mapOn })} style={seg(!mapOn)}>
         {t('home.listToggle')}
       </span>
-      <span onClick={() => setMapOn(true)} style={seg(mapOn)}>
+      <span {...clickable(() => setMapOn(true), { pressed: mapOn })} style={seg(mapOn)}>
         {t('home.mapToggle')}
       </span>
     </div>
@@ -123,6 +124,7 @@ export default function Home() {
               if (e.key === 'Enter') runAI();
             }}
             placeholder={t('home.searchPlaceholder')}
+            aria-label={t('home.searchPlaceholder')}
             style={{
               flex: 1,
               minWidth: 0,
@@ -135,7 +137,7 @@ export default function Home() {
             }}
           />
           <span
-            onClick={runAI}
+            {...clickable(runAI)}
             style={{
               flex: 'none',
               height: 42,
@@ -152,7 +154,7 @@ export default function Home() {
               cursor: 'pointer',
             }}
           >
-            {t('home.searchCta')} →
+            {t('home.searchCta')} <span aria-hidden="true">→</span>
           </span>
         </div>
 
@@ -162,7 +164,7 @@ export default function Home() {
             return (
               <span
                 key={label}
-                onClick={() => setCatSel(i)}
+                {...clickable(() => setCatSel(i), { pressed: active })}
                 style={{
                   flex: 'none',
                   background: active ? 'var(--accent)' : 'var(--surface)',
@@ -181,13 +183,13 @@ export default function Home() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '26px 0 14px' }}>
-          <span style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700 }}>{t('home.providersCount', { count: providers.length })}</span>
+          <h1 style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, margin: 0 }}>{t('home.providersCount', { count: providers.length })}</h1>
           <span
-            onClick={relocate}
+            {...clickable(relocate)}
             title={t('home.changeLocation')}
             style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--muted)', cursor: 'pointer' }}
           >
-            ◉ {myLocation}
+            <span aria-hidden="true">◉</span> {myLocation}
             <span style={{ color: 'var(--accent)', fontWeight: 700 }}>· {locating ? t('home.locating') : t('home.changeLocation')}</span>
           </span>
           <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -215,7 +217,7 @@ export default function Home() {
               {providers.map((p) => (
                 <div
                   key={p.id}
-                  onClick={() => openProvider(p.id)}
+                  {...clickable(() => openProvider(p.id))}
                   className="dw-card-hover"
                   style={{ display: 'flex', gap: 12, background: 'var(--surface)', borderRadius: 18, padding: 12, boxShadow: 'var(--shadow)', cursor: 'pointer' }}
                 >
@@ -224,7 +226,7 @@ export default function Home() {
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                       <span style={{ fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</span>
                       {p.verified && (
-                        <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 7px', fontSize: 10, fontWeight: 700 }}>
+                        <span aria-hidden="true" style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 7px', fontSize: 10, fontWeight: 700 }}>
                           {t('common.verifiedShort')}
                         </span>
                       )}
@@ -257,7 +259,7 @@ export default function Home() {
           {providers.map((p) => (
             <div
               key={p.id}
-              onClick={() => openProvider(p.id)}
+              {...clickable(() => openProvider(p.id))}
               className="dw-card-hover"
               style={{
                 display: 'flex',
@@ -279,6 +281,7 @@ export default function Home() {
                     </span>
                     {p.verified && (
                       <span
+                        aria-hidden="true"
                         style={{
                           background: 'var(--ver-bg)',
                           color: 'var(--ver-fg)',
@@ -300,7 +303,7 @@ export default function Home() {
                   {t('home.priceFromPrefix')} <b style={{ color: 'var(--text)' }}>{p.priceFromLabel}</b>
                 </span>
                 <span style={{ background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 13, padding: '6px 12px', fontSize: 11.5, fontWeight: 700 }}>
-                  {p.nextSlotLabel} →
+                  {p.nextSlotLabel} <span aria-hidden="true">→</span>
                 </span>
               </div>
             </div>
@@ -319,7 +322,7 @@ export default function Home() {
           <MapView providers={providers} user={userPoint} activeId={providers[0]?.id} onSelect={openProvider} showZoom={false} style={{ position: 'absolute', inset: 0 }} />
           <div style={{ position: 'absolute', left: '8%', top: '4%', right: '8%', display: 'flex', alignItems: 'center', gap: 10, zIndex: 1000 }}>
             <div
-              onClick={() => setMapOn(false)}
+              {...clickable(() => setMapOn(false))}
               style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 9, background: 'var(--surface)', borderRadius: 20, padding: '11px 14px', boxShadow: 'var(--shadow)', cursor: 'pointer' }}
             >
               <SparkleIcon size={15} />
@@ -344,7 +347,7 @@ export default function Home() {
           <div style={{ width: 40, height: 4, borderRadius: 2, background: 'var(--border)', margin: '0 auto 12px', flex: 'none' }} />
           <div style={{ overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingBottom: 10 }}>
             {providers.map((p) => (
-              <div key={p.id} onClick={() => openProvider(p.id)} style={{ display: 'flex', gap: 12, background: 'var(--surface2)', borderRadius: 20, padding: 12, cursor: 'pointer' }}>
+              <div key={p.id} {...clickable(() => openProvider(p.id))} style={{ display: 'flex', gap: 12, background: 'var(--surface2)', borderRadius: 20, padding: 12, cursor: 'pointer' }}>
                 <AvatarTile init={p.init} size={52} radius={14} fontSize={15} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontWeight: 700, fontSize: 14 }}>{p.name}</div>
@@ -377,15 +380,15 @@ export default function Home() {
     <div style={{ flex: 1, overflow: 'auto', padding: '18px 0 12px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 20px 0' }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700 }}>
+          <h1 style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, margin: 0 }}>
             {firstName ? t('home.greetingNamed', { name: firstName }) : t('home.greetingPlain')}
-          </div>
+          </h1>
           <div
-            onClick={relocate}
+            {...clickable(relocate)}
             title={t('home.changeLocation')}
             style={{ fontSize: 12, color: 'var(--muted)', marginTop: 1, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }}
           >
-            ◉ {myLocation}
+            <span aria-hidden="true">◉</span> {myLocation}
             <span style={{ color: 'var(--accent)', fontWeight: 700 }}>· {locating ? t('home.locating') : t('home.changeLocation')}</span>
           </div>
         </div>
@@ -413,6 +416,7 @@ export default function Home() {
             if (e.key === 'Enter') runAI();
           }}
           placeholder={t('home.searchPlaceholder')}
+          aria-label={t('home.searchPlaceholder')}
           style={{
             flex: 1,
             minWidth: 0,
@@ -425,7 +429,7 @@ export default function Home() {
           }}
         />
         <span
-          onClick={runAI}
+          {...clickable(runAI, { label: t('home.searchCta') })}
           style={{
             flex: 'none',
             width: 38,
@@ -448,7 +452,7 @@ export default function Home() {
         {suggestions.map((s) => (
           <span
             key={s}
-            onClick={() => setQuery(s)}
+            {...clickable(() => setQuery(s))}
             style={{
               border: '1px solid var(--border)',
               background: 'var(--surface)',
@@ -468,7 +472,7 @@ export default function Home() {
       {featured.length > 0 && (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', margin: '22px 20px 10px' }}>
-            <span style={{ fontFamily: BRICO, fontSize: 16, fontWeight: 700 }}>{t('home.featuredTitle')}</span>
+            <h2 style={{ fontFamily: BRICO, fontSize: 16, fontWeight: 700, margin: 0 }}>{t('home.featuredTitle')}</h2>
             <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)', background: 'var(--surface2)', borderRadius: 9, padding: '3px 8px' }}>
               {t('home.featuredBadge')}
             </span>
@@ -477,7 +481,7 @@ export default function Home() {
             {featured.map((p) => (
               <div
                 key={p.id}
-                onClick={() => openProvider(p.id)}
+                {...clickable(() => openProvider(p.id))}
                 style={{ flex: 'none', width: 200, background: 'var(--surface)', borderRadius: 20, overflow: 'hidden', boxShadow: 'var(--shadow)', cursor: 'pointer' }}
               >
                 <div style={{ height: 96, background: stripes(45, 8), display: 'flex', alignItems: 'flex-end', padding: 8 }}>
@@ -488,9 +492,9 @@ export default function Home() {
                 <div style={{ padding: '10px 12px 12px' }}>
                   <div style={{ fontWeight: 700, fontSize: 13.5 }}>{p.name}</div>
                   <div style={{ fontSize: 11.5, color: 'var(--muted)', marginTop: 2 }}>
-                    {p.categoryName} · ★ {formatRating(p.rating, locale)} · {formatKm(p.distanceKm, locale)}
+                    {p.categoryName} · <span aria-hidden="true">★</span> {formatRating(p.rating, locale)} · {formatKm(p.distanceKm, locale)}
                   </div>
-                  <div style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--accent)', marginTop: 5 }}>{p.nextSlotLabel} →</div>
+                  <div style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--accent)', marginTop: 5 }}>{p.nextSlotLabel} <span aria-hidden="true">→</span></div>
                 </div>
               </div>
             ))}
@@ -504,7 +508,7 @@ export default function Home() {
           return (
             <span
               key={label}
-              onClick={() => setCatSel(i)}
+              {...clickable(() => setCatSel(i), { pressed: active })}
               style={{
                 flex: 'none',
                 background: active ? 'var(--accent)' : 'var(--surface)',
@@ -523,14 +527,14 @@ export default function Home() {
         })}
       </div>
 
-      <div style={{ fontFamily: BRICO, fontSize: 16, fontWeight: 700, margin: '16px 20px 10px' }}>
+      <h2 style={{ fontFamily: BRICO, fontSize: 16, fontWeight: 700, margin: '16px 20px 10px' }}>
         {t('home.providersCount', { count: providers.length })}
-      </div>
+      </h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, padding: '0 20px' }}>
         {providers.map((p) => (
           <div
             key={p.id}
-            onClick={() => openProvider(p.id)}
+            {...clickable(() => openProvider(p.id))}
             style={{ display: 'flex', gap: 12, background: 'var(--surface)', borderRadius: 20, padding: 12, cursor: 'pointer', boxShadow: 'var(--shadow)' }}
           >
             <AvatarTile init={p.init} size={64} radius={16} fontSize={18} />
@@ -560,7 +564,7 @@ export default function Home() {
                   {t('home.priceFromPrefix')} <b style={{ color: 'var(--text)' }}>{p.priceFromLabel}</b>
                 </span>
                 <span style={{ background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: '6px 12px', fontSize: 12, fontWeight: 700 }}>
-                  {p.nextSlotLabel} →
+                  {p.nextSlotLabel} <span aria-hidden="true">→</span>
                 </span>
               </div>
             </div>

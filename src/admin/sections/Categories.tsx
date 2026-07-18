@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../../api/client';
 import type { Category } from '../../api/types';
 import { BRICO } from '../../lib/format';
+import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
 import { cardStyle } from '../ui';
 
@@ -55,6 +56,7 @@ export default function Categories() {
             if (e.key === 'Enter') void addCat();
           }}
           placeholder={t('admin.categories.newPlaceholder') ?? ''}
+          aria-label={t('admin.categories.newPlaceholder') ?? ''}
           style={{
             flex: 1,
             maxWidth: 320,
@@ -68,7 +70,7 @@ export default function Categories() {
           }}
         />
         <span
-          onClick={() => void addCat()}
+          {...clickable(() => void addCat())}
           style={{
             background: 'var(--accent)',
             color: '#fff',
@@ -119,10 +121,10 @@ export default function Categories() {
               <div style={{ fontSize: 11.5, color: 'var(--muted)' }}>{t('admin.categories.providerCount', { count: providerCount(c) })}</div>
             </div>
             <span
-              onClick={() => void toggle(c)}
+              {...clickable(() => void toggle(c), { pressed: c.active, label: t('a11y.toggleActive', 'Aktywna') })}
               style={{
                 width: 40,
-                height: 23,
+                height: 24,
                 borderRadius: 12,
                 background: c.active ? 'var(--accent)' : 'var(--border)',
                 position: 'relative',

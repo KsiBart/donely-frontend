@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, type Lang } from '../i18n';
 import { useSiteTheme } from '../state/SiteThemeContext';
+import { clickable } from '../lib/a11y';
 
 /**
  * PL/EN pill toggle for the marketing Landing page + split-panel auth (donely-landing.dc.html
@@ -30,7 +31,7 @@ export function LangToggle() {
   return (
     <div style={wrap}>
       {SUPPORTED_LANGS.map((l) => (
-        <span key={l} onClick={() => void i18n.changeLanguage(l)} style={pill(lang === l)}>
+        <span key={l} {...clickable(() => void i18n.changeLanguage(l), { pressed: lang === l })} style={pill(lang === l)}>
           {l.toUpperCase()}
         </span>
       ))}
@@ -47,9 +48,7 @@ export function DarkModeToggle() {
   if (forced) return null;
   return (
     <span
-      onClick={toggle}
-      role="button"
-      aria-label={t('landing.darkModeToggle')}
+      {...clickable(toggle, { label: t('landing.darkModeToggle') })}
       style={{
         width: 34,
         height: 34,

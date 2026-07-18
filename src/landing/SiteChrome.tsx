@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Logo, Wordmark } from '../components/ui';
 import { DarkModeToggle, LangToggle } from './shared';
 import { useSiteTheme } from '../state/SiteThemeContext';
+import { clickable } from '../lib/a11y';
 
 /** Anchor sections live only on `/` (hero id="top", #how, #cats, #pros, #app). From a subpage,
  * "jump" there by navigating home first and letting `Landing` pick up `location.state.scrollTo`
@@ -112,7 +113,7 @@ export function SiteHeader() {
         <div className="dt-nav-desktop" style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
           <DarkModeToggle />
           <LangToggle />
-          <span onClick={() => navigate('/login')} className="dt-btn-accent" style={signinBtn}>
+          <span {...clickable(() => navigate('/login'))} className="dt-btn-accent" style={signinBtn}>
             {t('landing.signin')}
           </span>
         </div>
@@ -139,11 +140,11 @@ export function SiteHeader() {
           }}
         >
           {menuOpen ? (
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           ) : (
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           )}
@@ -187,7 +188,7 @@ export function SiteHeader() {
             <DarkModeToggle />
             <LangToggle />
           </div>
-          <span onClick={() => navigate('/login')} className="dt-btn-accent" style={{ ...signinBtn, display: 'block', marginTop: 6 }}>
+          <span {...clickable(() => navigate('/login'))} className="dt-btn-accent" style={{ ...signinBtn, display: 'block', marginTop: 6 }}>
             {t('landing.signin')}
           </span>
         </div>
@@ -222,7 +223,7 @@ export function SiteFooter() {
       <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: '44px 22px 30px', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 40 }}>
         <div style={{ flex: '1 1 230px', minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-            <svg width="26" height="26" viewBox="0 0 48 48" style={{ color: 'var(--bandKicker)', flex: 'none' }}>
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 48 48" style={{ color: 'var(--bandKicker)', flex: 'none' }}>
               <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
               <path d="M15 24.5l6.5 6.5L34 18" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M40 2l1.7 5.3L47 9l-5.3 1.7L40 16l-1.7-5.3L34 9l5.3-1.7z" fill="currentColor" opacity=".85" />

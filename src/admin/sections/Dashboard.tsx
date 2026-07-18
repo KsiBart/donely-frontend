@@ -52,7 +52,7 @@ export default function Dashboard() {
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 14 }}>
         <div style={{ ...cardStyle, padding: 18 }}>
-          <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.dashboard.pendingTitle')}</div>
+          <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.dashboard.pendingTitle')}</h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {pending.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('admin.dashboard.pendingEmpty')}</div>}
             {pending.map((p) => (
@@ -61,7 +61,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div style={{ ...cardStyle, padding: 18 }}>
-          <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.dashboard.feedTitle')}</div>
+          <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.dashboard.feedTitle')}</h2>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {feed.map((f) => (
               <div key={f.id} style={{ display: 'flex', gap: 10, padding: '9px 0', borderBottom: '1px solid var(--border)' }}>

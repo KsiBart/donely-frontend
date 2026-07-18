@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { BRICO } from '../lib/format';
 import { useIsDesktop } from '../lib/useIsDesktop';
 import { useLocate } from '../lib/useLocate';
+import { clickable } from '../lib/a11y';
 
 /**
  * NOTE: the old passwordless email/OTP login UI that used to live in this file (default export
@@ -101,14 +102,14 @@ function LocationCardBody({ compact }: { compact: boolean }) {
 
   return (
     <>
-      <div style={{ fontFamily: BRICO, fontSize: compact ? 22 : 26, fontWeight: 700, marginBottom: compact ? 8 : 10 }}>
+      <h1 style={{ fontFamily: BRICO, fontSize: compact ? 22 : 26, fontWeight: 700, margin: 0, marginBottom: compact ? 8 : 10 }}>
         {t('auth.location.title')}
-      </div>
+      </h1>
       <div style={{ fontSize: compact ? 13.5 : 14.5, color: 'var(--muted)', lineHeight: 1.55, marginBottom: compact ? 18 : 24 }}>
         {t('auth.location.subtitle')}
       </div>
       <div
-        onClick={() => void useCurrent()}
+        {...clickable(() => void useCurrent())}
         style={{
           textAlign: 'center',
           background: 'var(--accent)',
@@ -135,6 +136,7 @@ function LocationCardBody({ compact }: { compact: boolean }) {
               if (e.key === 'Enter') submitManual();
             }}
             placeholder={t('auth.location.manualPlaceholder')}
+            aria-label={t('auth.location.manualPlaceholder')}
             style={{
               width: '100%',
               boxSizing: 'border-box',
@@ -148,7 +150,7 @@ function LocationCardBody({ compact }: { compact: boolean }) {
             }}
           />
           <div
-            onClick={submitManual}
+            {...clickable(submitManual)}
             style={{
               textAlign: 'center',
               marginTop: 10,
@@ -168,7 +170,7 @@ function LocationCardBody({ compact }: { compact: boolean }) {
         </div>
       ) : (
         <div
-          onClick={() => setManualMode(true)}
+          {...clickable(() => setManualMode(true))}
           style={{ textAlign: 'center', fontSize: compact ? 13 : 13.5, fontWeight: 700, color: 'var(--accent)', marginTop: compact ? 12 : 14, cursor: 'pointer' }}
         >
           {t('auth.location.manual')}

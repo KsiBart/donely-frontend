@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Logo } from '../components/ui';
 import { useBrand } from '../brand';
 import { BRICO } from '../lib/format';
+import { clickable } from '../lib/a11y';
 import { useAuth } from '../state/AuthContext';
 import { useToast } from '../state/ToastContext';
 
@@ -79,7 +80,7 @@ export default function AdminLogin() {
         </div>
         {step === 'email' ? (
           <>
-            <div style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, marginBottom: 8 }}>{t('admin.login.emailTitle')}</div>
+            <h1 style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, margin: '0 0 8px' }}>{t('admin.login.emailTitle')}</h1>
             <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.5, marginBottom: 20 }}>
               {t('admin.login.emailSubtitle')}
             </div>
@@ -90,12 +91,13 @@ export default function AdminLogin() {
                 if (e.key === 'Enter') void sendCode();
               }}
               placeholder={t('admin.login.emailPlaceholder') ?? ''}
+              aria-label={t('admin.login.emailTitle') ?? ''}
               type="email"
               autoFocus
               style={{ ...inputStyle, font: "600 15px 'Figtree', sans-serif" }}
             />
             <div
-              onClick={() => void sendCode()}
+              {...clickable(() => void sendCode())}
               style={{
                 marginTop: 14,
                 textAlign: 'center',
@@ -113,7 +115,7 @@ export default function AdminLogin() {
           </>
         ) : (
           <>
-            <div style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, marginBottom: 8 }}>{t('admin.login.codeTitle')}</div>
+            <h1 style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, margin: '0 0 8px' }}>{t('admin.login.codeTitle')}</h1>
             <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.5, marginBottom: 20 }}>
               {t('admin.login.codeSubtitle')} <b style={{ color: 'var(--text)' }}>{email}</b>
             </div>
@@ -124,12 +126,13 @@ export default function AdminLogin() {
                 if (e.key === 'Enter') void verifyCode();
               }}
               placeholder="────────"
+              aria-label={t('admin.login.codeTitle') ?? ''}
               inputMode="numeric"
               autoFocus
               style={{ ...inputStyle, font: "700 22px 'Figtree', sans-serif", letterSpacing: '.35em', textAlign: 'center' }}
             />
             <div
-              onClick={() => void verifyCode()}
+              {...clickable(() => void verifyCode())}
               style={{
                 marginTop: 14,
                 textAlign: 'center',
@@ -146,7 +149,7 @@ export default function AdminLogin() {
             </div>
             <div style={{ textAlign: 'center', fontSize: 12.5, color: 'var(--muted)', marginTop: 14 }}>
               {t('admin.login.resendPrompt')}{' '}
-              <b style={{ color: 'var(--accent)', cursor: 'pointer' }} onClick={() => void sendCode()}>
+              <b style={{ color: 'var(--accent)', cursor: 'pointer' }} {...clickable(() => void sendCode())}>
                 {t('admin.login.resend')}
               </b>
               {devCode ? t('admin.login.devCode', { code: devCode }) : ''}

@@ -4,6 +4,7 @@ import { useIsDesktop } from '../../lib/useIsDesktop';
 import { useInstallAction } from '../AppPromo';
 import { Logo } from '../../components/ui';
 import { BRICO } from '../../lib/format';
+import { clickable } from '../../lib/a11y';
 
 interface SuccessState {
   isQuote: boolean;
@@ -58,6 +59,7 @@ export default function Success() {
       }
     >
       <div
+        aria-hidden="true"
         style={{
           width: 84,
           height: 84,
@@ -74,7 +76,7 @@ export default function Success() {
       >
         ✓
       </div>
-      <div style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, marginBottom: 8 }}>{title}</div>
+      <h1 style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: 0, marginBottom: 8 }}>{title}</h1>
       <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.55, marginBottom: state.isQuote ? 28 : 10 }}>{sub}</div>
       {!state.isQuote && (
         <div
@@ -91,7 +93,7 @@ export default function Success() {
             marginBottom: 22,
           }}
         >
-          🔒 {t('success.frozenNote')}
+          <span aria-hidden="true">🔒</span> {t('success.frozenNote')}
         </div>
       )}
       {isDesktop && (
@@ -112,14 +114,14 @@ export default function Success() {
             <Trans i18nKey="success.desktopPromoText">
               Status śledzisz tu na donely.app — a z aplikacją dostaniesz też <b>push</b> o zmianach.
             </Trans>{' '}
-            <span onClick={install} style={{ color: 'var(--accent)', fontWeight: 700, cursor: 'pointer' }}>
+            <span {...clickable(install)} style={{ color: 'var(--accent)', fontWeight: 700, cursor: 'pointer' }}>
               {t('promo.download')}
             </span>
           </span>
         </div>
       )}
       <div
-        onClick={() => navigate('/bookings')}
+        {...clickable(() => navigate('/bookings'))}
         style={{
           width: '100%',
           textAlign: 'center',
@@ -136,7 +138,7 @@ export default function Success() {
         {t('success.viewBookings')}
       </div>
       <div
-        onClick={() => navigate('/')}
+        {...clickable(() => navigate('/'))}
         style={{ marginTop: 12, fontSize: 13.5, fontWeight: 700, color: 'var(--accent)', cursor: 'pointer' }}
       >
         {t('success.backToSearch')}

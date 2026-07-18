@@ -9,6 +9,7 @@ import { stripes } from '../../components/ui';
 import { BRICO, bizLong, formatKm, formatRating } from '../../lib/format';
 import { useBrand } from '../../brand';
 import { useToast } from '../../state/ToastContext';
+import { clickable } from '../../lib/a11y';
 
 export default function ProviderProfile() {
   const { t, i18n } = useTranslation();
@@ -71,7 +72,7 @@ export default function ProviderProfile() {
         </span>
         {pv.spotAddress && (
           <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
-            📍 {pv.spotAddress}
+            <span aria-hidden="true">📍</span> {pv.spotAddress}
           </span>
         )}
         <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
@@ -83,10 +84,10 @@ export default function ProviderProfile() {
     return (
       <div style={{ maxWidth: 1120, margin: '0 auto', padding: '22px 28px 48px', animation: 'dwfade .3s ease' }}>
         <span
-          onClick={() => navigate(-1)}
+          {...clickable(() => navigate(-1))}
           style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 700, color: 'var(--accent)', cursor: 'pointer' }}
         >
-          ‹ {t('providerProfile.backToResults')}
+          <span aria-hidden="true">‹</span> {t('providerProfile.backToResults')}
         </span>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 26, alignItems: 'start', marginTop: 16 }}>
           <div>
@@ -105,14 +106,14 @@ export default function ProviderProfile() {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 18 }}>
-              <span style={{ fontFamily: BRICO, fontSize: 26, fontWeight: 700 }}>{pv.name}</span>
+              <h1 style={{ fontFamily: BRICO, fontSize: 26, fontWeight: 700, margin: 0 }}>{pv.name}</h1>
               {pv.verified && (
                 <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '3px 9px', fontSize: 11, fontWeight: 700 }}>
                   {t('common.verifiedFull')}
                 </span>
               )}
               <span
-                onClick={() => void toggleFav()}
+                {...clickable(() => void toggleFav(), { pressed: fav, label: t('a11y.favorite', 'Ulubione') })}
                 style={{
                   width: 30,
                   height: 30,
@@ -131,24 +132,24 @@ export default function ProviderProfile() {
               </span>
             </div>
             <div style={{ fontSize: 13.5, color: 'var(--muted)', marginTop: 4 }}>
-              {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · ★ {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
+              {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
               {t('providerProfile.respondsIn', { minutes: pv.responseMinutes ?? 15 })}
             </div>
             <div style={{ fontSize: 14, color: 'var(--muted2)', lineHeight: 1.55, marginTop: 12, maxWidth: 620 }}>{pv.bio}</div>
             {tagsRow}
 
-            <div style={{ fontFamily: BRICO, fontSize: 18, fontWeight: 700, margin: '26px 0 10px' }}>
+            <h2 style={{ fontFamily: BRICO, fontSize: 18, fontWeight: 700, margin: '26px 0 10px' }}>
               {t('providerProfile.reviewsTitle')}{' '}
               <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>
-                ★ {formatRating(pv.rating, locale)} ({pv.reviewCount})
+                <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount})
               </span>
-            </div>
+            </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {pv.reviews.map((r) => (
                 <div key={r.id} style={{ background: 'var(--surface)', borderRadius: 18, padding: '14px 16px', boxShadow: 'var(--shadow)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                     <span style={{ fontWeight: 700, fontSize: 13.5 }}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
-                    <span style={{ color: '#e8a13c', fontSize: 12, letterSpacing: 1 }}>
+                    <span aria-hidden="true" style={{ color: '#e8a13c', fontSize: 12, letterSpacing: 1 }}>
                       {'★★★★★'.slice(0, Math.max(1, Math.min(5, r.rating)))}
                     </span>
                   </div>
@@ -159,7 +160,7 @@ export default function ProviderProfile() {
           </div>
 
           <div style={{ position: 'sticky', top: 20, background: 'var(--surface)', borderRadius: 22, padding: 18, boxShadow: 'var(--shadow)' }}>
-            <div style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, marginBottom: 12 }}>{t('providerProfile.servicesTitle')}</div>
+            <h2 style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: 0, marginBottom: 12 }}>{t('providerProfile.servicesTitle')}</h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
               {pv.services.map((s) => {
                 const instant = s.priceType !== 'QUOTE';
@@ -187,7 +188,7 @@ export default function ProviderProfile() {
                       </div>
                     </div>
                     <span
-                      onClick={() => book(s)}
+                      {...clickable(() => book(s))}
                       style={{
                         flex: 'none',
                         background: instant ? 'var(--accent)' : 'transparent',
@@ -243,17 +244,20 @@ export default function ProviderProfile() {
             <span style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>{t('providerProfile.morePhotosCount')}</span>
           </div>
         </div>
-        <span onClick={() => navigate(-1)} style={{ ...roundBtn, left: 14 }}>
+        <span {...clickable(() => navigate(-1), { label: t('a11y.back', 'Wstecz') })} style={{ ...roundBtn, left: 14 }}>
           ‹
         </span>
-        <span onClick={() => void toggleFav()} style={{ ...roundBtn, right: 14, color: 'var(--accent)', fontSize: 17 }}>
+        <span
+          {...clickable(() => void toggleFav(), { pressed: fav, label: t('a11y.favorite', 'Ulubione') })}
+          style={{ ...roundBtn, right: 14, color: 'var(--accent)', fontSize: 17 }}
+        >
           {fav ? '♥' : '♡'}
         </span>
       </div>
 
       <div style={{ padding: '16px 20px 40px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700 }}>{pv.name}</span>
+          <h1 style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, margin: 0 }}>{pv.name}</h1>
           {pv.verified && (
             <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 8px', fontSize: 10.5, fontWeight: 700 }}>
               {t('common.verifiedFull')}
@@ -261,7 +265,7 @@ export default function ProviderProfile() {
           )}
         </div>
         <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 4 }}>
-          {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · ★ {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
+          {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
           {t('providerProfile.respondsIn', { minutes: pv.responseMinutes ?? 15 })}
         </div>
         <div style={{ fontSize: 13.5, color: 'var(--muted2)', lineHeight: 1.5, marginTop: 10 }}>{pv.bio}</div>
@@ -275,7 +279,7 @@ export default function ProviderProfile() {
           </span>
           {pv.spotAddress && (
             <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
-              📍 {pv.spotAddress}
+              <span aria-hidden="true">📍</span> {pv.spotAddress}
             </span>
           )}
           <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
@@ -283,7 +287,7 @@ export default function ProviderProfile() {
           </span>
         </div>
 
-        <div style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: '22px 0 10px' }}>{t('providerProfile.servicesTitle')}</div>
+        <h2 style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: '22px 0 10px' }}>{t('providerProfile.servicesTitle')}</h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
           {pv.services.map((s) => {
             const instant = s.priceType !== 'QUOTE';
@@ -311,7 +315,7 @@ export default function ProviderProfile() {
                   </div>
                 </div>
                 <span
-                  onClick={() => book(s)}
+                  {...clickable(() => book(s))}
                   style={{
                     flex: 'none',
                     background: instant ? 'var(--accent)' : 'transparent',
@@ -331,18 +335,18 @@ export default function ProviderProfile() {
           })}
         </div>
 
-        <div style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: '22px 0 10px' }}>
+        <h2 style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: '22px 0 10px' }}>
           {t('providerProfile.reviewsTitle')}{' '}
           <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>
-            ★ {formatRating(pv.rating, locale)} ({pv.reviewCount})
+            <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount})
           </span>
-        </div>
+        </h2>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
           {pv.reviews.map((r) => (
             <div key={r.id} style={{ background: 'var(--surface)', borderRadius: 18, padding: '13px 14px', boxShadow: 'var(--shadow)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
                 <span style={{ fontWeight: 700, fontSize: 13.5 }}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
-                <span style={{ color: '#e8a13c', fontSize: 12, letterSpacing: 1 }}>
+                <span aria-hidden="true" style={{ color: '#e8a13c', fontSize: 12, letterSpacing: 1 }}>
                   {'★★★★★'.slice(0, Math.max(1, Math.min(5, r.rating)))}
                 </span>
               </div>

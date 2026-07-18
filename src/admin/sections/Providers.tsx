@@ -32,14 +32,14 @@ export default function Providers() {
 
   return (
     <>
-      <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.providers.queueTitle', { count: pendingCount })}</div>
+      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.providers.queueTitle', { count: pendingCount })}</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
         {pending.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('admin.providers.queueEmpty')}</div>}
         {pending.map((p) => (
           <PendingRow key={p.id} p={p} variant="page" onApprove={approve} onReject={reject} />
         ))}
       </div>
-      <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.providers.verifiedTitle')}</div>
+      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.providers.verifiedTitle')}</h2>
       <div style={{ ...cardStyle, overflow: 'hidden' }}>
         <TableHead cols={COLS} columns={columns} />
         {verified.map((v) => (
@@ -47,7 +47,9 @@ export default function Providers() {
             <span style={{ fontWeight: 700 }}>{v.name}</span>
             <span style={{ color: 'var(--muted2)' }}>{v.categoryName ?? v.category?.name ?? ''}</span>
             <span style={{ color: 'var(--muted2)', fontSize: 12 }}>{bizLong(v.businessType, t, brand.appName)}</span>
-            <span style={{ fontWeight: 700 }}>★ {formatRating(v.rating, locale)}</span>
+            <span style={{ fontWeight: 700 }}>
+              <span aria-hidden="true">★</span> {formatRating(v.rating, locale)}
+            </span>
             <StatusChip bg="var(--ver-bg)" fg="#3e7a48">
               {t('admin.providers.statusActive')}
             </StatusChip>

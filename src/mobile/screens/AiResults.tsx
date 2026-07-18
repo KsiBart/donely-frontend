@@ -9,6 +9,7 @@ import { useIsDesktop } from '../../lib/useIsDesktop';
 import { AvatarTile, Logo } from '../../components/ui';
 import { useToast } from '../../state/ToastContext';
 import { providerMeta } from '../shared';
+import { clickable } from '../../lib/a11y';
 
 export default function AiResults() {
   const { t, i18n } = useTranslation();
@@ -41,7 +42,7 @@ export default function AiResults() {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
         <span
-          onClick={() => navigate('/')}
+          {...clickable(() => navigate('/'), { label: t('a11y.back', 'Wstecz') })}
           style={{
             width: 34,
             height: 34,
@@ -57,7 +58,7 @@ export default function AiResults() {
         >
           ‹
         </span>
-        <span style={{ fontWeight: 700, fontSize: 15 }}>{t('aiResults.title', { appName: brand.appName })}</span>
+        <h1 style={{ fontWeight: 700, fontSize: 15, margin: 0 }}>{t('aiResults.title', { appName: brand.appName })}</h1>
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
@@ -100,7 +101,7 @@ export default function AiResults() {
         {(res?.matches ?? []).map((p) => (
           <div
             key={p.id}
-            onClick={() => navigate(`/provider/${p.id}`)}
+            {...clickable(() => navigate(`/provider/${p.id}`))}
             style={{ background: 'var(--surface)', borderRadius: 20, padding: 12, cursor: 'pointer', boxShadow: 'var(--shadow)' }}
           >
             <div style={{ display: 'flex', gap: 12 }}>
@@ -109,7 +110,7 @@ export default function AiResults() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                   <span style={{ fontWeight: 700, fontSize: 14.5 }}>{p.name}</span>
                   {p.verified && (
-                    <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 7px', fontSize: 10, fontWeight: 700 }}>
+                    <span aria-hidden="true" style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 7px', fontSize: 10, fontWeight: 700 }}>
                       {t('common.verifiedShort')}
                     </span>
                   )}
@@ -129,10 +130,10 @@ export default function AiResults() {
               }}
             >
               <span style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--accent)', background: 'var(--surface2)', borderRadius: 10, padding: '4px 9px' }}>
-                ✦ {p.why}
+                <span aria-hidden="true">✦</span> {p.why}
               </span>
               <span style={{ background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: '6px 12px', fontSize: 12, fontWeight: 700 }}>
-                {p.nextSlotLabel} →
+                {p.nextSlotLabel} <span aria-hidden="true">→</span>
               </span>
             </div>
           </div>
