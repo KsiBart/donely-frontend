@@ -120,12 +120,12 @@ export function SiteHeader() {
           onClick={toggleMenu}
           style={{
             marginLeft: 'auto',
-            background: 'var(--tint)',
-            border: '1px solid var(--tintBd)',
+            background: 'transparent',
+            border: 'none',
+            padding: 4,
             color: 'var(--acc)',
-            borderRadius: 12,
-            width: 42,
-            height: 42,
+            width: 44,
+            height: 44,
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
@@ -133,11 +133,11 @@ export function SiteHeader() {
           }}
         >
           {menuOpen ? (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           ) : (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
               <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           )}
