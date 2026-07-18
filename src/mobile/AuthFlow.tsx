@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BRICO } from '../lib/format';
+import { useIsDesktop } from '../lib/useIsDesktop';
 import { useAuth } from '../state/AuthContext';
 import { useToast } from '../state/ToastContext';
 
@@ -92,6 +93,7 @@ export function LocationScreen() {
   const { t } = useTranslation();
   const { updateMe } = useAuth();
   const { showToast } = useToast();
+  const isDesktop = useIsDesktop();
   const [busy, setBusy] = useState(false);
 
   const shareLocation = async () => {
@@ -106,6 +108,59 @@ export function LocationScreen() {
       setBusy(false);
     }
   };
+
+  // Phase 2.5 — Web Desktop: no small phone-card here. Full-viewport map backdrop (same
+  // MapBackdrop as mobile) with a single floating card holding the same copy/actions.
+  if (isDesktop) {
+    return (
+      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', animation: 'dwfade .3s ease' }}>
+        <MapBackdrop pinTop />
+        <div
+          style={{
+            position: 'absolute',
+            left: '8%',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            width: '100%',
+            maxWidth: 440,
+            background: 'var(--surface)',
+            color: 'var(--text)',
+            borderRadius: 26,
+            padding: '32px 30px 34px',
+            boxShadow: 'var(--shadow)',
+            zIndex: 1,
+          }}
+        >
+          <div style={{ fontFamily: BRICO, fontSize: 26, fontWeight: 700, marginBottom: 10 }}>{t('auth.location.title')}</div>
+          <div style={{ fontSize: 14.5, color: 'var(--muted)', lineHeight: 1.55, marginBottom: 24 }}>
+            {t('auth.location.subtitle')}
+          </div>
+          <div
+            onClick={() => void shareLocation()}
+            style={{
+              textAlign: 'center',
+              background: 'var(--accent)',
+              color: 'var(--onaccent)',
+              borderRadius: 18,
+              padding: 15,
+              fontSize: 15.5,
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: 'var(--glow)',
+            }}
+          >
+            {t('auth.location.share')}
+          </div>
+          <div
+            onClick={() => void shareLocation()}
+            style={{ textAlign: 'center', fontSize: 13.5, fontWeight: 700, color: 'var(--accent)', marginTop: 14, cursor: 'pointer' }}
+          >
+            {t('auth.location.manual')}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', animation: 'dwfade .3s ease' }}>

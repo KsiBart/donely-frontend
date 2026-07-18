@@ -90,8 +90,8 @@ export default function Home() {
   );
 
   if (isDesktop) {
-    return (
-      <div style={{ maxWidth: 1120, margin: '0 auto', padding: '28px 28px 40px' }}>
+    const desktopHeader = (
+      <>
         <div
           style={{
             background: 'var(--surface)',
@@ -169,10 +169,111 @@ export default function Home() {
           })}
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, margin: '26px 0 14px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '26px 0 14px' }}>
           <span style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700 }}>{t('home.providersCount', { count: providers.length })}</span>
-          <span style={{ marginLeft: 'auto', fontSize: 12.5, color: 'var(--muted)', cursor: 'pointer' }}>{t('home.sortNearest')}</span>
+          <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14 }}>
+            {!mapOn && <span style={{ fontSize: 12.5, color: 'var(--muted)', cursor: 'pointer' }}>{t('home.sortNearest')}</span>}
+            {segToggle}
+          </span>
         </div>
+      </>
+    );
+
+    if (mapOn) {
+      return (
+        <div style={{ maxWidth: 1120, margin: '0 auto', padding: '28px 28px 40px' }}>
+          {desktopHeader}
+
+          <div style={{ display: 'flex', gap: 18, alignItems: 'stretch', height: 560 }}>
+            <div style={{ flex: 1, minWidth: 0, position: 'relative', borderRadius: 24, overflow: 'hidden', background: 'var(--map)', boxShadow: 'var(--shadow)' }}>
+              <div style={{ position: 'absolute', left: '-20%', top: '30%', width: '140%', height: 26, background: 'var(--road)', transform: 'rotate(-8deg)' }} />
+              <div style={{ position: 'absolute', left: '55%', top: '-10%', width: 22, height: '120%', background: 'var(--road)', transform: 'rotate(12deg)' }} />
+              <div style={{ position: 'absolute', left: '10%', top: '62%', width: '80%', height: 14, background: 'var(--road)', transform: 'rotate(4deg)' }} />
+              {providers.map((p, i) => {
+                const [x, y] = pinPos(i);
+                const first = i === 0;
+                return (
+                  <span
+                    key={p.id}
+                    onClick={() => openProvider(p.id)}
+                    style={{
+                      position: 'absolute',
+                      left: x,
+                      top: y,
+                      background: first ? 'var(--accent)' : 'var(--surface)',
+                      border: '2px solid var(--accent)',
+                      borderRadius: 16,
+                      padding: '6px 13px',
+                      fontSize: 13.5,
+                      fontWeight: 700,
+                      color: first ? 'var(--onaccent)' : 'var(--accent)',
+                      boxShadow: first ? 'var(--glow)' : 'var(--shadow)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {p.priceFromLabel}
+                  </span>
+                );
+              })}
+              <span
+                style={{
+                  position: 'absolute',
+                  left: '46%',
+                  top: '58%',
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  background: '#2a78d6',
+                  border: '2.5px solid #fff',
+                  boxShadow: '0 2px 6px rgba(0,0,0,.3)',
+                }}
+              />
+            </div>
+
+            <div
+              className="hide-scroll"
+              style={{ width: 340, flex: 'none', overflow: 'auto', display: 'flex', flexDirection: 'column', gap: 10, paddingRight: 2 }}
+            >
+              {providers.map((p) => (
+                <div
+                  key={p.id}
+                  onClick={() => openProvider(p.id)}
+                  className="dw-card-hover"
+                  style={{ display: 'flex', gap: 12, background: 'var(--surface)', borderRadius: 18, padding: 12, boxShadow: 'var(--shadow)', cursor: 'pointer' }}
+                >
+                  <AvatarTile init={p.init} size={52} radius={14} fontSize={15} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ fontWeight: 700, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</span>
+                      {p.verified && (
+                        <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 7px', fontSize: 10, fontWeight: 700 }}>
+                          {t('common.verifiedShort')}
+                        </span>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{providerMeta(p, locale)}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 7 }}>
+                      <span style={{ fontSize: 12, color: 'var(--muted2)' }}>
+                        {t('home.priceFromPrefix')} <b style={{ color: 'var(--text)' }}>{p.priceFromLabel}</b>
+                      </span>
+                      <span style={{ background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 12, padding: '5px 10px', fontSize: 11, fontWeight: 700 }}>
+                        {p.nextSlotLabel}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <StoreCard />
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ maxWidth: 1120, margin: '0 auto', padding: '28px 28px 40px' }}>
+        {desktopHeader}
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
           {providers.map((p) => (

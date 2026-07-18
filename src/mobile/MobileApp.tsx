@@ -108,33 +108,42 @@ export default function MobileApp() {
 
   // authed === false here means authContent is non-null (loader/auth/location).
   if (!authed && isDesktop) {
+    // Logged in but no saved location yet: desktop gets a full-screen onboarding (map backdrop +
+    // floating card, rendered by LocationScreen's own useIsDesktop() branch), not the small
+    // phone-style auth card — that stays reserved for the (brief) session-loading state.
+    const desktopLocationGate = !!me && !me.locationLabel;
     return (
-      <div className="auth-desktop-page">
-        <div className="auth-desktop-card">
-          {authContent}
-          {toast && (
-            <div
-              style={{
-                position: 'absolute',
-                left: 20,
-                right: 20,
-                bottom: 24,
-                background: 'var(--text)',
-                color: 'var(--bg)',
-                borderRadius: 16,
-                padding: '12px 16px',
-                fontSize: 13,
-                fontWeight: 600,
-                textAlign: 'center',
-                animation: 'dwfade .25s ease',
-                zIndex: 10,
-              }}
-            >
-              {toast}
-            </div>
-          )}
-        </div>
-      </div>
+      <>
+        {desktopLocationGate ? (
+          <LocationScreen />
+        ) : (
+          <div className="auth-desktop-page">
+            <div className="auth-desktop-card">{authContent}</div>
+          </div>
+        )}
+        {toast && (
+          <div
+            style={{
+              position: 'fixed',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              bottom: 28,
+              background: 'var(--text)',
+              color: 'var(--bg)',
+              borderRadius: 16,
+              padding: '12px 22px',
+              fontSize: 13,
+              fontWeight: 600,
+              textAlign: 'center',
+              whiteSpace: 'nowrap',
+              animation: 'dwfade .25s ease',
+              zIndex: 10,
+            }}
+          >
+            {toast}
+          </div>
+        )}
+      </>
     );
   }
 

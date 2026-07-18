@@ -26,7 +26,12 @@ function normalize(res: AdminCalendarResponse): NormRow[] {
   return raw.map((row, i) => {
     const hour = row.hour ?? Number.parseInt(row.label ?? '', 10);
     const h = Number.isNaN(hour) ? 8 + i : hour;
-    const cells = (row.cells ?? []).map((c): AdminCalendarCell => (typeof c === 'string' ? { status: c } : c));
+    const cells = (row.cells ?? []).map((c): AdminCalendarCell => {
+      if (typeof c === 'string') return { status: c };
+      // Backend sends `{ state, label }`; the component reads `status` — accept either.
+      const anyC = c as AdminCalendarCell & { state?: AdminCalendarCell['status'] };
+      return { ...anyC, status: anyC.status ?? anyC.state ?? 'free' };
+    });
     return { hour: h, label: row.label ?? `${h}:00`, cells };
   });
 }
@@ -46,11 +51,13 @@ export default function Calendars() {
   function dayHeaders(res: AdminCalendarResponse | null): string[] {
     if (res?.days && res.days.length > 0) {
       return res.days.map((d) => {
-        const date = new Date(d);
-        if (!Number.isNaN(date.getTime()) && /\d{4}-\d{2}-\d{2}/.test(d)) {
+        // Backend sends `{ label }` objects; older/other shapes may send a plain date string.
+        const label = typeof d === 'string' ? d : ((d as { label?: string })?.label ?? '');
+        const date = new Date(label);
+        if (!Number.isNaN(date.getTime()) && /\d{4}-\d{2}-\d{2}/.test(label)) {
           return `${dowAdmin[date.getDay()]} ${date.getDate()}`;
         }
-        return d;
+        return label;
       });
     }
     return Array.from({ length: 6 }, (_, i) => {
