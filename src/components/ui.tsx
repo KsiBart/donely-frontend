@@ -10,9 +10,12 @@ import { BRICO } from '../lib/format';
  * accented tail without hand-tuning capitalization per brand.
  * `variant="onDark"` matches the auth panel's gradient background (solid white, no accent tail).
  */
-/** Rainbow gradient for the "AI" so it stands out (clipped to the glyphs). */
+/** Rainbow gradient for the "AI" so it stands out (clipped to the glyphs). The gradient repeats
+ * its first colour at the end + is sized 200% so the `.wordmark-ai` shimmer (keyframe in
+ * landing.css, bundled globally; respects prefers-reduced-motion) can flow it seamlessly. */
 const AI_RAINBOW: React.CSSProperties = {
-  background: 'linear-gradient(90deg,#ff4d6d,#ff9a3c,#ffd23f,#4ade80,#3b82f6,#a855f7)',
+  background: 'linear-gradient(90deg,#ff4d6d,#ff9a3c,#ffd23f,#4ade80,#3b82f6,#a855f7,#ff4d6d)',
+  backgroundSize: '200% auto',
   WebkitBackgroundClip: 'text',
   backgroundClip: 'text',
   WebkitTextFillColor: 'transparent',
@@ -37,7 +40,7 @@ export function Wordmark({ size = 23, variant = 'default' }: { size?: number; va
     <span style={base}>
       <span style={{ color: doneColor }}>Done</span>
       <span style={{ color: lyColor }}>Ly</span>
-      <span style={AI_RAINBOW}> AI</span>
+      <span className="wordmark-ai" style={AI_RAINBOW}> AI</span>
     </span>
   );
 }

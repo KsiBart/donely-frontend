@@ -156,21 +156,23 @@ export default function AuthPage() {
 
   return (
     <div className="dt" data-dk={dark ? '1' : '0'} style={{ minHeight: '100vh', display: 'flex', flexWrap: 'wrap', background: 'var(--bg)' }}>
-      {/* BRAND PANEL */}
+      {/* BRAND PANEL — second (right on desktop) via order; dark orange↔purple gradient. */}
       <div
         style={{
+          order: 2,
           flex: '1 1 440px',
           minHeight: 'clamp(200px,32vh,100vh)',
           position: 'relative',
           overflow: 'hidden',
-          background: 'linear-gradient(135deg,var(--acc) 0%,#9d6fd6 55%,#c3a7e6 100%)',
+          background: 'linear-gradient(140deg,#14101a 0%,#2f1c30 38%,#6b3348 70%,var(--acc) 118%)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           padding: 'clamp(28px,4vw,56px)',
         }}
       >
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.16, background: 'repeating-linear-gradient(45deg,#c3a7e6,#c3a7e6 7px,#b599dc 7px,#b599dc 14px)' }} />
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.08, background: 'repeating-linear-gradient(45deg,#c3a7e6,#c3a7e6 7px,#b599dc 7px,#b599dc 14px)' }} />
+        <div style={{ position: 'absolute', right: -120, bottom: -140, width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,140,77,.28), transparent 68%)' }} />
         <div style={{ position: 'absolute', right: -90, top: -90, width: 340, height: 340, borderRadius: '50%', background: 'rgba(255,255,255,.12)' }} />
         <span
           onClick={backToSite}
@@ -196,8 +198,8 @@ export default function AuthPage() {
         </div>
       </div>
 
-      {/* FORM PANEL */}
-      <div style={{ flex: '1 1 440px', display: 'flex', flexDirection: 'column', padding: 'clamp(24px,4vw,48px)' }}>
+      {/* FORM PANEL — first (left on desktop) via order. */}
+      <div style={{ order: 1, flex: '1 1 440px', display: 'flex', flexDirection: 'column', padding: 'clamp(24px,4vw,48px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
           <span onClick={backToSite} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
             ‹ {t('landing.backHome')}

@@ -73,7 +73,7 @@ export function PendingRow({
           <span
             onClick={() => onReject(p)}
             style={{
-              border: '1.5px solid #e5dccf',
+              border: '1.5px solid var(--border)',
               borderRadius: 11,
               padding: '7px 12px',
               fontSize: 12,
@@ -106,8 +106,8 @@ export function PendingRow({
             fontWeight: 700,
             borderRadius: 11,
             padding: '7px 12px',
-            background: ok ? '#e4f0e4' : '#f7f2ea',
-            color: ok ? '#3e7a48' : '#8a7a9e',
+            background: ok ? 'var(--ver-bg)' : 'var(--surface2)',
+            color: ok ? '#3e7a48' : 'var(--muted)',
           }}
         >
           {ok ? t('admin.providers.verifiedBadge') : t('admin.providers.rejectedBadge')}

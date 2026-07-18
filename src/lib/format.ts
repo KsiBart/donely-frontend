@@ -137,14 +137,14 @@ export function statusChipColors(status: BookingStatus): [string, string] {
   switch (status) {
     case 'CONFIRMED':
     case 'AWAITING_APPROVAL':
-      return ['#e4f0e4', '#3e7a48'];
+      return ['var(--ver-bg)', '#3e7a48'];
     case 'PENDING':
-      return ['var(--accent-tint)', 'var(--accent)'];
+      return ['var(--app-tint)', 'var(--accent)'];
     case 'CANCELLED':
     case 'DECLINED':
-      return ['#fbe4e6', '#d64550'];
+      return ['var(--danger-bg)', '#d64550'];
     default:
-      return ['#f7f2ea', '#8a7a9e'];
+      return ['var(--surface2)', 'var(--muted)'];
   }
 }
 

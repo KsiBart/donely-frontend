@@ -432,7 +432,7 @@ export default function BookingsTab() {
                       fontWeight: 700,
                       borderRadius: 10,
                       padding: '4px 9px',
-                      background: '#fbe4e6',
+                      background: 'var(--danger-bg)',
                       color: '#d64550',
                     }}
                   >

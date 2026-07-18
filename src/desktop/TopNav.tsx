@@ -37,7 +37,7 @@ export default function TopNav() {
                 style={{
                   padding: '8px 14px',
                   borderRadius: 12,
-                  background: active ? '#f1ebf7' : 'transparent',
+                  background: active ? 'var(--app-tint)' : 'transparent',
                   color: active ? 'var(--accent)' : 'var(--muted2)',
                   fontSize: 13.5,
                   fontWeight: 700,

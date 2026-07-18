@@ -64,7 +64,7 @@ export default function Dashboard() {
           <div style={{ fontWeight: 700, fontSize: 14.5, marginBottom: 12 }}>{t('admin.dashboard.feedTitle')}</div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {feed.map((f) => (
-              <div key={f.id} style={{ display: 'flex', gap: 10, padding: '9px 0', borderBottom: '1px solid #f3ede2' }}>
+              <div key={f.id} style={{ display: 'flex', gap: 10, padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
                 <span style={{ flex: 'none', width: 8, height: 8, borderRadius: '50%', background: f.dotColor, marginTop: 5 }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ fontSize: 12.5, lineHeight: 1.4 }}>{f.text}</div>

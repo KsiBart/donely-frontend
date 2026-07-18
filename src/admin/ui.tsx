@@ -50,7 +50,7 @@ export function rowStyle(cols: string): React.CSSProperties {
     gap: 10,
     alignItems: 'center',
     padding: '12px 18px',
-    borderTop: '1px solid #f3ede2',
+    borderTop: '1px solid var(--border)',
     fontSize: 13,
   };
 }

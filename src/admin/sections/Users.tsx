@@ -75,7 +75,7 @@ export default function Users() {
             <span style={{ color: 'var(--muted2)', fontSize: 12.5 }}>{u.email}</span>
             <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>{roles(u)}</span>
             <span style={{ color: 'var(--muted2)' }}>{bookingCount(u)}</span>
-            <StatusChip bg={u.blocked ? '#fbe4e6' : '#e4f0e4'} fg={u.blocked ? '#d64550' : '#3e7a48'}>
+            <StatusChip bg={u.blocked ? 'var(--danger-bg)' : 'var(--ver-bg)'} fg={u.blocked ? '#d64550' : '#3e7a48'}>
               {u.blocked ? t('admin.users.statusBlocked') : t('admin.users.statusActive')}
             </StatusChip>
             <span

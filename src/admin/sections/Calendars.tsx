@@ -122,13 +122,13 @@ export default function Calendars() {
   };
 
   const cellView = (cell: AdminCalendarCell, dayIdx: number, hour: number) => {
-    let bg = '#fff';
+    let bg = 'var(--surface)';
     let bd = '1.5px dashed var(--border)';
     let fg = 'var(--muted2)';
     let label = '';
     let tip = t('admin.calendars.tipBlock');
     if (cell.status === 'off') {
-      bg = '#f3ede2';
+      bg = 'var(--surface2)';
       bd = 'none';
       fg = '#fff';
       tip = t('admin.calendars.tipOff');
@@ -139,7 +139,7 @@ export default function Calendars() {
       label = cell.label ?? '';
       tip = cell.label ?? '';
     } else if (cell.status === 'blocked') {
-      bg = '#e5dccf';
+      bg = 'var(--border)';
       bd = 'none';
       label = t('admin.calendars.blockedLabel');
       tip = t('admin.calendars.tipUnblock');
@@ -208,15 +208,15 @@ export default function Calendars() {
             {t('admin.calendars.legendBooked')}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, background: '#e5dccf' }} />
+            <span style={{ width: 12, height: 12, borderRadius: 4, background: 'var(--border)' }} />
             {t('admin.calendars.legendBlocked')}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, border: '1.5px dashed #e5dccf', background: '#fff' }} />
+            <span style={{ width: 12, height: 12, borderRadius: 4, border: '1.5px dashed var(--border)', background: 'var(--surface)' }} />
             {t('admin.calendars.legendFree')}
           </span>
           <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, background: '#f3ede2' }} />
+            <span style={{ width: 12, height: 12, borderRadius: 4, background: 'var(--surface2)' }} />
             {t('admin.calendars.legendOff')}
           </span>
         </div>

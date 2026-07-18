@@ -42,14 +42,14 @@ export function InstallBanner() {
         display: 'flex',
         alignItems: 'center',
         gap: 10,
-        background: '#f1ebf7',
-        borderBottom: '1px solid #e4d9f2',
+        background: 'var(--app-tint)',
+        borderBottom: '1px solid var(--app-tint-border)',
         padding: '9px 14px',
         animation: 'dwfade .3s ease',
       }}
     >
       <Logo size={26} />
-      <span style={{ flex: 1, minWidth: 0, fontSize: 11.5, lineHeight: 1.35, color: '#544963' }}>
+      <span style={{ flex: 1, minWidth: 0, fontSize: 11.5, lineHeight: 1.35, color: 'var(--muted2)' }}>
         <Trans i18nKey="promo.bannerText">
           Pobierz aplikację, aby dostawać <b>powiadomienia push</b> o rezerwacjach i wycenach
         </Trans>
@@ -98,14 +98,14 @@ export function DesktopPromoBanner() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: 10,
-        background: '#f1ebf7',
-        borderBottom: '1px solid #e4d9f2',
+        background: 'var(--app-tint)',
+        borderBottom: '1px solid var(--app-tint-border)',
         padding: '8px 24px',
         animation: 'dwfade .3s ease',
       }}
     >
       <Logo size={22} />
-      <span style={{ fontSize: 12.5, color: '#544963' }}>
+      <span style={{ fontSize: 12.5, color: 'var(--muted2)' }}>
         <Trans i18nKey="promo.desktopBannerText">
           Masz telefon pod ręką? Pobierz aplikację, aby dostawać <b>powiadomienia push</b> o rezerwacjach i wycenach
         </Trans>

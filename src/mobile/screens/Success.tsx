@@ -99,7 +99,7 @@ export default function Success() {
           style={{
             display: 'flex',
             gap: 9,
-            background: '#f1ebf7',
+            background: 'var(--app-tint)',
             borderRadius: 16,
             padding: '11px 14px',
             marginBottom: 24,
@@ -108,7 +108,7 @@ export default function Success() {
           }}
         >
           <Logo size={24} />
-          <span style={{ fontSize: 11.5, color: '#544963', lineHeight: 1.4 }}>
+          <span style={{ fontSize: 11.5, color: 'var(--muted2)', lineHeight: 1.4 }}>
             <Trans i18nKey="success.desktopPromoText">
               Status śledzisz tu na donely.app — a z aplikacją dostaniesz też <b>push</b> o zmianach.
             </Trans>{' '}

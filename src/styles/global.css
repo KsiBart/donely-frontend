@@ -22,7 +22,58 @@
   --ph2: #b599dc;
   --danger: #d64550;
   --warn: #e8a13c;
+  /* Status-chip BACKGROUND that pairs with --danger's foreground (red "blocked"/"failed"/
+     "cancelled" chips across admin + app). Kept separate from --danger so a dark override can
+     redefine just the wash without touching the (still-fine-on-dark) saturated foreground. */
+  --danger-bg: #fbe4e6;
   --page-bg: #f0eee9;
+  /* App-local indirection for the accent "wash" background/border used as a light fill (install
+     banners, pending-status chips, category swatches). Mirrors landing.css's `.dt` --tint/--tintBd
+     pattern: --accent-tint(-border) are set as an INLINE style on :root by theme.ts's
+     applyTheme(), so a plain `:root[data-app-dark]` stylesheet rule can never win against them
+     (inline always beats stylesheet, regardless of selector specificity) — re-deriving them here
+     under a new name lets the dark block below repoint to the dark-tuned wash without touching
+     the accent system (`theme.ts` / `--accent*` stay untouched). */
+  --app-tint: var(--accent-tint);
+  --app-tint-border: var(--accent-tint-border);
+}
+
+/* Dark palette for the AUTHENTICATED app (src/mobile, src/desktop) + admin CRM (src/admin).
+   Activated by src/theme.ts's applyTheme() setting `data-app-dark="1"` on this element when
+   `VITE_FORCE_DARK=true` (mirrors the marketing site's own forced-dark knob, SiteThemeContext's
+   FORCE_DARK) — unset the env and this block simply never applies, app stays byte-identical to
+   today. Selector targets :root directly (not a wrapper class) so every existing `var(--token)`
+   call across the app/admin repaints for free; component-level hardcoded hex was swept separately
+   to point at these tokens instead (see CLAUDE.md).
+   Palette: warm near-black adapted from design/donely-app.dc.html's `.pt[data-theme="dark"]`
+   block, retuned off that design's violet-black onto the marketing site's actual dark background
+   (theme.ts's `--site-bg-dk` / landing.css's `.dt[data-dk='1']`) so the app and the orange/dark
+   landing read as one product. `--accent*` is deliberately NOT redefined here — it's already
+   orange via theme.ts, per the same reasoning as --app-tint above. */
+:root[data-app-dark='1'] {
+  --page-bg: #0f1117;
+  --bg: #141118;
+  --surface: #1e1a26;
+  --surface2: rgba(255, 255, 255, 0.05);
+  --map: #1c1922;
+  --road: #292330;
+  --text: #f3eff7;
+  --muted: #a89fb8;
+  --muted2: #cfc8da;
+  --border: rgba(255, 255, 255, 0.09);
+  --navmuted: #6f6880;
+  --ver-bg: rgba(120, 220, 150, 0.15);
+  --ver-fg: #8fdca8;
+  --danger-bg: rgba(214, 69, 80, 0.16);
+  --shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  /* Accent-tinted CTA glow (buttons/pins using --glow) — reads the theme's live dark accent glow
+     (--accent-glow is set inline by theme.ts) so it stays orange without this rule touching
+     --accent* itself; falls back to the orange dark glow if that var is ever unset. */
+  --glow: 0 4px 14px var(--accent-glow, rgba(255, 140, 77, 0.35));
+  --ph1: #6d5691;
+  --ph2: #5f4a81;
+  --app-tint: var(--accent-tint-dk, rgba(255, 140, 77, 0.15));
+  --app-tint-border: var(--accent-tint-border-dk, rgba(255, 140, 77, 0.3));
 }
 
 * {

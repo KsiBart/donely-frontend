@@ -69,7 +69,7 @@ export default function ProfileTab() {
       </div>
 
       {isDesktop && (
-        <div style={{ background: '#f1ebf7', borderRadius: 20, padding: '16px 18px', marginBottom: 14 }}>
+        <div style={{ background: 'var(--app-tint)', borderRadius: 20, padding: '16px 18px', marginBottom: 14 }}>
           <div style={{ fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{t('profile.pushPromoTitle')}</div>
           <div style={{ fontSize: 12.5, color: 'var(--muted2)', lineHeight: 1.45, marginBottom: 12 }}>{t('profile.pushPromoBody')}</div>
           <div

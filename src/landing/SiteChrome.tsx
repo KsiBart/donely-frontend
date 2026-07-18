@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo, Wordmark } from '../components/ui';
-import { BRICO } from '../lib/format';
 import { DarkModeToggle, LangToggle } from './shared';
 import { useSiteTheme } from '../state/SiteThemeContext';
 
@@ -228,10 +227,7 @@ export function SiteFooter() {
               <path d="M15 24.5l6.5 6.5L34 18" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M40 2l1.7 5.3L47 9l-5.3 1.7L40 16l-1.7-5.3L34 9l5.3-1.7z" fill="currentColor" opacity=".85" />
             </svg>
-            <span style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 800, color: 'var(--bandInk)' }}>
-              Done<span style={{ color: 'var(--bandKicker)' }}>Ly</span>
-              <span style={{ color: 'rgba(255,255,255,.45)', fontWeight: 700 }}>.app</span>
-            </span>
+            <Wordmark size={19} variant="onDark" />
           </div>
           <p style={{ fontSize: 14, color: 'var(--bandSoft)', lineHeight: 1.55, margin: '12px 0 0', maxWidth: 280 }}>{t('landing.footer.tag')}</p>
         </div>

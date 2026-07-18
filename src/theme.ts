@@ -239,4 +239,21 @@ export function applyTheme(palette: Palette = resolveTheme()): void {
   (Object.keys(CSS_VAR_NAMES) as (keyof Palette)[]).forEach((key) => {
     root.style.setProperty(CSS_VAR_NAMES[key], palette[key]);
   });
+  applyAppDarkMode();
+}
+
+/**
+ * Extends the marketing site's `VITE_FORCE_DARK` knob (see `state/SiteThemeContext.tsx`'s
+ * `FORCE_DARK`) to the AUTHENTICATED app + admin CRM, which historically kept its own separate
+ * (always-light) theming. Setting `data-app-dark="1"` on `:root` activates `global.css`'s
+ * `:root[data-app-dark='1']` block, which redefines the app's own `--bg`/`--surface`/`--text`/…
+ * tokens for dark — every `var(--token)` consumer in src/mobile, src/desktop, src/admin repaints
+ * for free, no component changes needed. Reversible: unset `VITE_FORCE_DARK` (the default) and
+ * this never runs, so the attribute is never added and the app stays exactly as it was before this
+ * existed (light, no dark mode). No independent toggle exists here (unlike the marketing site) —
+ * it's a boot-time, one-way decision driven purely by the env var, matching how FORCE_DARK works.
+ */
+function applyAppDarkMode(): void {
+  if (import.meta.env.VITE_FORCE_DARK !== 'true') return;
+  document.documentElement.setAttribute('data-app-dark', '1');
 }

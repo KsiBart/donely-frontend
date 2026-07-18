@@ -48,7 +48,7 @@ export default function Providers() {
             <span style={{ color: 'var(--muted2)' }}>{v.categoryName ?? v.category?.name ?? ''}</span>
             <span style={{ color: 'var(--muted2)', fontSize: 12 }}>{bizLong(v.businessType, t, brand.appName)}</span>
             <span style={{ fontWeight: 700 }}>★ {formatRating(v.rating, locale)}</span>
-            <StatusChip bg="#e4f0e4" fg="#3e7a48">
+            <StatusChip bg="var(--ver-bg)" fg="#3e7a48">
               {t('admin.providers.statusActive')}
             </StatusChip>
           </div>
