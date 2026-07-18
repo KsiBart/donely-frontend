@@ -454,7 +454,7 @@ export default function Home() {
             key={s}
             {...clickable(() => setQuery(s))}
             style={{
-              border: '1px solid var(--border)',
+              border: '1px solid var(--border-strong)',
               background: 'var(--surface)',
               borderRadius: 13,
               padding: '6px 11px',

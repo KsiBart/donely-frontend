@@ -98,6 +98,9 @@ body,
 
 html {
   scroll-behavior: smooth;
+  /* WCAG 2.4.11 Focus Not Obscured: keep anchor-jumped / focused targets clear of the sticky
+     header (~68px) instead of rendering hidden beneath it. */
+  scroll-padding-top: 80px;
 }
 
 body {
