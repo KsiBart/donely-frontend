@@ -132,7 +132,7 @@ export default function Landing() {
     sA: CAT_GRADIENTS[i % CAT_GRADIENTS.length][0],
     sB: CAT_GRADIENTS[i % CAT_GRADIENTS.length][1],
     // Slide in from alternating sides so the grid converges/aligns as it reveals (even cards from
-    // the left, odd from the right) — reverses on scroll-up via `data-reveal-repeat` below.
+    // the left, odd from the right). Reversal on scroll-out is handled globally by useScrollReveal.
     dir: i % 2 === 0 ? 'left' : 'right',
   }));
 
@@ -367,7 +367,6 @@ export default function Landing() {
               key={c.name}
               {...clickable(goLogin)}
               data-reveal={c.dir}
-              data-reveal-repeat=""
               className="dt-card"
               style={{
                 background: 'var(--surface)',

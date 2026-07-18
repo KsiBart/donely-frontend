@@ -3,9 +3,11 @@ import { useEffect } from 'react';
 /**
  * Scroll-reveal for `[data-reveal]` elements — React port of donely-landing.dc.html's
  * componentDidMount `arm()`/`reveal()` loop (which used a rAF loop over getBoundingClientRect).
- * An IntersectionObserver is the idiomatic React equivalent: same visual effect (fade + slide/scale
- * in once, direction set by `data-reveal="up|left|right|scale"`), cheaper than polling every frame.
- * Respects `prefers-reduced-motion` by revealing everything immediately without observing.
+ * An IntersectionObserver is the idiomatic React equivalent: same visual effect (fade + slide/scale,
+ * direction set by `data-reveal="up|left|right|scale"`), cheaper than polling every frame. The
+ * reveal is REVERSIBLE — elements re-hide (animation plays in reverse) when scrolled out of view and
+ * re-reveal on the next pass. Respects `prefers-reduced-motion` by revealing everything immediately
+ * without observing.
  */
 export function useScrollReveal(deps: readonly unknown[] = []): void {
   useEffect(() => {
@@ -26,16 +28,10 @@ export function useScrollReveal(deps: readonly unknown[] = []): void {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // `data-reveal-repeat` elements (e.g. the category cards) animate BOTH ways: they slide in
-          // when they enter and slide back out (reverse) when they leave the viewport, so scrolling
-          // up un-reveals them. Everything else reveals once and is unobserved.
-          const repeat = entry.target.hasAttribute('data-reveal-repeat');
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed');
-            if (!repeat) observer.unobserve(entry.target);
-          } else if (repeat) {
-            entry.target.classList.remove('is-revealed');
-          }
+          // Reversible reveal: every `[data-reveal]` element animates BOTH ways — it slides/fades in
+          // when it enters the viewport and reverses (slides/fades back out) when it leaves, so the
+          // effect re-plays on every scroll pass. Never unobserve, so it keeps toggling.
+          entry.target.classList.toggle('is-revealed', entry.isIntersecting);
         });
       },
       { threshold: 0.08, rootMargin: '0px 0px -10% 0px' },
