@@ -3,8 +3,9 @@ import { useAuth } from '../state/AuthContext';
 import { useToast } from '../state/ToastContext';
 import { useIsDesktop } from '../lib/useIsDesktop';
 import { Logo } from '../components/ui';
+import Landing from '../landing/Landing';
 import TopNav from '../desktop/TopNav';
-import AuthFlow, { LocationScreen } from './AuthFlow';
+import { LocationScreen } from './AuthFlow';
 import BottomNav from './BottomNav';
 import { DesktopPromoBanner, InstallBanner } from './AppPromo';
 import Home from './screens/Home';
@@ -80,17 +81,28 @@ export default function MobileApp() {
     );
   }
 
-  // Not authenticated yet: loader → auth (email/code) → location ask. The same inner
-  // components render on mobile and desktop; only the surrounding chrome differs.
+  // Logged-out visitor: `/` shows the full marketing Landing page (own header/footer, no
+  // .mobile-shell/.desktop-shell phone-card chrome); any other route (a direct deep link to a
+  // protected app screen while logged out) bounces to the unified `/login` auth flow. Guarded by
+  // `!loading` so a returning user with a stored token still sees the pulsing-logo loader below
+  // while `AuthProvider` verifies the session (see state/AuthContext.tsx).
+  if (!loading && !me && location.pathname === '/') {
+    return <Landing />;
+  }
+  if (!loading && !me) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Not authenticated yet (session still resolving) → loader; authenticated but no
+  // `locationLabel` yet → post-login "share your location" gate. The same inner components
+  // render on mobile and desktop; only the surrounding chrome differs.
   const authContent = loading ? (
     <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <span style={{ animation: 'ptpulse 1.6s infinite' }}>
         <Logo size={54} />
       </span>
     </div>
-  ) : !me ? (
-    <AuthFlow />
-  ) : !me.locationLabel ? (
+  ) : !me ? null : !me.locationLabel ? (
     <LocationScreen />
   ) : null;
 

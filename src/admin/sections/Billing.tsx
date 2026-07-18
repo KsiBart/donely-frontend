@@ -22,7 +22,7 @@ function paymentStatusColors(status: AdminPaymentRow['status']): [string, string
       return ['#e4f0e4', '#3e7a48'];
     case 'CAPTURED':
     case 'PENDING':
-      return ['#f1ebf7', '#7a4fc0'];
+      return ['var(--accent-tint)', 'var(--accent)'];
     case 'REFUNDED':
     case 'FAILED':
       return ['#fbe4e6', '#d64550'];
@@ -32,7 +32,7 @@ function paymentStatusColors(status: AdminPaymentRow['status']): [string, string
 }
 
 function payoutStatusColors(status: AdminPayoutRow['status']): [string, string] {
-  return status === 'PAID' ? ['#e4f0e4', '#3e7a48'] : ['#f1ebf7', '#7a4fc0'];
+  return status === 'PAID' ? ['#e4f0e4', '#3e7a48'] : ['var(--accent-tint)', 'var(--accent)'];
 }
 
 export default function Billing() {
@@ -114,7 +114,7 @@ export default function Billing() {
               <span style={{ color: 'var(--muted2)', fontSize: 12 }}>{d.type}</span>
               <span style={{ fontWeight: 700 }}>{d.amount ?? ''}</span>
               <span style={{ color: 'var(--muted2)' }}>{d.tax ?? '—'}</span>
-              <StatusChip bg={paidOut ? '#e4f0e4' : '#f1ebf7'} fg={paidOut ? '#3e7a48' : '#7a4fc0'}>
+              <StatusChip bg={paidOut ? '#e4f0e4' : 'var(--accent-tint)'} fg={paidOut ? '#3e7a48' : 'var(--accent)'}>
                 {d.status}
               </StatusChip>
             </div>

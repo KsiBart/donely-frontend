@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Logo, stripes } from '../components/ui';
+import { Logo, stripes, Wordmark } from '../components/ui';
 import { useAuth } from '../state/AuthContext';
 import { useInstallAction } from '../mobile/AppPromo';
-import { BRICO, initials } from '../lib/format';
-import { useBrand } from '../brand';
+import { initials } from '../lib/format';
 
 const LINKS: { key: string; path: string }[] = [
   { key: 'nav.search', path: '/' },
@@ -19,17 +18,13 @@ export default function TopNav() {
   const { pathname } = useLocation();
   const { me } = useAuth();
   const install = useInstallAction();
-  const brand = useBrand();
 
   return (
     <div style={{ flex: 'none', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 26, padding: '14px 28px' }}>
         <div onClick={() => navigate('/')} style={{ display: 'flex', alignItems: 'center', gap: 9, flex: 'none', cursor: 'pointer' }}>
           <Logo size={30} />
-          <span style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700 }}>
-            {brand.appName.slice(0, -2)}
-            <span style={{ color: 'var(--accent)' }}>{brand.appName.slice(-2)}</span>
-          </span>
+          <Wordmark size={19} />
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           {LINKS.map((link) => {

@@ -223,11 +223,13 @@ export interface Payout {
 
 // ---------- White-label config ----------
 
+/**
+ * `GET /api/config` — a read-only mirror of backend-authoritative ECONOMIC values only. Brand
+ * presentation (app name, store links) is frontend-owned via `VITE_*` env — see `src/brand.ts` —
+ * and is deliberately NOT part of this response's shape, even if the backend sends extra fields.
+ */
 export interface BrandConfigResponse {
-  appName: string;
-  country: string;
   currency: string;
-  defaultLocale: string;
   supportedLocales: string[];
   taxRatePrivate: number;
   paymentMethods: PaymentMethod[];

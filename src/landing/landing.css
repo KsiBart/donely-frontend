@@ -1,0 +1,162 @@
+/* Marketing site theme tokens — verbatim from design/donely-landing.dc.html's `.dt` / `.dt[data-dk="1"]`
+   blocks. Scoped to `.dt` so it never leaks into the authenticated app's own `:root` theming
+   (different variable names anyway: --acc not --accent, --ink not --text, etc).
+   --acc/--accHover/--accInk/--onacc/--tint/--tintBd reference the JS-set vars from src/theme.ts
+   (applied on :root, which cascades into this `.dt`-scoped subtree) so a VITE_THEME/VITE_ACCENT
+   swap recolors the marketing site too. Values today match the 'violet' palette exactly, so this
+   is a no-op by default. The `#hex` after each `var(...)` is the offline/no-JS fallback only. */
+.dt {
+  --bg: #faf7f2;
+  --bgGrad: linear-gradient(180deg, #f1e9fc 0%, #f8f5fc 30%, #fbfaf9 60%);
+  --surface: #fffdfa;
+  --surface2: #f0e9dd;
+  --tint: var(--accent-tint, #f1ebf7);
+  --tintBd: var(--accent-tint-border, #e4d9f2);
+  --ink: #2a2430;
+  --muted: #665a72;
+  --muted2: #8a7a9e;
+  --soft: #9a90a6;
+  --border: #ece4d6;
+  --border2: #e4d9c8;
+  --headbg: rgba(255, 253, 250, 0.86);
+  --headbd: #e8e0d2;
+  --acc: var(--accent, #7a4fc0);
+  --accHover: var(--accent-hover, #6a41ad);
+  --accInk: var(--accent-ink, #6a41ad);
+  --onacc: var(--on-accent, #fff);
+  /* Primary-CTA fill: light mode stays a solid accent (byte-identical to `--acc`); only dark mode
+     (below) swaps this to the per-theme gradient (`gradDk`). */
+  --accGrad: var(--acc);
+  --okbg: #e4f0e4;
+  --okfg: #3e7a48;
+  --blob1: #e9dcfa;
+  --blob2: #dfe0f6;
+  --band: #1c1826;
+  --band2: #17131e;
+  --bandBd: #2f2839;
+  --bandInk: #f5f1f8;
+  --bandMuted: #b3a9bf;
+  --bandSoft: #9a8fb0;
+  --bandAcc: var(--accent-dk, #c3a7e6);
+  --bandKicker: var(--accent-hover-dk, #b58ae6);
+  --bandChip: rgba(195, 167, 230, 0.16);
+  --bandChipFg: #d9c9ef;
+  --howGrad: radial-gradient(720px 320px at 50% -60px, rgba(122, 79, 192, 0.22), transparent 70%), #17131e;
+  --prosGrad: radial-gradient(760px 360px at 80% 18%, rgba(122, 79, 192, 0.3), transparent 70%), #1c1826;
+
+  background: var(--bgGrad);
+  color: var(--ink);
+}
+/* Dark mode. Accent tokens reference the per-theme dark set (`--accent-*-dk`, set on :root by
+   src/theme.ts from VITE_THEME); violet fallbacks equal the original hand-tuned dark shades, so
+   the default dark mode is byte-identical while a theme swap now recolors dark mode too. The
+   non-accent surface/ink/border shades below stay fixed (they're not part of the accent family). */
+.dt[data-dk='1'] {
+  /* Per-theme dark page background (src/theme.ts writes --site-bg-dk/--site-bggrad-dk on :root
+     from VITE_THEME); fallbacks = today's hand-tuned dark shades (violet), so default dark mode
+     is byte-identical while a theme swap (e.g. VITE_THEME=orange) now recolors the page bg too. */
+  --bg: var(--site-bg-dk, #141118);
+  --bgGrad: var(--site-bggrad-dk, linear-gradient(180deg, #231b31 0%, #191521 40%, #141118 70%));
+  --surface: #1e1a26;
+  --surface2: rgba(255, 255, 255, 0.08);
+  --tint: var(--accent-tint-dk, rgba(181, 138, 230, 0.15));
+  --tintBd: var(--accent-tint-border-dk, rgba(181, 138, 230, 0.28));
+  --ink: #f3eff7;
+  --muted: #cfc8da;
+  --muted2: #a89fb8;
+  --soft: #8d8299;
+  --border: rgba(255, 255, 255, 0.09);
+  --border2: rgba(255, 255, 255, 0.16);
+  --headbg: rgba(20, 17, 24, 0.88);
+  --headbd: rgba(255, 255, 255, 0.08);
+  /* Per-theme dark accent (src/theme.ts writes --accent-*-dk on :root from VITE_THEME);
+     violet fallbacks = today's hand-tuned dark shades. */
+  --acc: var(--accent-dk, #b58ae6);
+  --accHover: var(--accent-hover-dk, #c9a6f0);
+  --accInk: var(--accent-ink-dk, #d9c9ef);
+  --onacc: var(--on-accent-dk, #1a1420);
+  /* Primary-CTA fill in dark mode: the per-theme gradient (src/theme.ts's `gradDk`, written as
+     --accent-grad-dk); falls back to the solid dark accent if unset. */
+  --accGrad: var(--accent-grad-dk, var(--acc));
+  --okbg: rgba(120, 220, 150, 0.15);
+  --okfg: #8fdca8;
+  --blob1: rgba(122, 79, 192, 0.4);
+  --blob2: rgba(90, 65, 150, 0.35);
+  --band: #261e35;
+  --band2: #221b2f;
+  --bandBd: rgba(255, 255, 255, 0.1);
+  --bandInk: #f5f1f8;
+  --bandMuted: #bdb3ca;
+  --bandSoft: #93889f;
+  --bandAcc: var(--accent-dk, #cfaef5);
+  --bandKicker: var(--accent-hover-dk, #c9a6f0);
+  --bandChip: rgba(195, 167, 230, 0.18);
+  --bandChipFg: #e2d6f2;
+  --howGrad: radial-gradient(720px 320px at 50% -60px, rgba(181, 138, 230, 0.25), transparent 70%), #241d32;
+  --prosGrad: radial-gradient(760px 360px at 80% 18%, rgba(181, 138, 230, 0.32), transparent 70%), #261e35;
+}
+
+/* Scroll-reveal (componentDidMount arm/show logic ported to an IntersectionObserver — see
+   src/landing/effects.ts). Default hidden state per direction, cleared once `.is-revealed`
+   is added by the observer. */
+.dt [data-reveal] {
+  transition:
+    opacity 0.6s ease,
+    transform 0.8s cubic-bezier(0.2, 0.75, 0.3, 1);
+  opacity: 0;
+}
+.dt [data-reveal='up'] {
+  transform: translateY(46px);
+}
+.dt [data-reveal='left'] {
+  transform: translateX(-72px);
+}
+.dt [data-reveal='right'] {
+  transform: translateX(72px);
+}
+.dt [data-reveal='scale'] {
+  transform: translateY(22px) scale(0.9);
+}
+.dt [data-reveal].is-revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dt [data-reveal] {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.dt a {
+  color: var(--acc);
+}
+.dt a:hover {
+  color: var(--accHover);
+}
+
+.dt-nav-pill:hover {
+  background: var(--surface2);
+}
+.dt-chip:hover {
+  border-color: var(--acc);
+  color: var(--acc);
+}
+.dt-card:hover {
+  box-shadow: 0 18px 42px rgba(74, 52, 102, 0.18);
+  border-color: var(--tintBd);
+}
+.dt-post-card:hover {
+  box-shadow: 0 16px 36px rgba(74, 52, 102, 0.16);
+}
+.dt-footer-link:hover {
+  color: var(--bandAcc);
+}
+.dt-btn-ghost:hover {
+  background: var(--surface2);
+}
+.dt-btn-accent:hover {
+  background: var(--accHover);
+}

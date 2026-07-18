@@ -63,33 +63,6 @@
     }
   },
   "auth": {
-    "welcome": {
-      "titleLine1": "Umiesz coś?",
-      "titleLine2": "Zarabiaj legalnie.",
-      "subtitle": "Remont, opieka nad dziećmi, muzyk na event, detailing — osoby prywatne i małe firmy. AI dopasuje wykonawcę, a my wystawimy fakturę i rozliczymy podatki. Zero biurokracji.",
-      "cta": "Zaloguj się lub załóż konto",
-      "passwordless": "Bez hasła — wyślemy Ci 8-cyfrowy kod na e-mail"
-    },
-    "email": {
-      "title": "Podaj adres e-mail",
-      "subtitle": "Wyślemy Ci jednorazowy 8-cyfrowy kod. Żadnych haseł do zapamiętania.",
-      "placeholder": "twoj@email.pl",
-      "cta": "Wyślij kod",
-      "invalid": "Podaj poprawny e-mail",
-      "sendFailed": "Nie udało się wysłać kodu"
-    },
-    "code": {
-      "title": "Wpisz kod",
-      "subtitle": "Wysłaliśmy 8-cyfrowy kod na",
-      "placeholderEmail": "twoj@email.pl",
-      "cta": "Zaloguj",
-      "resendPrompt": "Nie dotarł?",
-      "resend": "Wyślij ponownie",
-      "devCode": " · kod: {{code}}",
-      "invalid": "Kod ma 8 cyfr",
-      "wrongCode": "Nieprawidłowy kod"
-    },
-    "codeSentToast": "Kod wysłany na {{email}}",
     "location": {
       "title": "Gdzie jesteś?",
       "subtitle": "Pokażemy fachowców dojeżdżających do Ciebie i policzymy odległość do warsztatów. Możesz też przesunąć pinezkę ręcznie.",
@@ -105,6 +78,350 @@
     "bookings": "Rezerwacje",
     "favorites": "Ulubione",
     "profile": "Profil"
+  },
+  "landing": {
+    "nav": { "how": "Jak to działa", "cats": "Kategorie", "pros": "Dla fachowców" },
+    "signin": "Zaloguj się",
+    "backHome": "Wróć na stronę",
+    "darkModeToggle": "Przełącz tryb ciemny/jasny",
+    "applyEmail": "praca@donely.app",
+    "form": {
+      "name": "Imię i nazwisko",
+      "email": "Adres e-mail",
+      "msg": "Wiadomość",
+      "send": "Wyślij wiadomość",
+      "thanks": "Dziękujemy! Odpowiemy w ciągu kilku godzin."
+    },
+    "hero": {
+      "badge": "Płacisz po usłudze — z legalnym rachunkiem",
+      "title": "Znajdź fachowca w minutę.",
+      "sub": "Hydraulik, sprzątanie, opieka, detailing — zweryfikowani wykonawcy w Twojej okolicy. AI dopasuje wykonawcę, a Donely wystawi rachunek i rozliczy podatki.",
+      "cta2": "Zostań fachowcem",
+      "rating": "4,9 · tysiące zleceń",
+      "trust2": "Zweryfikowani wykonawcy",
+      "aiBadge": "Wyszukiwarka AI",
+      "searchPlaceholder": "Opisz problem — np. „cieknący kran w kuchni\"…",
+      "searchBtn": "Szukaj",
+      "aiHint": "AI rozumie naturalny opis i dobiera najlepszych fachowców w Twojej okolicy.",
+      "matchedTitle": "Dopasowane przez AI",
+      "matchedNote": "na podstawie Twojego opisu"
+    },
+    "searchChips": ["💧 Cieknący kran", "🧹 Sprzątanie mieszkania", "👶 Niania na wieczór", "🎸 Muzyk na wesele"],
+    "scenarios": [
+      {
+        "q": "cieknący kran w kuchni",
+        "kw": ["kran", "hydraul", "rur", "odpływ", "odplyw", "przeciek", "ciek", "woda", "instalac", "spłucz", "splucz"],
+        "pros": [
+          { "init": "MK", "name": "Marek K.", "cat": "Hydraulik", "meta": "1,2 km · ★ 4,9 (128)", "slot": "Dziś 15:30", "verified": true },
+          { "init": "PZ", "name": "Piotr Z.", "cat": "Hydraulik", "meta": "2,0 km · ★ 4,8 (94)", "slot": "Dziś 17:00", "verified": true },
+          { "init": "JW", "name": "Jan W.", "cat": "Hydraulik", "meta": "3,4 km · ★ 4,7 (61)", "slot": "Jutro 8:30", "verified": false }
+        ]
+      },
+      {
+        "q": "sprzątanie mieszkania 60 m²",
+        "kw": ["sprzat", "sprząt", "okna", "porzad", "porząd", "pranie", "odkurz"],
+        "pros": [
+          { "init": "AS", "name": "Aneta S.", "cat": "Sprzątanie", "meta": "2,4 km · ★ 4,8 (86)", "slot": "Jutro 9:00", "verified": true },
+          { "init": "MK", "name": "Marta K.", "cat": "Sprzątanie", "meta": "1,9 km · ★ 4,7 (39)", "slot": "Jutro 12:00", "verified": true },
+          { "init": "OR", "name": "Ola R.", "cat": "Sprzątanie", "meta": "3,1 km · ★ 4,9 (52)", "slot": "Sob 10:00", "verified": false }
+        ]
+      },
+      {
+        "q": "niania na wieczór",
+        "kw": ["nian", "opiek", "dzieck", "dzieci", "senior", "babysit"],
+        "pros": [
+          { "init": "OW", "name": "Ola W.", "cat": "Opieka", "meta": "0,8 km · ★ 5,0 (41)", "slot": "Dziś 18:00", "verified": true },
+          { "init": "KM", "name": "Kasia M.", "cat": "Opieka", "meta": "1,5 km · ★ 4,9 (33)", "slot": "Dziś 19:00", "verified": true },
+          { "init": "ZL", "name": "Zofia L.", "cat": "Opieka", "meta": "2,2 km · ★ 4,8 (27)", "slot": "Jutro 16:00", "verified": false }
+        ]
+      },
+      {
+        "q": "muzyk na wesele",
+        "kw": ["muzyk", "wesel", "event", "gitar", "wokal", "zespół", "zespol", "koncert", "śpiew", "spiew"],
+        "pros": [
+          { "init": "KG", "name": "Kuba G.", "cat": "Muzyk", "meta": "4,2 km · ★ 4,9 (63)", "slot": "Sob 19:00", "verified": true },
+          { "init": "EN", "name": "Ela N.", "cat": "Wokalistka", "meta": "5,1 km · ★ 5,0 (48)", "slot": "Pt 20:00", "verified": true },
+          { "init": "BL", "name": "Band Lumo", "cat": "Zespół", "meta": "6,0 km · ★ 4,8 (35)", "slot": "Sob 18:00", "verified": false }
+        ]
+      },
+      {
+        "q": "detailing i pranie tapicerki",
+        "kw": ["detail", "samoch", "wosk", "tapicer", "lakier", "felg", "auta"],
+        "pros": [
+          { "init": "TD", "name": "Tomasz D.", "cat": "Detailing", "meta": "3,1 km · ★ 5,0 (54)", "slot": "Sob 10:00", "verified": true },
+          { "init": "RK", "name": "Rafał K.", "cat": "Detailing", "meta": "4,5 km · ★ 4,8 (40)", "slot": "Sob 13:00", "verified": true },
+          { "init": "AX", "name": "Auto Spa", "cat": "Detailing", "meta": "5,3 km · ★ 4,9 (77)", "slot": "Nd 11:00", "verified": false }
+        ]
+      }
+    ],
+    "stats": [
+      { "v": "2 min", "k": "Średni czas rezerwacji" },
+      { "v": "12k+", "k": "Zrealizowanych zleceń" },
+      { "v": "4,9★", "k": "Średnia ocena" },
+      { "v": "100%", "k": "Legalnych rozliczeń" }
+    ],
+    "cats": {
+      "kicker": "Kategorie",
+      "title": "Czego dziś potrzebujesz?",
+      "sub": "Od drobnej naprawy po całodniowy event — znajdź kogoś sprawdzonego w okolicy.",
+      "items": [
+        { "icon": "🔧", "name": "Hydraulik", "ex": "Naprawy, montaż, awarie", "from": "od 120 zł" },
+        { "icon": "🧹", "name": "Sprzątanie", "ex": "Mieszkania, generalne, okna", "from": "od 90 zł" },
+        { "icon": "👶", "name": "Opieka", "ex": "Nad dziećmi i seniorami", "from": "od 35 zł/h" },
+        { "icon": "🚗", "name": "Detailing", "ex": "Mycie, wosk, wnętrza", "from": "od 150 zł" },
+        { "icon": "🎸", "name": "Artyści", "ex": "Muzycy, eventy, wesela", "from": "od 500 zł" },
+        { "icon": "🛠️", "name": "Remonty", "ex": "Malowanie, montaż, drobne", "from": "wycena" }
+      ]
+    },
+    "how": {
+      "kicker": "Jak to działa",
+      "title": "Trzy kroki do gotowego",
+      "steps": [
+        { "n": "1", "t": "Opisz, czego potrzebujesz", "d": "Napisz naturalnie — np. „cieknący kran w kuchni\". AI zrozumie i podpowie." },
+        { "n": "2", "t": "Wybierz wykonawcę", "d": "Zweryfikowani fachowcy z ocenami, opiniami i cenami z góry. Rezerwuj lub poproś o wycenę." },
+        { "n": "3", "t": "Płacisz po usłudze", "d": "Gotówka, karta lub BLIK po wykonaniu. Donely wystawia rachunek lub fakturę i rozlicza podatek." }
+      ]
+    },
+    "values": [
+      { "icon": "💸", "bg": "#e4f0e4", "fg": "#3e7a48", "t": "Płacisz po usłudze", "d": "Bez zaliczek i przedpłat. Płacisz dopiero, gdy praca jest zrobiona." },
+      { "icon": "🧾", "bg": "#f1ebf7", "fg": "#7a4fc0", "t": "Legalny rachunek", "d": "Faktura lub rachunek automatycznie. Donely rozlicza podatek wykonawcy." },
+      { "icon": "✓", "bg": "#f1ebf7", "fg": "#7a4fc0", "t": "Zweryfikowani", "d": "Tożsamość i opinie sprawdzone. Widzisz oceny, zanim zamówisz." }
+    ],
+    "pros": {
+      "kicker": "Dla fachowców",
+      "title": "Zarabiaj na tym, co umiesz.",
+      "sub": "Przyjmuj zlecenia w okolicy, ustaw własne ceny. Donely wystawia rachunki i rozlicza podatki. Wypłata po usłudze — zero biurokracji.",
+      "bullets": ["🧾 Donely rozlicza podatki", "💸 Wypłata po usłudze", "📍 Zlecenia w okolicy"],
+      "cta": "Dołącz jako fachowiec",
+      "note": "Za darmo · konto w 2 minuty",
+      "card": {
+        "name": "Marek Kowalski",
+        "role": "Hydraulik · Zweryfikowany",
+        "earnLabel": "WYPŁATA W TYM MIESIĄCU",
+        "earn": "4 820 zł",
+        "earnNote": "Wypłacane po każdej usłudze",
+        "jobs": "23",
+        "jobsLabel": "Zlecenia",
+        "rating": "4,9",
+        "ratingLabel": "Ocena",
+        "tax": "Podatki rozliczone przez Donely"
+      }
+    },
+    "app": {
+      "title": "Miej Donely w kieszeni",
+      "sub": "Wersja web ma pełną funkcjonalność. Aplikacja dodaje powiadomienia push w czasie rzeczywistym — o potwierdzeniach, wycenach i przypomnieniach.",
+      "dlOn": "Pobierz w",
+      "dlFrom": "Pobierz z"
+    },
+    "footer": {
+      "tag": "Znajdź fachowca w minutę — płacisz po usłudze, z legalnym rachunkiem.",
+      "cols": [
+        { "h": "Produkt", "links": ["Jak to działa", "Kategorie", "Cennik", "Aplikacja"] },
+        { "h": "Firma", "links": ["O nas", "Kariera", "Kontakt", "Blog"] },
+        { "h": "Wsparcie", "links": ["Pomoc", "Bezpieczeństwo", "Regulamin", "Prywatność"] }
+      ],
+      "copyright": "© 2026 Donely · donely.app"
+    },
+    "auth": {
+      "brandTitle": "Witaj z powrotem w Donely.",
+      "brandSub": "Zaloguj się, aby rezerwować fachowców, śledzić zlecenia i odbierać wyceny w jednym miejscu.",
+      "chips": ["✓ Bez hasła", "🔒 Bezpieczne logowanie", "⚡ Kod w kilka sekund"],
+      "email": {
+        "title": "Zaloguj się lub załóż konto",
+        "sub": "Wyślemy Ci jednorazowy 8-cyfrowy kod na e-mail. Żadnych haseł do zapamiętania.",
+        "label": "Adres e-mail",
+        "placeholder": "twoj@email.pl",
+        "cta": "Wyślij kod",
+        "legal": "Kontynuując, akceptujesz Regulamin i Politykę prywatności Donely.",
+        "invalid": "Podaj poprawny e-mail",
+        "sendFailed": "Nie udało się wysłać kodu"
+      },
+      "code": {
+        "changeEmail": "Zmień e-mail",
+        "title": "Wpisz kod",
+        "subA": "Wysłaliśmy 8-cyfrowy kod na",
+        "cta": "Zaloguj",
+        "resendA": "Nie dotarł?",
+        "resend": "Wyślij ponownie",
+        "devHint": " · kod: {{code}}",
+        "invalid": "Kod ma 8 cyfr",
+        "wrongCode": "Nieprawidłowy kod",
+        "codeSentToast": "Kod wysłany na {{email}}"
+      },
+      "done": {
+        "title": "Zalogowano!",
+        "sub": "Witaj w Donely. Wszystko gotowe — przejdź do aplikacji web, aby znaleźć fachowca.",
+        "cta": "Przejdź do aplikacji",
+        "back": "Wróć na stronę główną"
+      }
+    },
+    "pages": {
+      "cennik": {
+        "title": "Cennik",
+        "sub": "Proste zasady: płacisz tylko wtedy, gdy usługa jest wykonana.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "🙋", "t": "Dla klientów — 0 zł", "d": "Szukanie, wyceny i rezerwacje są bezpłatne. Płacisz tylko za usługę — po jej wykonaniu, gotówką, kartą lub BLIK-iem." },
+              { "icon": "🛠️", "t": "Dla fachowców — 12%", "d": "Zero opłat stałych i abonamentów. Prowizja tylko od zrealizowanych zleceń — w cenie rachunki, rozliczenie podatków i wypłaty." },
+              { "icon": "🧾", "t": "Zawsze w cenie", "d": "Automatyczne rachunki i faktury, rozliczenie podatku wykonawcy, ochrona płatności i wsparcie 7 dni w tygodniu." }
+            ]
+          },
+          {
+            "type": "doc",
+            "items": [
+              { "h": "Bez ukrytych opłat", "p": "Nie pobieramy opłat za rejestrację, przeglądanie profili ani kontakt z fachowcem. Cena, którą widzisz przy rezerwacji, jest ceną końcową." },
+              { "h": "Anulowanie", "p": "Rezerwację możesz bezpłatnie odwołać do 24 godzin przed terminem. Późniejsze odwołania mogą podlegać opłacie zgodnie z regulaminem." }
+            ]
+          }
+        ]
+      },
+      "onas": {
+        "title": "O nas",
+        "sub": "Budujemy najprostszy sposób na znalezienie zaufanego fachowca — i na uczciwe, legalne zarabianie na swoich umiejętnościach.",
+        "blocks": [
+          {
+            "type": "doc",
+            "items": [
+              { "h": "Nasza misja", "p": "W Polsce miliony drobnych usług rozliczane są „po znajomości\", bez rachunku i bez ochrony dla obu stron. Donely zmienia to jedną aplikacją: klient płaci po usłudze i dostaje rachunek, a fachowiec nie martwi się podatkami — rozliczamy je za niego." },
+              { "h": "Jak pracujemy", "p": "Jesteśmy zespołem z Warszawy łączącym doświadczenie z marketplace’ów, fintechu i usług. Wierzymy w proste produkty, przejrzyste zasady i technologię, która znika z drogi." }
+            ]
+          },
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "🤝", "t": "Zaufanie", "d": "Weryfikujemy tożsamość wykonawców, a opinie pochodzą tylko z realnych zleceń." },
+              { "icon": "⚖️", "t": "Legalność", "d": "Każde zlecenie kończy się rachunkiem lub fakturą. Podatki rozliczone — automatycznie." },
+              { "icon": "⚡", "t": "Prostota", "d": "Od opisu problemu do rezerwacji w minutę. Zero formalności po obu stronach." }
+            ]
+          }
+        ]
+      },
+      "kariera": {
+        "title": "Kariera",
+        "sub": "Dołącz do zespołu, który porządkuje rynek usług w Polsce.",
+        "blocks": [
+          {
+            "type": "list",
+            "action": "Aplikuj →",
+            "items": [
+              { "t": "Senior Frontend Engineer", "meta": "Warszawa / zdalnie · pełny etat", "tag": "Engineering" },
+              { "t": "Product Designer", "meta": "Warszawa · pełny etat", "tag": "Design" },
+              { "t": "Growth Marketing Manager", "meta": "Zdalnie · pełny etat", "tag": "Marketing" },
+              { "t": "Customer Success Specialist", "meta": "Warszawa · pełny lub pół etatu", "tag": "Support" }
+            ]
+          },
+          {
+            "type": "doc",
+            "items": [{ "h": "Nie widzisz swojej roli?", "p": "Napisz do nas na praca@donely.app — dobre osoby znajdują u nas miejsce, zanim pojawi się ogłoszenie." }]
+          }
+        ]
+      },
+      "kontakt": {
+        "title": "Kontakt",
+        "sub": "Odpowiadamy zwykle w ciągu kilku godzin, 7 dni w tygodniu.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "✉️", "t": "E-mail", "d": "pomoc@donely.app — sprawy kont, rezerwacji i płatności." },
+              { "icon": "💬", "t": "Czat w aplikacji", "d": "Pn–Sob 8:00–20:00, średni czas odpowiedzi: 15 minut." },
+              { "icon": "🏢", "t": "Biuro", "d": "Donely sp. z o.o., ul. Prosta 20, 00-850 Warszawa." }
+            ]
+          },
+          { "type": "form" }
+        ]
+      },
+      "blog": {
+        "title": "Blog",
+        "sub": "Porady, ceny usług i historie fachowców.",
+        "blocks": [
+          {
+            "type": "posts",
+            "items": [
+              { "t": "Ile kosztuje hydraulik w 2026? Sprawdzamy stawki", "meta": "12 lip 2026 · 5 min", "d": "Średnie ceny wymiany baterii, udrożnienia odpływu i większych prac w 10 miastach.", "hue": 0 },
+              { "t": "Jak Donely rozlicza podatki fachowców", "meta": "28 cze 2026 · 4 min", "d": "Rachunek, faktura, PIT — co dzieje się automatycznie po każdym zleceniu.", "hue": 3 },
+              { "t": "Historia Marka: z etatu na swoje w 3 miesiące", "meta": "15 cze 2026 · 6 min", "d": "Jak hydraulik z Mokotowa zbudował kalendarz pełen zleceń bez ogłoszeń.", "hue": 2 },
+              { "t": "Sprzątanie generalne: checklista przed rezerwacją", "meta": "2 cze 2026 · 3 min", "d": "Co ustalić z wykonawcą, żeby wycena była trafna za pierwszym razem.", "hue": 1 },
+              { "t": "Niania przez aplikację — bezpiecznie i legalnie", "meta": "19 maj 2026 · 5 min", "d": "Weryfikacja, opinie i rachunek — opieka nad dziećmi bez szarej strefy.", "hue": 4 },
+              { "t": "Detailing wiosną: 5 usług, które warto zamówić", "meta": "5 maj 2026 · 4 min", "d": "Od prania tapicerki po korektę lakieru — co wybrać i ile to kosztuje.", "hue": 5 }
+            ]
+          }
+        ]
+      },
+      "pomoc": {
+        "title": "Centrum pomocy",
+        "sub": "Najczęstsze pytania o rezerwacje, płatności i konto.",
+        "blocks": [
+          {
+            "type": "faq",
+            "items": [
+              { "q": "Jak działa płatność po usłudze?", "a": "Rezerwujesz bez przedpłat. Po wykonaniu usługi płacisz bezpośrednio — gotówką, kartą lub BLIK-iem — a Donely automatycznie wystawia rachunek lub fakturę." },
+              { "q": "Czy dostanę rachunek lub fakturę?", "a": "Tak, zawsze. Dokument trafia na Twój e-mail po każdym zakończonym zleceniu. Firmy mogą podać dane do faktury VAT w profilu." },
+              { "q": "Jak zostać fachowcem na Donely?", "a": "Załóż konto, przejdź weryfikację tożsamości i ustaw swoje usługi z cenami. Pierwsze zlecenia możesz przyjmować zwykle w 24 godziny." },
+              { "q": "Co jeśli usługa się nie odbędzie?", "a": "Nie płacisz nic. Zgłoś sprawę w aplikacji — pomożemy znaleźć nowy termin lub innego wykonawcę." },
+              { "q": "Jak działa weryfikacja wykonawców?", "a": "Sprawdzamy dokument tożsamości i dane rozliczeniowe, a znaczek „Zweryfikowany\" dostają tylko sprawdzone profile. Opinie pochodzą wyłącznie z realnych zleceń." }
+            ]
+          },
+          { "type": "doc", "items": [{ "h": "Nie znalazłeś odpowiedzi?", "p": "Napisz na pomoc@donely.app lub skorzystaj z czatu w aplikacji (Pn–Sob 8:00–20:00)." }] }
+        ]
+      },
+      "bezpieczenstwo": {
+        "title": "Bezpieczeństwo",
+        "sub": "Zweryfikowani wykonawcy, chronione płatności i realna pomoc, gdy coś pójdzie nie tak.",
+        "blocks": [
+          {
+            "type": "cards",
+            "items": [
+              { "icon": "✓", "t": "Weryfikacja tożsamości", "d": "Każdy fachowiec przechodzi weryfikację dokumentu i danych rozliczeniowych, zanim przyjmie pierwsze zlecenie." },
+              { "icon": "⭐", "t": "Prawdziwe opinie", "d": "Ocenę można wystawić tylko po zrealizowanym zleceniu — żadnych kupionych recenzji." },
+              { "icon": "🛡️", "t": "Ochrona zlecenia", "d": "Płacisz po usłudze, a każde zlecenie jest udokumentowane rachunkiem. W razie sporu mamy pełną historię." }
+            ]
+          },
+          {
+            "type": "doc",
+            "items": [
+              { "h": "Zgłaszanie problemów", "p": "Każde zlecenie możesz zgłosić z poziomu aplikacji do 14 dni po realizacji. Zespół wsparcia odpowiada zwykle w kilka godzin." },
+              { "h": "Dane i prywatność", "p": "Twój adres i numer telefonu udostępniamy wykonawcy dopiero po potwierdzonej rezerwacji — i tylko w zakresie potrzebnym do realizacji." }
+            ]
+          }
+        ]
+      },
+      "regulamin": {
+        "title": "Regulamin",
+        "sub": "Wersja 2.1 · obowiązuje od 1 czerwca 2026",
+        "blocks": [
+          {
+            "type": "doc",
+            "items": [
+              { "h": "1. Postanowienia ogólne", "p": "Serwis donely.app prowadzony jest przez Donely sp. z o.o. z siedzibą w Warszawie. Regulamin określa zasady korzystania z serwisu przez klientów i wykonawców." },
+              { "h": "2. Konto", "p": "Do korzystania z serwisu wymagane jest konto założone z użyciem adresu e-mail. Logowanie odbywa się jednorazowym kodem — bez hasła." },
+              { "h": "3. Rezerwacje i wyceny", "p": "Rezerwacja terminu lub akceptacja wyceny stanowi zawarcie umowy o wykonanie usługi między klientem a wykonawcą. Donely pośredniczy w rozliczeniu i dokumentacji." },
+              { "h": "4. Płatności i rachunki", "p": "Płatność następuje po wykonaniu usługi. Donely wystawia rachunek lub fakturę w imieniu wykonawcy i rozlicza należne podatki zgodnie z obowiązującymi przepisami." },
+              { "h": "5. Odwołania", "p": "Bezpłatne odwołanie rezerwacji możliwe jest do 24 godzin przed terminem. Szczegółowe zasady opłat za późniejsze odwołania określa cennik." },
+              { "h": "6. Reklamacje", "p": "Reklamacje można składać w aplikacji lub na pomoc@donely.app w terminie 14 dni od realizacji zlecenia. Rozpatrujemy je w ciągu 14 dni roboczych." }
+            ]
+          }
+        ]
+      },
+      "prywatnosc": {
+        "title": "Polityka prywatności",
+        "sub": "Ostatnia aktualizacja: 1 czerwca 2026",
+        "blocks": [
+          {
+            "type": "doc",
+            "items": [
+              { "h": "1. Administrator danych", "p": "Administratorem Twoich danych jest Donely sp. z o.o., ul. Prosta 20, 00-850 Warszawa. Kontakt: prywatnosc@donely.app." },
+              { "h": "2. Jakie dane zbieramy", "p": "Adres e-mail, dane rezerwacji, lokalizację (za zgodą) oraz dane rozliczeniowe wykonawców — wyłącznie w zakresie niezbędnym do świadczenia usług." },
+              { "h": "3. Cel przetwarzania", "p": "Realizacja rezerwacji, wystawianie dokumentów księgowych, rozliczenia podatkowe wykonawców, bezpieczeństwo serwisu i komunikacja." },
+              { "h": "4. Udostępnianie", "p": "Dane przekazujemy wykonawcy lub klientowi w zakresie potrzebnym do realizacji zlecenia oraz podmiotom obsługującym płatności i księgowość." },
+              { "h": "5. Twoje prawa", "p": "Masz prawo dostępu do danych, ich sprostowania, usunięcia i przenoszenia oraz sprzeciwu. Wnioski: prywatnosc@donely.app." }
+            ]
+          }
+        ]
+      }
+    }
   },
   "promo": {
     "installToast": "→ przekierowanie do sklepu z aplikacją",

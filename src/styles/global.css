@@ -1,3 +1,6 @@
+/* --accent / --onaccent: fallback values only (= the 'violet' palette). src/theme.ts's
+   applyTheme() sets both as inline styles on this element at boot (from VITE_THEME / VITE_ACCENT),
+   which overrides these stylesheet defaults — see that file for how to swap the accent. */
 :root {
   --bg: #faf7f2;
   --surface: #fffdfa;
@@ -8,7 +11,7 @@
   --muted: #8a7a9e;
   --muted2: #665a72;
   --accent: #7a4fc0;
-  --onaccent: #fff;
+  --onaccent: var(--on-accent, #fff);
   --border: #efe8dd;
   --navmuted: #a99cb6;
   --ver-bg: #e4f0e4;
@@ -33,6 +36,10 @@ body,
   min-height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background: var(--page-bg);
   color: var(--text);
@@ -44,7 +51,7 @@ a {
   color: var(--accent);
 }
 a:hover {
-  color: #5f3a99;
+  color: var(--accent-hover, #6a41ad);
 }
 
 input,
@@ -85,6 +92,26 @@ textarea::placeholder {
   }
   50% {
     opacity: 1;
+  }
+}
+/* Landing page + auth split-panel (donely-landing.dc.html) */
+@keyframes dfade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes dfloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 
