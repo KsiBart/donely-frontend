@@ -142,7 +142,9 @@ export default function Landing() {
         id="top"
         style={{
           position: 'relative',
-          overflow: 'hidden',
+          // No `overflow: hidden` here: the card's soft glow + the corner blobs must bleed past
+          // the 1200px column onto the full-width page bg instead of being clipped into a visible
+          // rectangle. Horizontal scroll from the bleed is contained by `.dt { overflow-x: hidden }`.
           maxWidth: 1200,
           margin: '0 auto',
           width: '100%',
