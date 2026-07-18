@@ -1,3 +1,30 @@
+@import "tailwindcss";
+
+/* dark: utilities activate on the app's existing data-attribute (set by theme.ts applyTheme) */
+@custom-variant dark (&:where([data-app-dark='1'], [data-app-dark='1'] *));
+
+/* Map Tailwind color utilities onto the EXISTING CSS variables so applyTheme() runtime theming,
+   light/forced-dark, and white-label keep working unchanged. `inline` = utilities emit
+   var(--token) references, not resolved values. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-page: var(--page-bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-muted2: var(--muted2);
+  --color-accent: var(--accent);
+  --color-onaccent: var(--onaccent);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-warn: var(--warn);
+  --color-ver-bg: var(--ver-bg);
+  --color-ver-fg: var(--ver-fg);
+}
+
 /* --accent / --onaccent: fallback values only (= the 'violet' palette). src/theme.ts's
    applyTheme() sets both as inline styles on this element at boot (from VITE_THEME / VITE_ACCENT),
    which overrides these stylesheet defaults — see that file for how to swap the accent. */
