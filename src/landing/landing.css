@@ -137,6 +137,7 @@
 
 .dt a {
   color: var(--acc);
+  text-decoration: none;
 }
 .dt a:hover {
   color: var(--accHover);
@@ -187,17 +188,19 @@
   gap: 2px;
   animation: dfade 0.2s ease;
 }
-.dt-mobile-menu-link {
-  padding: 12px 10px;
+/* Compound selector (.dt-mobile-menu descendant) beats `.dt a` so links read as subtle white,
+   not the accent colour. */
+.dt-mobile-menu .dt-mobile-menu-link {
+  padding: 11px 10px;
   border-radius: 12px;
   font-size: 15px;
-  font-weight: 700;
-  color: var(--ink);
+  font-weight: 500;
+  color: var(--muted);
   cursor: pointer;
 }
-.dt-mobile-menu-link:hover {
+.dt-mobile-menu .dt-mobile-menu-link:hover {
   background: var(--surface2);
-  color: var(--acc);
+  color: var(--ink);
 }
 @media (max-width: 767px) {
   .dt-nav-desktop {

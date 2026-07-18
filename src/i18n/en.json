@@ -8,9 +8,33 @@
     "today": "today",
     "tomorrow": "tomorrow",
     "notSet": "to be arranged",
-    "dowShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "dowShortAdmin": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "dowFull": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "dowShort": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "dowShortAdmin": [
+      "Sun",
+      "Mon",
+      "Tue",
+      "Wed",
+      "Thu",
+      "Fri",
+      "Sat"
+    ],
+    "dowFull": [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ],
     "relTime": {
       "minutesAgo": "{{count}} min ago",
       "hoursAgo": "{{count}} h ago",
@@ -78,7 +102,15 @@
     "profile": "Profile"
   },
   "landing": {
-    "nav": { "how": "How it works", "cats": "Categories", "pros": "For pros" },
+    "nav": {
+      "how": "How it works",
+      "cats": "Categories",
+      "pros": "For pros",
+      "pricing": "Pricing",
+      "about": "About",
+      "help": "Help center",
+      "contact": "Contact"
+    },
     "signin": "Sign in",
     "backHome": "Back to site",
     "darkModeToggle": "Toggle dark/light mode",
@@ -104,92 +136,319 @@
       "matchedTitle": "Matched by AI",
       "matchedNote": "based on your description"
     },
-    "searchChips": ["💧 Leaking tap", "🧹 Home cleaning", "👶 Evening babysitter", "🎸 Wedding musician"],
+    "searchChips": [
+      "💧 Leaking tap",
+      "🧹 Home cleaning",
+      "👶 Evening babysitter",
+      "🎸 Wedding musician"
+    ],
     "scenarios": [
       {
         "q": "leaking kitchen tap",
-        "kw": ["plumb", "tap", "leak", "pipe", "drain", "water", "faucet", "toilet"],
+        "kw": [
+          "plumb",
+          "tap",
+          "leak",
+          "pipe",
+          "drain",
+          "water",
+          "faucet",
+          "toilet"
+        ],
         "pros": [
-          { "init": "MK", "name": "Marek K.", "cat": "Plumber", "meta": "1.2 km · ★ 4.9 (128)", "slot": "Today 15:30", "verified": true },
-          { "init": "PZ", "name": "Piotr Z.", "cat": "Plumber", "meta": "2.0 km · ★ 4.8 (94)", "slot": "Today 17:00", "verified": true },
-          { "init": "JW", "name": "Jan W.", "cat": "Plumber", "meta": "3.4 km · ★ 4.7 (61)", "slot": "Tmrw 8:30", "verified": false }
+          {
+            "init": "MK",
+            "name": "Marek K.",
+            "cat": "Plumber",
+            "meta": "1.2 km · ★ 4.9 (128)",
+            "slot": "Today 15:30",
+            "verified": true
+          },
+          {
+            "init": "PZ",
+            "name": "Piotr Z.",
+            "cat": "Plumber",
+            "meta": "2.0 km · ★ 4.8 (94)",
+            "slot": "Today 17:00",
+            "verified": true
+          },
+          {
+            "init": "JW",
+            "name": "Jan W.",
+            "cat": "Plumber",
+            "meta": "3.4 km · ★ 4.7 (61)",
+            "slot": "Tmrw 8:30",
+            "verified": false
+          }
         ]
       },
       {
         "q": "clean a 60 m² apartment",
-        "kw": ["clean", "window", "tidy", "housekeep", "laundry", "vacuum"],
+        "kw": [
+          "clean",
+          "window",
+          "tidy",
+          "housekeep",
+          "laundry",
+          "vacuum"
+        ],
         "pros": [
-          { "init": "AS", "name": "Aneta S.", "cat": "Cleaning", "meta": "2.4 km · ★ 4.8 (86)", "slot": "Tmrw 9:00", "verified": true },
-          { "init": "MK", "name": "Marta K.", "cat": "Cleaning", "meta": "1.9 km · ★ 4.7 (39)", "slot": "Tmrw 12:00", "verified": true },
-          { "init": "OR", "name": "Ola R.", "cat": "Cleaning", "meta": "3.1 km · ★ 4.9 (52)", "slot": "Sat 10:00", "verified": false }
+          {
+            "init": "AS",
+            "name": "Aneta S.",
+            "cat": "Cleaning",
+            "meta": "2.4 km · ★ 4.8 (86)",
+            "slot": "Tmrw 9:00",
+            "verified": true
+          },
+          {
+            "init": "MK",
+            "name": "Marta K.",
+            "cat": "Cleaning",
+            "meta": "1.9 km · ★ 4.7 (39)",
+            "slot": "Tmrw 12:00",
+            "verified": true
+          },
+          {
+            "init": "OR",
+            "name": "Ola R.",
+            "cat": "Cleaning",
+            "meta": "3.1 km · ★ 4.9 (52)",
+            "slot": "Sat 10:00",
+            "verified": false
+          }
         ]
       },
       {
         "q": "evening babysitter",
-        "kw": ["babysit", "child", "kid", "nanny", "care", "senior"],
+        "kw": [
+          "babysit",
+          "child",
+          "kid",
+          "nanny",
+          "care",
+          "senior"
+        ],
         "pros": [
-          { "init": "OW", "name": "Ola W.", "cat": "Childcare", "meta": "0.8 km · ★ 5.0 (41)", "slot": "Today 18:00", "verified": true },
-          { "init": "KM", "name": "Kasia M.", "cat": "Childcare", "meta": "1.5 km · ★ 4.9 (33)", "slot": "Today 19:00", "verified": true },
-          { "init": "ZL", "name": "Zofia L.", "cat": "Childcare", "meta": "2.2 km · ★ 4.8 (27)", "slot": "Tmrw 16:00", "verified": false }
+          {
+            "init": "OW",
+            "name": "Ola W.",
+            "cat": "Childcare",
+            "meta": "0.8 km · ★ 5.0 (41)",
+            "slot": "Today 18:00",
+            "verified": true
+          },
+          {
+            "init": "KM",
+            "name": "Kasia M.",
+            "cat": "Childcare",
+            "meta": "1.5 km · ★ 4.9 (33)",
+            "slot": "Today 19:00",
+            "verified": true
+          },
+          {
+            "init": "ZL",
+            "name": "Zofia L.",
+            "cat": "Childcare",
+            "meta": "2.2 km · ★ 4.8 (27)",
+            "slot": "Tmrw 16:00",
+            "verified": false
+          }
         ]
       },
       {
         "q": "musician for a wedding",
-        "kw": ["music", "wedding", "event", "guitar", "vocal", "band", "concert", "sing"],
+        "kw": [
+          "music",
+          "wedding",
+          "event",
+          "guitar",
+          "vocal",
+          "band",
+          "concert",
+          "sing"
+        ],
         "pros": [
-          { "init": "KG", "name": "Kuba G.", "cat": "Musician", "meta": "4.2 km · ★ 4.9 (63)", "slot": "Sat 19:00", "verified": true },
-          { "init": "EN", "name": "Ela N.", "cat": "Vocalist", "meta": "5.1 km · ★ 5.0 (48)", "slot": "Fri 20:00", "verified": true },
-          { "init": "BL", "name": "Band Lumo", "cat": "Band", "meta": "6.0 km · ★ 4.8 (35)", "slot": "Sat 18:00", "verified": false }
+          {
+            "init": "KG",
+            "name": "Kuba G.",
+            "cat": "Musician",
+            "meta": "4.2 km · ★ 4.9 (63)",
+            "slot": "Sat 19:00",
+            "verified": true
+          },
+          {
+            "init": "EN",
+            "name": "Ela N.",
+            "cat": "Vocalist",
+            "meta": "5.1 km · ★ 5.0 (48)",
+            "slot": "Fri 20:00",
+            "verified": true
+          },
+          {
+            "init": "BL",
+            "name": "Band Lumo",
+            "cat": "Band",
+            "meta": "6.0 km · ★ 4.8 (35)",
+            "slot": "Sat 18:00",
+            "verified": false
+          }
         ]
       },
       {
         "q": "car detailing & valet",
-        "kw": ["detail", "wash", "wax", "wheel", "interior", "valet", "upholster", "vehicle"],
+        "kw": [
+          "detail",
+          "wash",
+          "wax",
+          "wheel",
+          "interior",
+          "valet",
+          "upholster",
+          "vehicle"
+        ],
         "pros": [
-          { "init": "TD", "name": "Tomasz D.", "cat": "Detailing", "meta": "3.1 km · ★ 5.0 (54)", "slot": "Sat 10:00", "verified": true },
-          { "init": "RK", "name": "Rafał K.", "cat": "Detailing", "meta": "4.5 km · ★ 4.8 (40)", "slot": "Sat 13:00", "verified": true },
-          { "init": "AX", "name": "Auto Spa", "cat": "Detailing", "meta": "5.3 km · ★ 4.9 (77)", "slot": "Sun 11:00", "verified": false }
+          {
+            "init": "TD",
+            "name": "Tomasz D.",
+            "cat": "Detailing",
+            "meta": "3.1 km · ★ 5.0 (54)",
+            "slot": "Sat 10:00",
+            "verified": true
+          },
+          {
+            "init": "RK",
+            "name": "Rafał K.",
+            "cat": "Detailing",
+            "meta": "4.5 km · ★ 4.8 (40)",
+            "slot": "Sat 13:00",
+            "verified": true
+          },
+          {
+            "init": "AX",
+            "name": "Auto Spa",
+            "cat": "Detailing",
+            "meta": "5.3 km · ★ 4.9 (77)",
+            "slot": "Sun 11:00",
+            "verified": false
+          }
         ]
       }
     ],
     "stats": [
-      { "v": "2 min", "k": "Avg. time to book" },
-      { "v": "12k+", "k": "Jobs completed" },
-      { "v": "4.9★", "k": "Average rating" },
-      { "v": "100%", "k": "Legal settlements" }
+      {
+        "v": "2 min",
+        "k": "Avg. time to book"
+      },
+      {
+        "v": "12k+",
+        "k": "Jobs completed"
+      },
+      {
+        "v": "4.9★",
+        "k": "Average rating"
+      },
+      {
+        "v": "100%",
+        "k": "Legal settlements"
+      }
     ],
     "cats": {
       "kicker": "Categories",
       "title": "What do you need today?",
       "sub": "From a quick fix to a full-day event — find someone trusted nearby.",
       "items": [
-        { "icon": "🔧", "name": "Plumbing", "ex": "Repairs, installs, emergencies", "from": "from 120 zł" },
-        { "icon": "🧹", "name": "Cleaning", "ex": "Homes, deep clean, windows", "from": "from 90 zł" },
-        { "icon": "👶", "name": "Childcare", "ex": "Kids and seniors", "from": "from 35 zł/h" },
-        { "icon": "🚗", "name": "Detailing", "ex": "Wash, wax, interiors", "from": "from 150 zł" },
-        { "icon": "🎸", "name": "Musicians", "ex": "Events, weddings, parties", "from": "from 500 zł" },
-        { "icon": "🛠️", "name": "Renovations", "ex": "Painting, assembly, odd jobs", "from": "get a quote" }
+        {
+          "icon": "🔧",
+          "name": "Plumbing",
+          "ex": "Repairs, installs, emergencies",
+          "from": "from 120 zł"
+        },
+        {
+          "icon": "🧹",
+          "name": "Cleaning",
+          "ex": "Homes, deep clean, windows",
+          "from": "from 90 zł"
+        },
+        {
+          "icon": "👶",
+          "name": "Childcare",
+          "ex": "Kids and seniors",
+          "from": "from 35 zł/h"
+        },
+        {
+          "icon": "🚗",
+          "name": "Detailing",
+          "ex": "Wash, wax, interiors",
+          "from": "from 150 zł"
+        },
+        {
+          "icon": "🎸",
+          "name": "Musicians",
+          "ex": "Events, weddings, parties",
+          "from": "from 500 zł"
+        },
+        {
+          "icon": "🛠️",
+          "name": "Renovations",
+          "ex": "Painting, assembly, odd jobs",
+          "from": "get a quote"
+        }
       ]
     },
     "how": {
       "kicker": "How it works",
       "title": "Three steps to done",
       "steps": [
-        { "n": "1", "t": "Describe what you need", "d": "Write naturally — e.g. \"leaking kitchen tap\". The AI understands and suggests." },
-        { "n": "2", "t": "Choose a pro", "d": "Verified pros with ratings, reviews and upfront prices. Book instantly or request a quote." },
-        { "n": "3", "t": "Pay after the job", "d": "Cash, card or BLIK once it's done. Donely issues the invoice and settles the pro's tax." }
+        {
+          "n": "1",
+          "t": "Describe what you need",
+          "d": "Write naturally — e.g. \"leaking kitchen tap\". The AI understands and suggests."
+        },
+        {
+          "n": "2",
+          "t": "Choose a pro",
+          "d": "Verified pros with ratings, reviews and upfront prices. Book instantly or request a quote."
+        },
+        {
+          "n": "3",
+          "t": "Pay after the job",
+          "d": "Cash, card or BLIK once it's done. Donely issues the invoice and settles the pro's tax."
+        }
       ]
     },
     "values": [
-      { "icon": "💸", "bg": "#e4f0e4", "fg": "#3e7a48", "t": "Pay after the job", "d": "No deposits, no prepayments. You pay only when the work is finished." },
-      { "icon": "🧾", "bg": "#f1ebf7", "fg": "#7a4fc0", "t": "Legal invoice", "d": "Invoice or receipt automatically. Donely settles the pro's taxes for you." },
-      { "icon": "✓", "bg": "#f1ebf7", "fg": "#7a4fc0", "t": "Verified pros", "d": "Identity and reviews checked. See the ratings before you book." }
+      {
+        "icon": "💸",
+        "bg": "#e4f0e4",
+        "fg": "#3e7a48",
+        "t": "Pay after the job",
+        "d": "No deposits, no prepayments. You pay only when the work is finished."
+      },
+      {
+        "icon": "🧾",
+        "bg": "#f1ebf7",
+        "fg": "#7a4fc0",
+        "t": "Legal invoice",
+        "d": "Invoice or receipt automatically. Donely settles the pro's taxes for you."
+      },
+      {
+        "icon": "✓",
+        "bg": "#f1ebf7",
+        "fg": "#7a4fc0",
+        "t": "Verified pros",
+        "d": "Identity and reviews checked. See the ratings before you book."
+      }
     ],
     "pros": {
       "kicker": "For pros",
       "title": "Earn from what you're good at.",
       "sub": "Take jobs nearby, set your own prices. Donely issues the invoices and settles the taxes. Get paid after the job — zero paperwork.",
-      "bullets": ["🧾 Donely handles taxes", "💸 Paid after the job", "📍 Jobs nearby"],
+      "bullets": [
+        "🧾 Donely handles taxes",
+        "💸 Paid after the job",
+        "📍 Jobs nearby"
+      ],
       "cta": "Join as a pro",
       "note": "Free · account in 2 minutes",
       "card": {
@@ -214,16 +473,44 @@
     "footer": {
       "tag": "Find a pro in a minute — pay after the job, with a legal invoice.",
       "cols": [
-        { "h": "Product", "links": ["How it works", "Categories", "Pricing", "Mobile app"] },
-        { "h": "Company", "links": ["About", "Careers", "Contact", "Blog"] },
-        { "h": "Support", "links": ["Help center", "Safety", "Terms", "Privacy"] }
+        {
+          "h": "Product",
+          "links": [
+            "How it works",
+            "Categories",
+            "Pricing",
+            "Mobile app"
+          ]
+        },
+        {
+          "h": "Company",
+          "links": [
+            "About",
+            "Careers",
+            "Contact",
+            "Blog"
+          ]
+        },
+        {
+          "h": "Support",
+          "links": [
+            "Help center",
+            "Safety",
+            "Terms",
+            "Privacy"
+          ]
+        }
       ],
       "copyright": "© 2026 Donely · donely.app"
     },
     "auth": {
       "brandTitle": "Welcome back to Donely.",
       "brandSub": "Sign in to book pros, track jobs and receive quotes — all in one place.",
-      "chips": ["✓ No password", "🔒 Secure sign-in", "⚡ Code in seconds"],
+      "chips": [
+        "✓ No password",
+        "🔒 Secure sign-in",
+        "⚡ Code in seconds"
+      ],
       "email": {
         "title": "Sign in or create an account",
         "sub": "We'll send you a one-time 8-digit code by email. No passwords to remember.",
@@ -261,16 +548,34 @@
           {
             "type": "cards",
             "items": [
-              { "icon": "🙋", "t": "For clients — free", "d": "Searching, quotes and bookings are free. You only pay for the service — after it's done, by cash, card or BLIK." },
-              { "icon": "🛠️", "t": "For pros — 12%", "d": "No fixed fees or subscriptions. Commission only on completed jobs — invoicing, tax settlement and payouts included." },
-              { "icon": "🧾", "t": "Always included", "d": "Automatic receipts and invoices, tax settlement for pros, payment protection and 7-day support." }
+              {
+                "icon": "🙋",
+                "t": "For clients — free",
+                "d": "Searching, quotes and bookings are free. You only pay for the service — after it's done, by cash, card or BLIK."
+              },
+              {
+                "icon": "🛠️",
+                "t": "For pros — 12%",
+                "d": "No fixed fees or subscriptions. Commission only on completed jobs — invoicing, tax settlement and payouts included."
+              },
+              {
+                "icon": "🧾",
+                "t": "Always included",
+                "d": "Automatic receipts and invoices, tax settlement for pros, payment protection and 7-day support."
+              }
             ]
           },
           {
             "type": "doc",
             "items": [
-              { "h": "No hidden fees", "p": "No charges for signing up, browsing profiles or contacting a pro. The price you see at booking is the final price." },
-              { "h": "Cancellations", "p": "Cancel for free up to 24 hours before the appointment. Later cancellations may incur a fee per the Terms." }
+              {
+                "h": "No hidden fees",
+                "p": "No charges for signing up, browsing profiles or contacting a pro. The price you see at booking is the final price."
+              },
+              {
+                "h": "Cancellations",
+                "p": "Cancel for free up to 24 hours before the appointment. Later cancellations may incur a fee per the Terms."
+              }
             ]
           }
         ]
@@ -282,16 +587,34 @@
           {
             "type": "doc",
             "items": [
-              { "h": "Our mission", "p": "Millions of small jobs are settled off the books, with no receipt and no protection for either side. Donely changes that with one app: clients pay after the job and get a receipt, and pros never worry about taxes — we settle them." },
-              { "h": "How we work", "p": "We're a Warsaw-based team with marketplace, fintech and services experience. We believe in simple products, transparent rules and technology that stays out of the way." }
+              {
+                "h": "Our mission",
+                "p": "Millions of small jobs are settled off the books, with no receipt and no protection for either side. Donely changes that with one app: clients pay after the job and get a receipt, and pros never worry about taxes — we settle them."
+              },
+              {
+                "h": "How we work",
+                "p": "We're a Warsaw-based team with marketplace, fintech and services experience. We believe in simple products, transparent rules and technology that stays out of the way."
+              }
             ]
           },
           {
             "type": "cards",
             "items": [
-              { "icon": "🤝", "t": "Trust", "d": "We verify pros' identity, and reviews come only from real jobs." },
-              { "icon": "⚖️", "t": "Legality", "d": "Every job ends with a receipt or invoice. Taxes settled — automatically." },
-              { "icon": "⚡", "t": "Simplicity", "d": "From problem to booking in a minute. Zero paperwork on both sides." }
+              {
+                "icon": "🤝",
+                "t": "Trust",
+                "d": "We verify pros' identity, and reviews come only from real jobs."
+              },
+              {
+                "icon": "⚖️",
+                "t": "Legality",
+                "d": "Every job ends with a receipt or invoice. Taxes settled — automatically."
+              },
+              {
+                "icon": "⚡",
+                "t": "Simplicity",
+                "d": "From problem to booking in a minute. Zero paperwork on both sides."
+              }
             ]
           }
         ]
@@ -304,15 +627,36 @@
             "type": "list",
             "action": "Apply →",
             "items": [
-              { "t": "Senior Frontend Engineer", "meta": "Warsaw / remote · full-time", "tag": "Engineering" },
-              { "t": "Product Designer", "meta": "Warsaw · full-time", "tag": "Design" },
-              { "t": "Growth Marketing Manager", "meta": "Remote · full-time", "tag": "Marketing" },
-              { "t": "Customer Success Specialist", "meta": "Warsaw · full or part-time", "tag": "Support" }
+              {
+                "t": "Senior Frontend Engineer",
+                "meta": "Warsaw / remote · full-time",
+                "tag": "Engineering"
+              },
+              {
+                "t": "Product Designer",
+                "meta": "Warsaw · full-time",
+                "tag": "Design"
+              },
+              {
+                "t": "Growth Marketing Manager",
+                "meta": "Remote · full-time",
+                "tag": "Marketing"
+              },
+              {
+                "t": "Customer Success Specialist",
+                "meta": "Warsaw · full or part-time",
+                "tag": "Support"
+              }
             ]
           },
           {
             "type": "doc",
-            "items": [{ "h": "Don't see your role?", "p": "Write to praca@donely.app — great people find a place here before the job post exists." }]
+            "items": [
+              {
+                "h": "Don't see your role?",
+                "p": "Write to praca@donely.app — great people find a place here before the job post exists."
+              }
+            ]
           }
         ]
       },
@@ -323,12 +667,26 @@
           {
             "type": "cards",
             "items": [
-              { "icon": "✉️", "t": "Email", "d": "pomoc@donely.app — accounts, bookings and payments." },
-              { "icon": "💬", "t": "In-app chat", "d": "Mon–Sat 8:00–20:00, average response: 15 minutes." },
-              { "icon": "🏢", "t": "Office", "d": "Donely sp. z o.o., Prosta 20, 00-850 Warsaw." }
+              {
+                "icon": "✉️",
+                "t": "Email",
+                "d": "pomoc@donely.app — accounts, bookings and payments."
+              },
+              {
+                "icon": "💬",
+                "t": "In-app chat",
+                "d": "Mon–Sat 8:00–20:00, average response: 15 minutes."
+              },
+              {
+                "icon": "🏢",
+                "t": "Office",
+                "d": "Donely sp. z o.o., Prosta 20, 00-850 Warsaw."
+              }
             ]
           },
-          { "type": "form" }
+          {
+            "type": "form"
+          }
         ]
       },
       "blog": {
@@ -338,12 +696,42 @@
           {
             "type": "posts",
             "items": [
-              { "t": "How much does a plumber cost in 2026?", "meta": "Jul 12, 2026 · 5 min", "d": "Average prices for tap replacement, drain unclogging and bigger jobs across 10 cities.", "hue": 0 },
-              { "t": "How Donely settles pros' taxes", "meta": "Jun 28, 2026 · 4 min", "d": "Receipt, invoice, income tax — what happens automatically after every job.", "hue": 3 },
-              { "t": "Marek's story: from a day job to his own business", "meta": "Jun 15, 2026 · 6 min", "d": "How a Mokotów plumber filled his calendar without a single ad.", "hue": 2 },
-              { "t": "Deep cleaning: a checklist before you book", "meta": "Jun 2, 2026 · 3 min", "d": "What to agree with the pro so the quote is right the first time.", "hue": 1 },
-              { "t": "A babysitter via an app — safe and legal", "meta": "May 19, 2026 · 5 min", "d": "Verification, reviews and a receipt — childcare without the grey market.", "hue": 4 },
-              { "t": "Spring detailing: 5 services worth booking", "meta": "May 5, 2026 · 4 min", "d": "From upholstery cleaning to paint correction — what to pick and what it costs.", "hue": 5 }
+              {
+                "t": "How much does a plumber cost in 2026?",
+                "meta": "Jul 12, 2026 · 5 min",
+                "d": "Average prices for tap replacement, drain unclogging and bigger jobs across 10 cities.",
+                "hue": 0
+              },
+              {
+                "t": "How Donely settles pros' taxes",
+                "meta": "Jun 28, 2026 · 4 min",
+                "d": "Receipt, invoice, income tax — what happens automatically after every job.",
+                "hue": 3
+              },
+              {
+                "t": "Marek's story: from a day job to his own business",
+                "meta": "Jun 15, 2026 · 6 min",
+                "d": "How a Mokotów plumber filled his calendar without a single ad.",
+                "hue": 2
+              },
+              {
+                "t": "Deep cleaning: a checklist before you book",
+                "meta": "Jun 2, 2026 · 3 min",
+                "d": "What to agree with the pro so the quote is right the first time.",
+                "hue": 1
+              },
+              {
+                "t": "A babysitter via an app — safe and legal",
+                "meta": "May 19, 2026 · 5 min",
+                "d": "Verification, reviews and a receipt — childcare without the grey market.",
+                "hue": 4
+              },
+              {
+                "t": "Spring detailing: 5 services worth booking",
+                "meta": "May 5, 2026 · 4 min",
+                "d": "From upholstery cleaning to paint correction — what to pick and what it costs.",
+                "hue": 5
+              }
             ]
           }
         ]
@@ -355,14 +743,37 @@
           {
             "type": "faq",
             "items": [
-              { "q": "How does pay-after-the-job work?", "a": "You book with no prepayment. After the job is done you pay directly — cash, card or BLIK — and Donely automatically issues a receipt or invoice." },
-              { "q": "Will I get a receipt or invoice?", "a": "Yes, always. The document lands in your email after every completed job. Companies can add VAT details in their profile." },
-              { "q": "How do I become a pro on Donely?", "a": "Create an account, pass identity verification and set up your services with prices. You can usually take your first jobs within 24 hours." },
-              { "q": "What if the service doesn't happen?", "a": "You pay nothing. Report it in the app — we'll help find a new time or another pro." },
-              { "q": "How does pro verification work?", "a": "We check an ID document and billing details, and the “Verified” badge goes only to vetted profiles. Reviews come exclusively from real jobs." }
+              {
+                "q": "How does pay-after-the-job work?",
+                "a": "You book with no prepayment. After the job is done you pay directly — cash, card or BLIK — and Donely automatically issues a receipt or invoice."
+              },
+              {
+                "q": "Will I get a receipt or invoice?",
+                "a": "Yes, always. The document lands in your email after every completed job. Companies can add VAT details in their profile."
+              },
+              {
+                "q": "How do I become a pro on Donely?",
+                "a": "Create an account, pass identity verification and set up your services with prices. You can usually take your first jobs within 24 hours."
+              },
+              {
+                "q": "What if the service doesn't happen?",
+                "a": "You pay nothing. Report it in the app — we'll help find a new time or another pro."
+              },
+              {
+                "q": "How does pro verification work?",
+                "a": "We check an ID document and billing details, and the “Verified” badge goes only to vetted profiles. Reviews come exclusively from real jobs."
+              }
             ]
           },
-          { "type": "doc", "items": [{ "h": "Didn't find an answer?", "p": "Email pomoc@donely.app or use the in-app chat (Mon–Sat 8:00–20:00)." }] }
+          {
+            "type": "doc",
+            "items": [
+              {
+                "h": "Didn't find an answer?",
+                "p": "Email pomoc@donely.app or use the in-app chat (Mon–Sat 8:00–20:00)."
+              }
+            ]
+          }
         ]
       },
       "bezpieczenstwo": {
@@ -372,16 +783,34 @@
           {
             "type": "cards",
             "items": [
-              { "icon": "✓", "t": "Identity verification", "d": "Every pro passes document and billing verification before taking their first job." },
-              { "icon": "⭐", "t": "Real reviews", "d": "Ratings can only be left after a completed job — no bought reviews." },
-              { "icon": "🛡️", "t": "Job protection", "d": "You pay after the job and every job is documented with a receipt. In a dispute we have the full history." }
+              {
+                "icon": "✓",
+                "t": "Identity verification",
+                "d": "Every pro passes document and billing verification before taking their first job."
+              },
+              {
+                "icon": "⭐",
+                "t": "Real reviews",
+                "d": "Ratings can only be left after a completed job — no bought reviews."
+              },
+              {
+                "icon": "🛡️",
+                "t": "Job protection",
+                "d": "You pay after the job and every job is documented with a receipt. In a dispute we have the full history."
+              }
             ]
           },
           {
             "type": "doc",
             "items": [
-              { "h": "Reporting problems", "p": "You can report any job from the app up to 14 days after completion. Support usually replies within hours." },
-              { "h": "Data & privacy", "p": "We share your address and phone number with the pro only after a confirmed booking — and only as needed for the job." }
+              {
+                "h": "Reporting problems",
+                "p": "You can report any job from the app up to 14 days after completion. Support usually replies within hours."
+              },
+              {
+                "h": "Data & privacy",
+                "p": "We share your address and phone number with the pro only after a confirmed booking — and only as needed for the job."
+              }
             ]
           }
         ]
@@ -393,12 +822,30 @@
           {
             "type": "doc",
             "items": [
-              { "h": "1. General provisions", "p": "donely.app is operated by Donely sp. z o.o., based in Warsaw. These Terms define the rules for using the service by clients and pros." },
-              { "h": "2. Account", "p": "An account created with an email address is required. Sign-in uses a one-time code — no password." },
-              { "h": "3. Bookings and quotes", "p": "Booking a slot or accepting a quote forms a service agreement between the client and the pro. Donely intermediates settlement and documentation." },
-              { "h": "4. Payments and receipts", "p": "Payment is made after the service. Donely issues a receipt or invoice on the pro's behalf and settles applicable taxes under current law." },
-              { "h": "5. Cancellations", "p": "Free cancellation is available up to 24 hours before the appointment. Detailed fees for later cancellations are set out in the Pricing." },
-              { "h": "6. Complaints", "p": "Complaints can be filed in the app or at pomoc@donely.app within 14 days of the job. We respond within 14 business days." }
+              {
+                "h": "1. General provisions",
+                "p": "donely.app is operated by Donely sp. z o.o., based in Warsaw. These Terms define the rules for using the service by clients and pros."
+              },
+              {
+                "h": "2. Account",
+                "p": "An account created with an email address is required. Sign-in uses a one-time code — no password."
+              },
+              {
+                "h": "3. Bookings and quotes",
+                "p": "Booking a slot or accepting a quote forms a service agreement between the client and the pro. Donely intermediates settlement and documentation."
+              },
+              {
+                "h": "4. Payments and receipts",
+                "p": "Payment is made after the service. Donely issues a receipt or invoice on the pro's behalf and settles applicable taxes under current law."
+              },
+              {
+                "h": "5. Cancellations",
+                "p": "Free cancellation is available up to 24 hours before the appointment. Detailed fees for later cancellations are set out in the Pricing."
+              },
+              {
+                "h": "6. Complaints",
+                "p": "Complaints can be filed in the app or at pomoc@donely.app within 14 days of the job. We respond within 14 business days."
+              }
             ]
           }
         ]
@@ -410,11 +857,26 @@
           {
             "type": "doc",
             "items": [
-              { "h": "1. Data controller", "p": "The controller of your data is Donely sp. z o.o., Prosta 20, 00-850 Warsaw. Contact: prywatnosc@donely.app." },
-              { "h": "2. What we collect", "p": "Email address, booking data, location (with consent) and pros' billing data — only as needed to provide the service." },
-              { "h": "3. Purpose", "p": "Fulfilling bookings, issuing accounting documents, pros' tax settlement, service security and communication." },
-              { "h": "4. Sharing", "p": "We share data between client and pro as needed for the job, and with payment and accounting providers." },
-              { "h": "5. Your rights", "p": "You have the right to access, rectify, erase and port your data, and to object. Requests: prywatnosc@donely.app." }
+              {
+                "h": "1. Data controller",
+                "p": "The controller of your data is Donely sp. z o.o., Prosta 20, 00-850 Warsaw. Contact: prywatnosc@donely.app."
+              },
+              {
+                "h": "2. What we collect",
+                "p": "Email address, booking data, location (with consent) and pros' billing data — only as needed to provide the service."
+              },
+              {
+                "h": "3. Purpose",
+                "p": "Fulfilling bookings, issuing accounting documents, pros' tax settlement, service security and communication."
+              },
+              {
+                "h": "4. Sharing",
+                "p": "We share data between client and pro as needed for the job, and with payment and accounting providers."
+              },
+              {
+                "h": "5. Your rights",
+                "p": "You have the right to access, rectify, erase and port your data, and to object. Requests: prywatnosc@donely.app."
+              }
             ]
           }
         ]
@@ -442,7 +904,11 @@
     "searchEmptyToast": "First describe what you need",
     "searchCta": "Search",
     "sortNearest": "Sort: Nearest ▾",
-    "suggestions": ["Leaking tap", "Evening babysitter", "Musician for a birthday"],
+    "suggestions": [
+      "Leaking tap",
+      "Evening babysitter",
+      "Musician for a birthday"
+    ],
     "listToggle": "List",
     "mapToggle": "Map",
     "featuredTitle": "Recommended near you",
@@ -476,7 +942,12 @@
     "removedFavToast": "Removed from favorites"
   },
   "booking": {
-    "windows": ["This week", "This weekend", "Evenings", "Flexible"],
+    "windows": [
+      "This week",
+      "This weekend",
+      "Evenings",
+      "Flexible"
+    ],
     "dayToday": "Today",
     "dayTomorrow": "Tomorrow",
     "step": "Step {{step}} of 3",
@@ -512,8 +983,14 @@
     "infoInstant": "You pay now online — funds are frozen until the service is confirmed done. Once you approve it, {{appName}} pays the provider the amount minus tax and issues the document. Free cancellation up to 24 hours before the appointment.",
     "paymentMethodLabel": "Payment method",
     "paymentMethods": {
-      "p24": { "title": "BLIK / Przelewy24", "subtitle": "Fast BLIK code or bank transfer" },
-      "paypal": { "title": "PayPal", "subtitle": "Card or PayPal balance" }
+      "p24": {
+        "title": "BLIK / Przelewy24",
+        "subtitle": "Fast BLIK code or bank transfer"
+      },
+      "paypal": {
+        "title": "PayPal",
+        "subtitle": "Card or PayPal balance"
+      }
     },
     "cta": {
       "next": "Next",
@@ -655,7 +1132,14 @@
       "searchPlaceholder": "Search by name or e-mail…",
       "accountsCount_one": "{{count}} account",
       "accountsCount_other": "{{count}} accounts",
-      "columns": ["User", "E-mail", "Roles", "Bookings", "Status", ""],
+      "columns": [
+        "User",
+        "E-mail",
+        "Roles",
+        "Bookings",
+        "Status",
+        ""
+      ],
       "roleCustomer": "Customer",
       "roleProvider": "Provider",
       "roleAdmin": "Admin",
@@ -670,7 +1154,13 @@
       "queueTitle": "Verification queue ({{count}})",
       "queueEmpty": "No submissions",
       "verifiedTitle": "Verified",
-      "columns": ["Provider", "Category", "Type", "Rating", "Status"],
+      "columns": [
+        "Provider",
+        "Category",
+        "Type",
+        "Rating",
+        "Status"
+      ],
       "statusActive": "Active",
       "approve": "Approve",
       "reject": "Reject",
@@ -679,8 +1169,23 @@
       "verifiedToast": "{{name}} verified — profile active"
     },
     "bookings": {
-      "filters": ["All", "Confirmed", "Pending", "Completed", "Cancelled"],
-      "columns": ["ID", "Customer", "Provider", "Service", "Date", "Price", "Status", ""],
+      "filters": [
+        "All",
+        "Confirmed",
+        "Pending",
+        "Completed",
+        "Cancelled"
+      ],
+      "columns": [
+        "ID",
+        "Customer",
+        "Provider",
+        "Service",
+        "Date",
+        "Price",
+        "Status",
+        ""
+      ],
       "cancel": "Cancel",
       "cancelToast": "Booking #{{id}} cancelled — both parties notified"
     },
@@ -717,12 +1222,33 @@
       "kpiPayout": "Payouts to providers",
       "kpiPayoutSub": "next batch: {{date}}",
       "documentsTitle": "Documents",
-      "columns": ["Document no.", "Provider", "Type", "Amount", "Tax", "Status"],
+      "columns": [
+        "Document no.",
+        "Provider",
+        "Type",
+        "Amount",
+        "Tax",
+        "Status"
+      ],
       "paymentsTitle": "Payments",
-      "paymentsColumns": ["Booking", "Customer", "Provider", "Method", "Amount", "Status"],
+      "paymentsColumns": [
+        "Booking",
+        "Customer",
+        "Provider",
+        "Method",
+        "Amount",
+        "Status"
+      ],
       "noPayments": "No payments",
       "payoutsTitle": "Payouts",
-      "payoutsColumns": ["Provider", "Gross amount", "Tax", "Net amount", "Status", "Batch"],
+      "payoutsColumns": [
+        "Provider",
+        "Gross amount",
+        "Tax",
+        "Net amount",
+        "Status",
+        "Batch"
+      ],
       "noPayouts": "No payouts",
       "runBatchCta": "Run payouts",
       "runBatchToast_one": "Payouts run — {{count}} transfer",

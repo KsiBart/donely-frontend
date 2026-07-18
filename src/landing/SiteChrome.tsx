@@ -75,6 +75,13 @@ export function SiteHeader() {
     { key: 'landing.nav.cats', anchor: 'cats' },
     { key: 'landing.nav.pros', anchor: 'pros' },
   ];
+  // Useful subpages surfaced in the mobile menu (from the footer's link set).
+  const pageItems: { key: string; path: string }[] = [
+    { key: 'landing.nav.pricing', path: '/pricing' },
+    { key: 'landing.nav.about', path: '/about' },
+    { key: 'landing.nav.help', path: '/help' },
+    { key: 'landing.nav.contact', path: '/contact' },
+  ];
 
   return (
     <>
@@ -162,6 +169,20 @@ export function SiteHeader() {
               {t(n.key)}
             </a>
           ))}
+          {pageItems.map((p) => (
+            <a
+              key={p.path}
+              href={p.path}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate(p.path);
+                setMenuOpen(false);
+              }}
+              className="dt-mobile-menu-link"
+            >
+              {t(p.key)}
+            </a>
+          ))}
           <div style={{ height: 1, background: 'var(--border)', margin: '6px 0' }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '4px 2px' }}>
             <DarkModeToggle />
@@ -199,8 +220,8 @@ export function SiteFooter() {
 
   return (
     <footer style={{ background: 'var(--band2)', borderTop: '1px solid var(--bandBd)', marginTop: 'auto' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: '44px 22px 30px', display: 'flex', flexWrap: 'wrap', gap: 30, justifyContent: 'space-between' }}>
-        <div style={{ flex: '1 1 260px', minWidth: 0 }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: '44px 22px 30px', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 40 }}>
+        <div style={{ flex: '1 1 230px', minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
             <svg width="26" height="26" viewBox="0 0 48 48" style={{ color: 'var(--bandKicker)', flex: 'none' }}>
               <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
@@ -214,9 +235,10 @@ export function SiteFooter() {
           </div>
           <p style={{ fontSize: 14, color: 'var(--bandSoft)', lineHeight: 1.55, margin: '12px 0 0', maxWidth: 280 }}>{t('landing.footer.tag')}</p>
         </div>
-        {footCols.map((col, ci) => (
-          <div key={col.h} style={{ flex: '1 1 160px', minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--bandInk)', marginBottom: 12 }}>{col.h}</div>
+        <div style={{ flex: '2 1 460px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '26px 28px' }}>
+          {footCols.map((col, ci) => (
+            <div key={col.h} style={{ minWidth: 0 }}>
+              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--bandInk)', marginBottom: 12 }}>{col.h}</div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
               {col.links.map((label, li) => {
                 const target = FOOT_LINK_TARGETS[ci]?.[li] ?? {};
@@ -241,8 +263,9 @@ export function SiteFooter() {
                 );
               })}
             </div>
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
       <div style={{ borderTop: '1px solid var(--bandBd)' }}>
         <div style={{ maxWidth: 1200, margin: '0 auto', padding: '18px 22px', fontSize: 13, color: 'var(--bandSoft)' }}>{t('landing.footer.copyright')}</div>
