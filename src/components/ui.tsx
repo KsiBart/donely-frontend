@@ -1,5 +1,4 @@
 import React from 'react';
-import { DEFAULT_BRAND, useBrand } from '../brand';
 import { BRICO } from '../lib/format';
 
 /**
@@ -11,38 +10,34 @@ import { BRICO } from '../lib/format';
  * accented tail without hand-tuning capitalization per brand.
  * `variant="onDark"` matches the auth panel's gradient background (solid white, no accent tail).
  */
+/** Rainbow gradient for the "AI" so it stands out (clipped to the glyphs). */
+const AI_RAINBOW: React.CSSProperties = {
+  background: 'linear-gradient(90deg,#ff4d6d,#ff9a3c,#ffd23f,#4ade80,#3b82f6,#a855f7)',
+  WebkitBackgroundClip: 'text',
+  backgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  color: 'transparent',
+  fontWeight: 800,
+};
+
 export function Wordmark({ size = 23, variant = 'default' }: { size?: number; variant?: 'default' | 'onDark' }) {
-  const { appName } = useBrand();
   const base: React.CSSProperties = {
     fontFamily: BRICO,
     fontSize: size,
     fontWeight: 800,
     letterSpacing: '-0.01em',
     whiteSpace: 'nowrap',
+    textDecoration: 'none',
   };
-  const isDefaultName = appName === DEFAULT_BRAND.appName;
-  // The default brand ships a hand-stylized capital "L" ("DoneLy") the design never lowercases —
-  // reproduce that literal casing for the default name; a custom name renders as typed (no
-  // capitalization guesswork for a brand we don't know).
-  const displayName = isDefaultName ? 'DoneLy' : appName;
-  if (variant === 'onDark') {
-    return (
-      <span style={{ ...base, color: '#fff' }}>
-        {displayName}
-        <span style={{ color: 'rgba(255,255,255,.7)', fontWeight: 700 }}>.app</span>
-      </span>
-    );
-  }
-  const head = isDefaultName ? 'Done' : displayName.slice(0, -2) || displayName;
-  const tail = isDefaultName ? 'Ly' : displayName.slice(-2);
+  // Brand: "DoneLy AI" — "Done" in ink/white, "Ly" in the accent, "AI" a rainbow gradient. No
+  // ".app" suffix. `onDark` (auth gradient panel) makes Done/Ly white; the rainbow reads on any bg.
+  const doneColor = variant === 'onDark' ? '#fff' : 'var(--ink, var(--text))';
+  const lyColor = variant === 'onDark' ? 'rgba(255,255,255,.85)' : 'var(--accent)';
   return (
-    // "Done"/head: var(--ink) on the marketing site's `.dt` tokens (flips light/dark with the
-    // toggle), falling back to the app's var(--text) outside that scope (--ink isn't defined
-    // there, so the fallback always applies — same value the app used before this change).
-    <span style={{ ...base, color: 'var(--ink, var(--text))' }}>
-      {head}
-      <span style={{ color: 'var(--accent)' }}>{tail}</span>
-      <span style={{ color: '#b9aec6', fontWeight: 700 }}>.app</span>
+    <span style={base}>
+      <span style={{ color: doneColor }}>Done</span>
+      <span style={{ color: lyColor }}>Ly</span>
+      <span style={AI_RAINBOW}> AI</span>
     </span>
   );
 }
