@@ -10,11 +10,11 @@ import { BRICO } from '../lib/format';
  * accented tail without hand-tuning capitalization per brand.
  * `variant="onDark"` matches the auth panel's gradient background (solid white, no accent tail).
  */
-/** Rainbow gradient for the "AI" so it stands out (clipped to the glyphs). The gradient repeats
- * its first colour at the end + is sized 200% so the `.wordmark-ai` shimmer (keyframe in
- * landing.css, bundled globally; respects prefers-reduced-motion) can flow it seamlessly. */
-const AI_RAINBOW: React.CSSProperties = {
-  background: 'linear-gradient(90deg,#ff4d6d,#ff9a3c,#ffd23f,#4ade80,#3b82f6,#a855f7,#ff4d6d)',
+/** Orange→purple gradient for the "AI" so it stands out (clipped to the glyphs). Palindromic
+ * (orange → purple → orange) + sized 200% so the `.wordmark-ai` shimmer (keyframe in landing.css,
+ * bundled globally; respects prefers-reduced-motion) can flow it seamlessly with no colour jump. */
+const AI_GRADIENT: React.CSSProperties = {
+  background: 'linear-gradient(90deg,#ff9a3c,#f2732e,#d24d9e,#a855f7,#d24d9e,#f2732e,#ff9a3c)',
   backgroundSize: '200% auto',
   WebkitBackgroundClip: 'text',
   backgroundClip: 'text',
@@ -32,15 +32,15 @@ export function Wordmark({ size = 23, variant = 'default' }: { size?: number; va
     whiteSpace: 'nowrap',
     textDecoration: 'none',
   };
-  // Brand: "DoneLy AI" — "Done" in ink/white, "Ly" in the accent, "AI" a rainbow gradient. No
-  // ".app" suffix. `onDark` (auth gradient panel) makes Done/Ly white; the rainbow reads on any bg.
+  // Brand: "DoneLy AI" — "Done" in ink/white, "Ly" in the accent, "AI" an orange→purple gradient.
+  // No ".app" suffix. `onDark` (auth gradient panel) makes Done/Ly white; the gradient reads on any bg.
   const doneColor = variant === 'onDark' ? '#fff' : 'var(--ink, var(--text))';
   const lyColor = variant === 'onDark' ? 'rgba(255,255,255,.85)' : 'var(--accent)';
   return (
     <span style={base}>
       <span style={{ color: doneColor }}>Done</span>
       <span style={{ color: lyColor }}>Ly</span>
-      <span className="wordmark-ai" style={AI_RAINBOW}> AI</span>
+      <span className="wordmark-ai" style={AI_GRADIENT}> AI</span>
     </span>
   );
 }

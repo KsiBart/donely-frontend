@@ -211,7 +211,7 @@
   }
 }
 
-/* Animated rainbow shimmer for the wordmark's "AI" (src/components/ui.tsx Wordmark). landing.css is
+/* Animated orange→purple shimmer for the wordmark's "AI" (src/components/ui.tsx Wordmark). landing.css is
    imported globally in main.tsx, so this flows in the app TopNav too, not just the marketing site. */
 @keyframes wordmark-ai-shimmer {
   to {
