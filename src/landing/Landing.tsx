@@ -263,7 +263,7 @@ export default function Landing() {
 
         <div style={{ flex: '1 1 380px', minWidth: 0, position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center' }}>
           <div style={{ position: 'relative', width: '100%', maxWidth: 460 }}>
-            <div style={{ position: 'absolute', inset: '-18px -18px 30px', borderRadius: 38, background: 'linear-gradient(135deg,var(--acc),#c3a7e6)', opacity: 0.32 }} />
+            <div style={{ position: 'absolute', inset: '-26px', borderRadius: 44, background: 'linear-gradient(135deg,var(--acc),var(--accHover))', opacity: 0.38, filter: 'blur(46px)' }} />
             <div style={{ position: 'relative', background: 'var(--surface)', borderRadius: 28, padding: 20, boxShadow: '0 30px 70px rgba(74,52,102,.26)', animation: 'dfloat 6s ease-in-out infinite' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'var(--tint)', color: 'var(--accInk)', borderRadius: 99, padding: '6px 12px', fontSize: 12.5, fontWeight: 800 }}>
