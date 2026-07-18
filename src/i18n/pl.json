@@ -94,7 +94,14 @@
       "manual": "Wpiszę adres ręcznie",
       "pin": "Twoja lokalizacja",
       "setToast": "Lokalizacja ustawiona: {{place}}",
-      "saveFailed": "Nie udało się zapisać lokalizacji"
+      "saveFailed": "Nie udało się zapisać lokalizacji",
+      "locating": "Ustalam lokalizację…",
+      "yourLocation": "Twoja lokalizacja",
+      "denied": "Brak dostępu do lokalizacji. Wpisz adres ręcznie.",
+      "geoFailed": "Nie udało się ustalić lokalizacji",
+      "notFound": "Nie znaleziono takiego adresu",
+      "manualPlaceholder": "Wpisz adres lub dzielnicę…",
+      "manualConfirm": "Ustaw lokalizację"
     }
   },
   "nav": {
@@ -911,6 +918,8 @@
     "searchEmptyToast": "Opisz najpierw, czego potrzebujesz",
     "searchCta": "Szukaj",
     "sortNearest": "Sortuj: Najbliżej ▾",
+    "changeLocation": "zmień",
+    "locating": "ustalam…",
     "suggestions": [
       "Cieknący kran",
       "Opiekunka na wieczór",

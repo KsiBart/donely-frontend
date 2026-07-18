@@ -92,7 +92,14 @@
       "manual": "I'll type the address manually",
       "pin": "Your location",
       "setToast": "Location set: {{place}}",
-      "saveFailed": "Couldn't save the location"
+      "saveFailed": "Couldn't save the location",
+      "locating": "Getting your location…",
+      "yourLocation": "Your location",
+      "denied": "Location access denied. Type your address instead.",
+      "geoFailed": "Couldn't determine your location",
+      "notFound": "No such address found",
+      "manualPlaceholder": "Enter an address or district…",
+      "manualConfirm": "Set location"
     }
   },
   "nav": {
@@ -904,6 +911,8 @@
     "searchEmptyToast": "First describe what you need",
     "searchCta": "Search",
     "sortNearest": "Sort: Nearest ▾",
+    "changeLocation": "change",
+    "locating": "locating…",
     "suggestions": [
       "Leaking tap",
       "Evening babysitter",

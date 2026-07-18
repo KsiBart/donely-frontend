@@ -271,3 +271,65 @@ textarea::placeholder {
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(74, 52, 102, 0.24);
 }
+
+/* ── Interactive map (Leaflet + OSM) — see src/components/MapView.tsx ───────────────────────────
+   Pins are divIcons (raw HTML in the document), so they read the live theme vars and recolor with
+   the accent/dark theme automatically. */
+.donely-map {
+  z-index: 0; /* keep tiles/controls under sticky app chrome */
+  overflow: hidden;
+  background: var(--map);
+}
+/* Dark theme: OSM tiles are light-only, so invert+hue-rotate them into a dark basemap. Applied to
+   the tile pane only, so marker pins (separate pane) keep their theme colors. */
+.donely-map-dark .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.9);
+}
+/* Price pin — the 0×0 marker div sits on the coordinate; center the label over it. */
+.map-pin-wrap {
+  overflow: visible;
+}
+.map-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  background: var(--surface);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 16px;
+  padding: 5px 11px;
+  font: 700 13px 'Figtree', sans-serif;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+}
+.map-pin-active {
+  background: var(--accent);
+  color: var(--onaccent);
+  box-shadow: var(--glow);
+  z-index: 500;
+}
+/* Customer's own position — blue GPS dot with a soft halo. */
+.map-user-dot {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #2a78d6;
+  border: 3px solid #fff;
+  box-shadow:
+    0 0 0 4px rgba(42, 120, 214, 0.28),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+.donely-map .leaflet-control-attribution {
+  font-size: 9px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.donely-map-dark .leaflet-control-attribution {
+  background: rgba(20, 17, 24, 0.7);
+  color: #9aa;
+}
+.donely-map-dark .leaflet-control-attribution a {
+  color: #89b3d6;
+}

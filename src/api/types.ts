@@ -77,6 +77,8 @@ export interface ProviderListItem {
   reviewCount: number;
   priceFromLabel: string;
   distanceKm: number;
+  lat: number;
+  lng: number;
   nextSlotLabel: string;
   verified: boolean;
   featured: boolean;

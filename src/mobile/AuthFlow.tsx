@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BRICO } from '../lib/format';
 import { useIsDesktop } from '../lib/useIsDesktop';
-import { useAuth } from '../state/AuthContext';
-import { useToast } from '../state/ToastContext';
+import { useLocate } from '../lib/useLocate';
 
 /**
  * NOTE: the old passwordless email/OTP login UI that used to live in this file (default export
@@ -88,26 +87,100 @@ function MapBackdrop({ pinTop }: { pinTop?: boolean }) {
   );
 }
 
+/** Copy + actions shared by the desktop and mobile LocationScreen cards. GPS share (real browser
+ * geolocation via useLocate) + a manual address field that forward-geocodes. `compact` = mobile. */
+function LocationCardBody({ compact }: { compact: boolean }) {
+  const { t } = useTranslation();
+  const { busy, useCurrent, useManual } = useLocate();
+  const [manualMode, setManualMode] = useState(false);
+  const [addr, setAddr] = useState('');
+
+  const submitManual = () => {
+    void useManual(addr);
+  };
+
+  return (
+    <>
+      <div style={{ fontFamily: BRICO, fontSize: compact ? 22 : 26, fontWeight: 700, marginBottom: compact ? 8 : 10 }}>
+        {t('auth.location.title')}
+      </div>
+      <div style={{ fontSize: compact ? 13.5 : 14.5, color: 'var(--muted)', lineHeight: 1.55, marginBottom: compact ? 18 : 24 }}>
+        {t('auth.location.subtitle')}
+      </div>
+      <div
+        onClick={() => void useCurrent()}
+        style={{
+          textAlign: 'center',
+          background: 'var(--accent)',
+          color: 'var(--onaccent)',
+          borderRadius: 18,
+          padding: compact ? 14 : 15,
+          fontSize: compact ? 15 : 15.5,
+          fontWeight: 700,
+          cursor: busy ? 'default' : 'pointer',
+          opacity: busy ? 0.7 : 1,
+          boxShadow: 'var(--glow)',
+        }}
+      >
+        {busy ? t('auth.location.locating') : t('auth.location.share')}
+      </div>
+
+      {manualMode ? (
+        <div style={{ marginTop: 14 }}>
+          <input
+            value={addr}
+            autoFocus
+            onChange={(e) => setAddr(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') submitManual();
+            }}
+            placeholder={t('auth.location.manualPlaceholder')}
+            style={{
+              width: '100%',
+              boxSizing: 'border-box',
+              border: '1.5px solid var(--border)',
+              background: 'var(--surface2)',
+              color: 'var(--text)',
+              borderRadius: 14,
+              padding: '13px 14px',
+              fontSize: 14.5,
+              outline: 'none',
+            }}
+          />
+          <div
+            onClick={submitManual}
+            style={{
+              textAlign: 'center',
+              marginTop: 10,
+              background: 'var(--surface2)',
+              color: 'var(--accent)',
+              border: '1.5px solid var(--accent)',
+              borderRadius: 14,
+              padding: 12,
+              fontSize: 14,
+              fontWeight: 700,
+              cursor: busy ? 'default' : 'pointer',
+              opacity: busy ? 0.7 : 1,
+            }}
+          >
+            {busy ? t('auth.location.locating') : t('auth.location.manualConfirm')}
+          </div>
+        </div>
+      ) : (
+        <div
+          onClick={() => setManualMode(true)}
+          style={{ textAlign: 'center', fontSize: compact ? 13 : 13.5, fontWeight: 700, color: 'var(--accent)', marginTop: compact ? 12 : 14, cursor: 'pointer' }}
+        >
+          {t('auth.location.manual')}
+        </div>
+      )}
+    </>
+  );
+}
+
 /** Post-login location ask ("Gdzie jesteś?") — shown until the profile has a location. */
 export function LocationScreen() {
-  const { t } = useTranslation();
-  const { updateMe } = useAuth();
-  const { showToast } = useToast();
   const isDesktop = useIsDesktop();
-  const [busy, setBusy] = useState(false);
-
-  const shareLocation = async () => {
-    if (busy) return;
-    setBusy(true);
-    try {
-      await updateMe({ locationLabel: 'Mokotów, Warszawa', lat: 52.1935, lng: 21.0355 });
-      showToast(t('auth.location.setToast', { place: 'Mokotów' }));
-    } catch (e) {
-      showToast(e instanceof Error ? e.message : t('auth.location.saveFailed'));
-    } finally {
-      setBusy(false);
-    }
-  };
 
   // Phase 2.5 — Web Desktop: no small phone-card here. Full-viewport map backdrop (same
   // MapBackdrop as mobile) with a single floating card holding the same copy/actions.
@@ -131,32 +204,7 @@ export function LocationScreen() {
             zIndex: 1,
           }}
         >
-          <div style={{ fontFamily: BRICO, fontSize: 26, fontWeight: 700, marginBottom: 10 }}>{t('auth.location.title')}</div>
-          <div style={{ fontSize: 14.5, color: 'var(--muted)', lineHeight: 1.55, marginBottom: 24 }}>
-            {t('auth.location.subtitle')}
-          </div>
-          <div
-            onClick={() => void shareLocation()}
-            style={{
-              textAlign: 'center',
-              background: 'var(--accent)',
-              color: 'var(--onaccent)',
-              borderRadius: 18,
-              padding: 15,
-              fontSize: 15.5,
-              fontWeight: 700,
-              cursor: 'pointer',
-              boxShadow: 'var(--glow)',
-            }}
-          >
-            {t('auth.location.share')}
-          </div>
-          <div
-            onClick={() => void shareLocation()}
-            style={{ textAlign: 'center', fontSize: 13.5, fontWeight: 700, color: 'var(--accent)', marginTop: 14, cursor: 'pointer' }}
-          >
-            {t('auth.location.manual')}
-          </div>
+          <LocationCardBody compact={false} />
         </div>
       </div>
     );
@@ -178,32 +226,7 @@ export function LocationScreen() {
           boxShadow: 'var(--shadow)',
         }}
       >
-        <div style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, marginBottom: 8 }}>{t('auth.location.title')}</div>
-        <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.5, marginBottom: 18 }}>
-          {t('auth.location.subtitle')}
-        </div>
-        <div
-          onClick={() => void shareLocation()}
-          style={{
-            textAlign: 'center',
-            background: 'var(--accent)',
-            color: 'var(--onaccent)',
-            borderRadius: 18,
-            padding: 14,
-            fontSize: 15,
-            fontWeight: 700,
-            cursor: 'pointer',
-            boxShadow: 'var(--glow)',
-          }}
-        >
-          {t('auth.location.share')}
-        </div>
-        <div
-          onClick={() => void shareLocation()}
-          style={{ textAlign: 'center', fontSize: 13, fontWeight: 700, color: 'var(--accent)', marginTop: 12, cursor: 'pointer' }}
-        >
-          {t('auth.location.manual')}
-        </div>
+        <LocationCardBody compact />
       </div>
     </div>
   );

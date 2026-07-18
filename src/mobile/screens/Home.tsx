@@ -5,12 +5,14 @@ import { api } from '../../api/client';
 import type { Category, ProviderListItem } from '../../api/types';
 import { toIntlLocale } from '../../i18n';
 import { useIsDesktop } from '../../lib/useIsDesktop';
+import { useLocate } from '../../lib/useLocate';
 import { AvatarTile, SparkleIcon, stripes } from '../../components/ui';
+import MapView from '../../components/MapView';
 import { BRICO, formatKm, formatRating } from '../../lib/format';
 import { useAuth } from '../../state/AuthContext';
 import { useToast } from '../../state/ToastContext';
 import { StoreCard } from '../AppPromo';
-import { pinPos, providerMeta } from '../shared';
+import { providerMeta } from '../shared';
 
 function shortCatLabel(name: string): string {
   return name.split(/ \/ | nad /)[0];
@@ -23,6 +25,7 @@ export default function Home() {
   const { showToast } = useToast();
   const navigate = useNavigate();
   const isDesktop = useIsDesktop();
+  const { busy: locating, useCurrent } = useLocate();
   const suggestions = t('home.suggestions', { returnObjects: true }) as unknown as string[];
 
   const [mapOn, setMapOn] = useState(false);
@@ -34,12 +37,18 @@ export default function Home() {
 
   useEffect(() => {
     api.categories().then(setCats).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Refetch when the user's stored location changes — the backend sorts/measures distance from the
+  // profile's lat/lng (JWT), so a relocate must re-order the list from the new origin.
+  useEffect(() => {
     api
       .providers()
       .then(setAllProviders)
       .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [me?.lat, me?.lng]);
 
   useEffect(() => {
     if (catSel === 0) return;
@@ -50,12 +59,14 @@ export default function Home() {
       .then(setCatProviders)
       .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catSel]);
+  }, [catSel, me?.lat, me?.lng]);
 
   const providers = catSel === 0 ? allProviders : catProviders;
   const featured = useMemo(() => allProviders.filter((p) => p.featured), [allProviders]);
   const firstName = (me?.name ?? '').split(' ')[0];
   const myLocation = me?.locationLabel || 'Mokotów, Warszawa';
+  const userPoint = me?.lat != null && me?.lng != null ? { lat: me.lat, lng: me.lng } : null;
+  const relocate = () => void useCurrent();
 
   const openProvider = (id: number) => navigate(`/provider/${id}`);
 
@@ -171,6 +182,14 @@ export default function Home() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '26px 0 14px' }}>
           <span style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700 }}>{t('home.providersCount', { count: providers.length })}</span>
+          <span
+            onClick={relocate}
+            title={t('home.changeLocation')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 12.5, color: 'var(--muted)', cursor: 'pointer' }}
+          >
+            ◉ {myLocation}
+            <span style={{ color: 'var(--accent)', fontWeight: 700 }}>· {locating ? t('home.locating') : t('home.changeLocation')}</span>
+          </span>
           <span style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 14 }}>
             {!mapOn && <span style={{ fontSize: 12.5, color: 'var(--muted)', cursor: 'pointer' }}>{t('home.sortNearest')}</span>}
             {segToggle}
@@ -185,49 +204,8 @@ export default function Home() {
           {desktopHeader}
 
           <div style={{ display: 'flex', gap: 18, alignItems: 'stretch', height: 560 }}>
-            <div style={{ flex: 1, minWidth: 0, position: 'relative', borderRadius: 24, overflow: 'hidden', background: 'var(--map)', boxShadow: 'var(--shadow)' }}>
-              <div style={{ position: 'absolute', left: '-20%', top: '30%', width: '140%', height: 26, background: 'var(--road)', transform: 'rotate(-8deg)' }} />
-              <div style={{ position: 'absolute', left: '55%', top: '-10%', width: 22, height: '120%', background: 'var(--road)', transform: 'rotate(12deg)' }} />
-              <div style={{ position: 'absolute', left: '10%', top: '62%', width: '80%', height: 14, background: 'var(--road)', transform: 'rotate(4deg)' }} />
-              {providers.map((p, i) => {
-                const [x, y] = pinPos(i);
-                const first = i === 0;
-                return (
-                  <span
-                    key={p.id}
-                    onClick={() => openProvider(p.id)}
-                    style={{
-                      position: 'absolute',
-                      left: x,
-                      top: y,
-                      background: first ? 'var(--accent)' : 'var(--surface)',
-                      border: '2px solid var(--accent)',
-                      borderRadius: 16,
-                      padding: '6px 13px',
-                      fontSize: 13.5,
-                      fontWeight: 700,
-                      color: first ? 'var(--onaccent)' : 'var(--accent)',
-                      boxShadow: first ? 'var(--glow)' : 'var(--shadow)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {p.priceFromLabel}
-                  </span>
-                );
-              })}
-              <span
-                style={{
-                  position: 'absolute',
-                  left: '46%',
-                  top: '58%',
-                  width: 12,
-                  height: 12,
-                  borderRadius: '50%',
-                  background: '#2a78d6',
-                  border: '2.5px solid #fff',
-                  boxShadow: '0 2px 6px rgba(0,0,0,.3)',
-                }}
-              />
+            <div style={{ flex: 1, minWidth: 0, borderRadius: 24, overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
+              <MapView providers={providers} user={userPoint} activeId={providers[0]?.id} onSelect={openProvider} />
             </div>
 
             <div
@@ -338,49 +316,8 @@ export default function Home() {
     return (
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
         <div style={{ flex: 1, position: 'relative', background: 'var(--map)', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', left: '-20%', top: '30%', width: '140%', height: 26, background: 'var(--road)', transform: 'rotate(-8deg)' }} />
-          <div style={{ position: 'absolute', left: '55%', top: '-10%', width: 22, height: '120%', background: 'var(--road)', transform: 'rotate(12deg)' }} />
-          <div style={{ position: 'absolute', left: '10%', top: '62%', width: '80%', height: 14, background: 'var(--road)', transform: 'rotate(4deg)' }} />
-          {providers.map((p, i) => {
-            const [x, y] = pinPos(i);
-            const first = i === 0;
-            return (
-              <span
-                key={p.id}
-                onClick={() => openProvider(p.id)}
-                style={{
-                  position: 'absolute',
-                  left: x,
-                  top: y,
-                  background: first ? 'var(--accent)' : 'var(--surface)',
-                  border: '2px solid var(--accent)',
-                  borderRadius: 16,
-                  padding: '5px 11px',
-                  fontSize: 13,
-                  fontWeight: 700,
-                  color: first ? 'var(--onaccent)' : 'var(--accent)',
-                  boxShadow: first ? 'var(--glow)' : 'var(--shadow)',
-                  cursor: 'pointer',
-                }}
-              >
-                {p.priceFromLabel}
-              </span>
-            );
-          })}
-          <span
-            style={{
-              position: 'absolute',
-              left: '46%',
-              top: '58%',
-              width: 12,
-              height: 12,
-              borderRadius: '50%',
-              background: '#2a78d6',
-              border: '2.5px solid #fff',
-              boxShadow: '0 2px 6px rgba(0,0,0,.3)',
-            }}
-          />
-          <div style={{ position: 'absolute', left: '8%', top: '4%', right: '8%', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <MapView providers={providers} user={userPoint} activeId={providers[0]?.id} onSelect={openProvider} showZoom={false} style={{ position: 'absolute', inset: 0 }} />
+          <div style={{ position: 'absolute', left: '8%', top: '4%', right: '8%', display: 'flex', alignItems: 'center', gap: 10, zIndex: 1000 }}>
             <div
               onClick={() => setMapOn(false)}
               style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 9, background: 'var(--surface)', borderRadius: 20, padding: '11px 14px', boxShadow: 'var(--shadow)', cursor: 'pointer' }}
@@ -443,7 +380,14 @@ export default function Home() {
           <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700 }}>
             {firstName ? t('home.greetingNamed', { name: firstName }) : t('home.greetingPlain')}
           </div>
-          <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 1 }}>◉ {myLocation}</div>
+          <div
+            onClick={relocate}
+            title={t('home.changeLocation')}
+            style={{ fontSize: 12, color: 'var(--muted)', marginTop: 1, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 5 }}
+          >
+            ◉ {myLocation}
+            <span style={{ color: 'var(--accent)', fontWeight: 700 }}>· {locating ? t('home.locating') : t('home.changeLocation')}</span>
+          </div>
         </div>
         {segToggle}
       </div>
