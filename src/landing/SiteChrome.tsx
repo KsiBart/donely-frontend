@@ -1,7 +1,8 @@
-import type { CSSProperties, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { Logo, Wordmark } from '../components/ui';
 import { DarkModeToggle, LangToggle } from './shared';
 import { useSiteTheme } from '../state/SiteThemeContext';
@@ -24,29 +25,13 @@ export function useAnchorNav() {
   };
 }
 
-const navLink: CSSProperties = {
-  padding: '8px 12px',
-  borderRadius: 11,
-  fontSize: 14,
-  fontWeight: 600,
-  color: 'var(--muted)',
-  cursor: 'pointer',
-};
+const navLink = 'py-2 px-3 rounded-[11px] text-sm font-semibold text-muted cursor-pointer';
 
 /** Sticky blurred header — shared by the landing page AND every subpage (CLAUDE.md build brief
  * §1 "shared chrome"). Logo/Wordmark go home; nav anchors jump to the landing sections; PL/EN +
  * dark-mode toggles persist app-wide; "Sign in" always routes to the unified `/login`. */
-const signinBtn: CSSProperties = {
-  background: 'var(--accGrad)',
-  color: 'var(--onacc)',
-  borderRadius: 13,
-  padding: '10px 18px',
-  fontSize: 14,
-  fontWeight: 800,
-  cursor: 'pointer',
-  boxShadow: '0 4px 14px rgba(122,79,192,.32)',
-  textAlign: 'center',
-};
+const signinBtn =
+  'bg-[var(--accGrad)] text-[var(--onacc)] rounded-[13px] p-[10px_18px] text-sm font-extrabold cursor-pointer shadow-[0_4px_14px_rgba(122,79,192,.32)] text-center';
 
 export function SiteHeader() {
   const { t } = useTranslation();
@@ -87,33 +72,27 @@ export function SiteHeader() {
     <>
       <header
         ref={headerRef}
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 50,
-          background: 'var(--headbg)',
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          borderBottom: '1px solid var(--headbd)',
-        }}
+        className="sticky top-0 z-50 bg-[var(--headbg)] border-b border-[var(--headbd)]"
+        // eslint-disable-next-line react/no-inline-styles -- vendor-prefix: keeps explicit -webkit-backdrop-filter for older Safari; not guaranteed emitted by the Tailwind backdrop-blur utility under this build's target
+        style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
       >
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 18, padding: '14px 22px' }}>
-        <a href="/#top" onClick={goAnchor('top')} style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 'none' }}>
+        <div className="max-w-[1200px] mx-auto flex items-center gap-[18px] p-[14px_22px]">
+        <a href="/#top" onClick={goAnchor('top')} className="flex items-center gap-[10px] flex-none">
           <Logo size={32} />
           <Wordmark size={23} />
         </a>
         {/* Desktop: inline nav + controls. Hidden below the hamburger breakpoint (landing.css). */}
-        <nav className="dt-nav-desktop" style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap', marginLeft: 8 }}>
+        <nav className="dt-nav-desktop flex items-center gap-1 flex-wrap ml-2">
           {navItems.map((n) => (
-            <a key={n.anchor} href={`/#${n.anchor}`} onClick={goAnchor(n.anchor)} className="dt-nav-pill" style={navLink}>
+            <a key={n.anchor} href={`/#${n.anchor}`} onClick={goAnchor(n.anchor)} className={clsx('dt-nav-pill', navLink)}>
               {t(n.key)}
             </a>
           ))}
         </nav>
-        <div className="dt-nav-desktop" style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div className="dt-nav-desktop ml-auto flex items-center gap-[10px]">
           <DarkModeToggle />
           <LangToggle />
-          <span {...clickable(() => navigate('/login'))} className="dt-btn-accent" style={signinBtn}>
+          <span {...clickable(() => navigate('/login'))} className={clsx('dt-btn-accent', signinBtn)}>
             {t('landing.signin')}
           </span>
         </div>
@@ -121,23 +100,10 @@ export function SiteHeader() {
         {/* Mobile: hamburger toggle (accent-tinted). Hidden at/above the breakpoint (landing.css). */}
         <button
           type="button"
-          className="dt-hamburger"
+          className="dt-hamburger ml-auto bg-transparent border-none p-1 text-[var(--acc)] w-11 h-11 items-center justify-center cursor-pointer flex-none"
           aria-label={t('landing.nav.menu', 'Menu')}
           aria-expanded={menuOpen}
           onClick={toggleMenu}
-          style={{
-            marginLeft: 'auto',
-            background: 'transparent',
-            border: 'none',
-            padding: 4,
-            color: 'var(--acc)',
-            width: 44,
-            height: 44,
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            flex: 'none',
-          }}
         >
           {menuOpen ? (
             <svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
@@ -155,7 +121,11 @@ export function SiteHeader() {
       {/* Mobile dropdown menu — a viewport-anchored FIXED overlay rendered OUTSIDE <header> so it
           can't widen it (which was shifting the header) and isn't offset by its layout. */}
       {menuOpen && (
-        <div className="dt-mobile-menu" style={{ top: menuTop }}>
+        <div
+          className="dt-mobile-menu"
+          // eslint-disable-next-line react/no-inline-styles -- dynamic: measured from the header's DOM position when the menu opens
+          style={{ top: menuTop }}
+        >
           {navItems.map((n) => (
             <a
               key={n.anchor}
@@ -183,12 +153,12 @@ export function SiteHeader() {
               {t(p.key)}
             </a>
           ))}
-          <div style={{ height: 1, background: 'var(--border)', margin: '6px 0' }} />
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '4px 2px' }}>
+          <div className="h-px bg-border m-[6px_0]" />
+          <div className="flex items-center gap-3 p-[4px_2px]">
             <DarkModeToggle />
             <LangToggle />
           </div>
-          <span {...clickable(() => navigate('/login'))} className="dt-btn-accent" style={{ ...signinBtn, display: 'block', marginTop: 6 }}>
+          <span {...clickable(() => navigate('/login'))} className={clsx('dt-btn-accent', signinBtn, 'block mt-1.5')}>
             {t('landing.signin')}
           </span>
         </div>
@@ -219,24 +189,24 @@ export function SiteFooter() {
   const footCols = t('landing.footer.cols', { returnObjects: true }) as FootCol[];
 
   return (
-    <footer style={{ background: 'var(--band2)', borderTop: '1px solid var(--bandBd)', marginTop: 'auto' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: '44px 22px 30px', display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 40 }}>
-        <div style={{ flex: '1 1 230px', minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 48 48" style={{ color: 'var(--bandKicker)', flex: 'none' }}>
+    <footer className="bg-[var(--band2)] border-t border-[var(--bandBd)] mt-auto">
+      <div className="max-w-[1200px] mx-auto w-full box-border p-[44px_22px_30px] flex flex-wrap items-start gap-10">
+        <div className="flex-[1_1_230px] min-w-0">
+          <div className="flex items-center gap-[9px]">
+            <svg aria-hidden="true" width="26" height="26" viewBox="0 0 48 48" className="text-[var(--bandKicker)] flex-none">
               <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
               <path d="M15 24.5l6.5 6.5L34 18" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M40 2l1.7 5.3L47 9l-5.3 1.7L40 16l-1.7-5.3L34 9l5.3-1.7z" fill="currentColor" opacity=".85" />
             </svg>
             <Wordmark size={19} variant="onDark" />
           </div>
-          <p style={{ fontSize: 14, color: 'var(--bandSoft)', lineHeight: 1.55, margin: '12px 0 0', maxWidth: 280 }}>{t('landing.footer.tag')}</p>
+          <p className="text-sm text-[var(--bandSoft)] leading-[1.55] m-[12px_0_0] max-w-[280px]">{t('landing.footer.tag')}</p>
         </div>
-        <div style={{ flex: '2 1 460px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '26px 28px' }}>
+        <div className="flex-[2_1_460px] grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-[26px_28px]">
           {footCols.map((col, ci) => (
-            <div key={col.h} style={{ minWidth: 0 }}>
-              <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--bandInk)', marginBottom: 12 }}>{col.h}</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+            <div key={col.h} className="min-w-0">
+              <div className="text-[13px] font-extrabold text-[var(--bandInk)] mb-3">{col.h}</div>
+            <div className="flex flex-col gap-[9px]">
               {col.links.map((label, li) => {
                 const target = FOOT_LINK_TARGETS[ci]?.[li] ?? {};
                 const href = target.path ?? (target.anchor ? `/#${target.anchor}` : '/');
@@ -244,7 +214,7 @@ export function SiteFooter() {
                   <a
                     key={label}
                     href={href}
-                    className="dt-footer-link"
+                    className="dt-footer-link text-sm text-[var(--bandMuted)]"
                     onClick={(e) => {
                       if (target.path) {
                         e.preventDefault();
@@ -253,7 +223,6 @@ export function SiteFooter() {
                         goAnchor(target.anchor)(e);
                       }
                     }}
-                    style={{ fontSize: 14, color: 'var(--bandMuted)' }}
                   >
                     {label}
                   </a>
@@ -264,8 +233,8 @@ export function SiteFooter() {
           ))}
         </div>
       </div>
-      <div style={{ borderTop: '1px solid var(--bandBd)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '18px 22px', fontSize: 13, color: 'var(--bandSoft)' }}>{t('landing.footer.copyright')}</div>
+      <div className="border-t border-[var(--bandBd)]">
+        <div className="max-w-[1200px] mx-auto p-[18px_22px] text-[13px] text-[var(--bandSoft)]">{t('landing.footer.copyright')}</div>
       </div>
     </footer>
   );
@@ -276,7 +245,7 @@ export function SiteFooter() {
  * Landing.tsx composes the same pieces around its own hero/sections). */
 export function SitePage({ children }: { children: React.ReactNode }) {
   return (
-    <div className="dt" data-dk={useSiteDk()} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bgGrad)' }}>
+    <div className="dt min-h-screen flex flex-col bg-[var(--bgGrad)]" data-dk={useSiteDk()}>
       <SiteHeader />
       {children}
       <SiteFooter />

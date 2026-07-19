@@ -38,9 +38,27 @@ export const qk = {
     detail: (id: number | string) => ['payment', 'detail', String(id)] as const,
   },
 
-  providerPayouts: {
-    all: ['providerPayouts'] as const,
-    list: () => ['providerPayouts', 'list'] as const,
+  // Provider-area (pro/wykonawca dashboard) — Bug-fix Stage A. Supersedes the old unused
+  // top-level `providerPayouts` key group (dead: its only consumer, `useProviderPayoutsQuery` in
+  // hooks/payments.ts, duplicated the one below and was removed).
+  provider: {
+    dashboard: () => ['provider', 'dashboard'] as const,
+    requests: {
+      all: ['provider', 'requests'] as const,
+      list: () => ['provider', 'requests', 'list'] as const,
+    },
+    calendar: {
+      all: ['provider', 'calendar'] as const,
+      detail: (day: string) => ['provider', 'calendar', 'detail', day] as const,
+    },
+    billing: {
+      all: ['provider', 'billing'] as const,
+      detail: () => ['provider', 'billing', 'detail'] as const,
+    },
+    payouts: {
+      all: ['provider', 'payouts'] as const,
+      list: () => ['provider', 'payouts', 'list'] as const,
+    },
   },
 
   admin: {

@@ -1,10 +1,11 @@
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAdminBlockUserMutation, useAdminUnblockUserMutation, useAdminUsersQuery } from '../../api/hooks';
 import type { AdminUser } from '../../api/models';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
-import { StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
+import { CARD_CLASS, StatusChip, TableHead, rowClass } from '../ui';
 
 const COLS = '1.4fr 1.6fr 1fr .7fr .8fr .9fr';
 
@@ -54,42 +55,35 @@ export default function Users() {
 
   return (
     <>
-      <div style={{ display: 'flex', gap: 12, marginBottom: 16 }}>
+      <div className="mb-4 flex gap-3">
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
           placeholder={t('admin.users.searchPlaceholder') ?? ''}
           aria-label={t('admin.users.searchPlaceholder') ?? ''}
-          style={{
-            flex: 1,
-            maxWidth: 340,
-            borderRadius: 14,
-            border: '1.5px solid var(--border)',
-            background: 'var(--surface)',
-            padding: '11px 14px',
-            font: "600 13px 'Figtree', sans-serif",
-            color: 'var(--text)',
-            outline: 'none',
-          }}
+          className="max-w-[340px] flex-1 rounded-2xl border-[1.5px] border-border bg-surface px-3.5 py-[11px] font-[Figtree,sans-serif] text-[13px] font-semibold text-text outline-none"
         />
-        <span style={{ alignSelf: 'center', fontSize: 12.5, color: 'var(--muted)' }}>
-          {t('admin.users.accountsCount', { count: users.length })}
-        </span>
+        <span className="self-center text-[12.5px] text-muted">{t('admin.users.accountsCount', { count: users.length })}</span>
       </div>
-      <div style={{ ...cardStyle, overflow: 'hidden' }}>
+      <div className={`${CARD_CLASS} overflow-hidden`}>
         <TableHead cols={COLS} columns={columns} />
         {users.map((u) => (
-          <div key={u.id} style={rowStyle(COLS)}>
-            <span style={{ fontWeight: 700 }}>{u.name}</span>
-            <span style={{ color: 'var(--muted2)', fontSize: 12.5 }}>{u.email}</span>
-            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent)' }}>{roles(u)}</span>
-            <span style={{ color: 'var(--muted2)' }}>{bookingCount(u)}</span>
+          <div
+            key={u.id}
+            className={rowClass()}
+            // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns is a runtime string constant, Tailwind JIT can't scan it
+            style={{ gridTemplateColumns: COLS }}
+          >
+            <span className="font-bold">{u.name}</span>
+            <span className="text-[12.5px] text-muted2">{u.email}</span>
+            <span className="text-[11px] font-bold text-accent">{roles(u)}</span>
+            <span className="text-muted2">{bookingCount(u)}</span>
             <StatusChip bg={u.blocked ? 'var(--danger-bg)' : 'var(--ver-bg)'} fg={u.blocked ? '#d64550' : '#3e7a48'}>
               {u.blocked ? t('admin.users.statusBlocked') : t('admin.users.statusActive')}
             </StatusChip>
             <span
               {...clickable(() => void toggle(u))}
-              style={{ fontSize: 12, fontWeight: 700, color: u.blocked ? '#3e7a48' : '#d64550', cursor: 'pointer', justifySelf: 'end' }}
+              className={clsx('justify-self-end cursor-pointer text-[12px] font-bold', u.blocked ? 'text-[#3e7a48]' : 'text-[#d64550]')}
             >
               {u.blocked ? t('admin.users.unblock') : t('admin.users.block')}
             </span>

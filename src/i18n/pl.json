@@ -7,6 +7,7 @@
     "loading": "Ładowanie…",
     "otpDigit": "Cyfra kodu {{n}}",
     "primaryNav": "Nawigacja",
+    "refresh": "Odśwież",
     "starLabel": "{{n}} z 5 gwiazdek",
     "starRating": "Ocena w gwiazdkach",
     "timePicker": "Wybierz godzinę",
@@ -20,13 +21,15 @@
     "profile": "Profil",
     "provider": "Wykonawca",
     "book": "Rezerwacja",
-    "admin": "Panel administratora"
+    "admin": "Panel administratora",
+    "pro": "Tryb Pro"
   },
   "common": {
     "skipToContent": "Przejdź do treści",
     "error": "Błąd",
     "errorWithStatus": "Błąd {{status}}",
     "noConnection": "Brak połączenia z serwerem",
+    "loading": "Ładowanie…",
     "verifiedFull": "✓ Zweryfikowany",
     "verifiedShort": "✓",
     "today": "dziś",
@@ -573,7 +576,10 @@
       },
       "done": {
         "title": "Zalogowano!",
-        "sub": "Witaj w Donely. Wszystko gotowe — przejdź do aplikacji web, aby znaleźć fachowca.",
+        "sub": "Witaj w Donely. Wszystko gotowe — wybierz, jak chcesz kontynuować.",
+        "chooseTitle": "Jak chcesz kontynuować?",
+        "standardCta": "Wejdź jako klient",
+        "proCta": "Wejdź jako Pro (wykonawca)",
         "cta": "Przejdź do aplikacji",
         "back": "Wróć na stronę główną"
       }
@@ -1112,6 +1118,7 @@
       "language": "Język"
     },
     "notificationsOn": "Włączone",
+    "notificationsOff": "Wyłączone",
     "paymentMethodsVal": "BLIK, PayPal",
     "defaultLocation": "Mokotów",
     "logout": "Wyloguj",
@@ -1121,7 +1128,117 @@
     "langNamePl": "Polski",
     "langNameEn": "English",
     "pushPromoTitle": "Powiadomienia push",
-    "pushPromoBody": "W przeglądarce dostaniesz e-maile. Push w czasie rzeczywistym — o potwierdzeniach i wycenach — wymaga aplikacji."
+    "pushPromoBody": "W przeglądarce dostaniesz e-maile. Push w czasie rzeczywistym — o potwierdzeniach i wycenach — wymaga aplikacji.",
+    "locationPanel": {
+      "title": "Zmień lokalizację"
+    },
+    "addressesPanel": {
+      "title": "Zapisane adresy",
+      "empty": "Nie masz jeszcze zapisanych adresów.",
+      "labelPlaceholder": "Nazwa (np. Dom, Praca)",
+      "addrPlaceholder": "Adres",
+      "addCta": "Dodaj adres",
+      "removeLabel": "Usuń adres {{label}}",
+      "savedToast": "Adres zapisany",
+      "removedToast": "Adres usunięty",
+      "incomplete": "Podaj nazwę i adres"
+    },
+    "paymentsPanel": {
+      "title": "Metody płatności",
+      "note": "Metodę płatności wybierasz przy rezerwacji. Platforma obsługuje obecnie:",
+      "empty": "Brak skonfigurowanych metod płatności."
+    },
+    "proSection": {
+      "becomeTitle": "Świadczysz usługi?",
+      "becomeBody": "Zarabiaj legalnie bez zakładania firmy — {{appName}} wystawia faktury i rozlicza podatki za Ciebie.",
+      "becomeCta": "Zostań Pro",
+      "activeTitle": "Jesteś fachowcem {{appName}}",
+      "enterProBody": "Przełącz widok, aby zarządzać zleceniami, kalendarzem i wypłatami.",
+      "enterProCta": "Wejdź w tryb Pro",
+      "inProTitle": "Tryb Pro aktywny",
+      "inProBody": "Widzisz teraz aplikację jako fachowiec.",
+      "switchStandardCta": "Przełącz na tryb klienta",
+      "becameProToast": "Tryb Pro aktywowany!",
+      "enteredProToast": "Przełączono na tryb Pro",
+      "enteredStandardToast": "Przełączono na tryb klienta"
+    }
+  },
+  "proTerms": {
+    "back": "Wróć do wyboru",
+    "title": "Warunki trybu Pro",
+    "body": "Jako fachowiec w DoneLy AI otrzymujesz zlecenia od klientów, samodzielnie ustalasz swoje usługi i stawki oraz realizujesz je na własną odpowiedzialność.\n\nDoneLy AI pośredniczy w płatności: środki klienta są zamrożone do czasu wykonania usługi, a po jej zatwierdzeniu wypłacane Tobie pomniejszone o prowizję platformy — wraz z automatycznym rachunkiem/fakturą.\n\nAkceptując, potwierdzasz że rozliczasz przychody z tych zleceń zgodnie z obowiązującym prawem podatkowym.",
+    "accept": "Akceptuję i przechodzę",
+    "accepting": "Zapisywanie…",
+    "cancel": "Anuluj"
+  },
+  "pro": {
+    "nav": {
+      "dashboard": "Pulpit",
+      "requests": "Zlecenia",
+      "calendar": "Kalendarz",
+      "payouts": "Wypłaty",
+      "profile": "Profil"
+    },
+    "dashboard": {
+      "title": "Pulpit",
+      "statusPendingBanner": "Twój profil fachowca czeka na weryfikację przez administratora. Do czasu zatwierdzenia niektóre funkcje mogą być ograniczone.",
+      "statusRejectedBanner": "Twój profil fachowca nie został zatwierdzony. Skontaktuj się z pomocą, aby dowiedzieć się więcej.",
+      "kpiBookings": "Zlecenia w tym miesiącu",
+      "kpiRevenue": "Przychód w tym miesiącu",
+      "kpiRating": "Ocena",
+      "kpiRatingSub": "{{count}} opinii",
+      "kpiNewRequests": "Nowe zlecenia",
+      "kpiDocs": "Dokumenty w tym miesiącu",
+      "kpiNet": "Wypłacono netto",
+      "kpiNetSub": "Podatek: {{tax}}",
+      "agendaTitle": "Dzisiejszy plan",
+      "agendaEmpty": "Brak zaplanowanych zleceń na dziś.",
+      "bufferRow": "🚐 Dojazd: {{label}}",
+      "viewRequestsCta": "Zobacz zlecenia →"
+    },
+    "requests": {
+      "title": "Zlecenia",
+      "empty": "Brak zleceń.",
+      "declineCta": "Odrzuć",
+      "completeCta": "Oznacz jako wykonane",
+      "quotePlaceholder": "Kwota w zł",
+      "quoteSendCta": "Wyślij wycenę",
+      "quoteInvalid": "Podaj prawidłową kwotę większą od zera",
+      "status": {
+        "new": "Nowe",
+        "accepted": "Zaakceptowane",
+        "quoted": "Wycena wysłana",
+        "declined": "Odrzucone"
+      },
+      "acceptToast": "Zlecenie zaakceptowane",
+      "declineToast": "Zlecenie odrzucone",
+      "quoteSentToast": "Wycena wysłana",
+      "completeToast": "Zlecenie oznaczone jako wykonane"
+    },
+    "calendar": {
+      "title": "Kalendarz",
+      "prevDayLabel": "Poprzedni dzień",
+      "nextDayLabel": "Następny dzień",
+      "today": "Dziś",
+      "empty": "Brak wpisów na ten dzień.",
+      "freeLabel": "Wolny termin",
+      "blockCta": "Zablokuj",
+      "unblockCta": "Odblokuj",
+      "unblockUnavailable": "Tej blokady nie można usunąć stąd",
+      "blockToast": "Termin zablokowany",
+      "unblockToast": "Blokada usunięta"
+    },
+    "payouts": {
+      "title": "Wypłaty",
+      "billingSummaryTitle": "Podsumowanie miesiąca",
+      "kpiDocs": "Dokumenty",
+      "kpiTax": "Podatek pobrany",
+      "kpiNet": "Wypłacono netto",
+      "documentsTitle": "Dokumenty",
+      "documentsEmpty": "Brak dokumentów w tym miesiącu.",
+      "payoutsTitle": "Historia wypłat",
+      "payoutsEmpty": "Brak wypłat."
+    }
   },
   "admin": {
     "common": {

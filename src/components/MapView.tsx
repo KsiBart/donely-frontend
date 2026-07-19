@@ -103,6 +103,7 @@ export default function MapView({
       scrollWheelZoom
       zoomControl={showZoom}
       className={isDark ? 'donely-map donely-map-dark' : 'donely-map'}
+      // eslint-disable-next-line react/no-inline-styles -- dynamic: merges caller-supplied `style` prop at runtime
       style={{ height: '100%', width: '100%', ...style }}
     >
       <TileLayer

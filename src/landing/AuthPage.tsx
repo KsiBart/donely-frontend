@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Logo, Wordmark } from '../components/ui';
-import { BRICO } from '../lib/format';
 import { useAuth } from '../state/AuthContext';
 import { useSiteTheme } from '../state/SiteThemeContext';
 import { useToast } from '../state/ToastContext';
@@ -10,6 +9,7 @@ import { clickable } from '../lib/a11y';
 import { DarkModeToggle, LangToggle, ToastBubble } from './shared';
 
 type Step = 'email' | 'code' | 'done';
+type DoneView = 'choice' | 'terms';
 const EMPTY_DIGITS = () => Array(8).fill('');
 
 /**
@@ -31,7 +31,7 @@ function OtpBoxes({ digits, setDigits }: { digits: string[]; setDigits: (d: stri
   };
 
   return (
-    <div style={{ display: 'flex', gap: 'clamp(5px,1.4vw,10px)', marginTop: 26, justifyContent: 'space-between' }}>
+    <div className="flex gap-[clamp(5px,1.4vw,10px)] mt-[26px] justify-between">
       {digits.map((d, i) => (
         <input
           key={i}
@@ -73,20 +73,9 @@ function OtpBoxes({ digits, setDigits }: { digits: string[]; setDigits: (d: stri
             setDigits(next);
             setTimeout(() => focusBox(Math.min(i + txt.length, 7)), 0);
           }}
-          style={{
-            width: '100%',
-            minWidth: 0,
-            aspectRatio: '3/4',
-            boxSizing: 'border-box',
-            textAlign: 'center',
-            borderRadius: 14,
-            border: `1.5px solid ${d ? 'var(--acc)' : 'var(--border2)'}`,
-            background: 'var(--surface)',
-            color: 'var(--ink)',
-            font: "800 clamp(20px,3vw,26px) 'Figtree', sans-serif",
-            outline: 'none',
-            padding: 0,
-          }}
+          className="w-full min-w-0 aspect-[3/4] box-border text-center rounded-[14px] bg-surface text-[var(--ink)] font-extrabold text-[clamp(20px,3vw,26px)] font-['Figtree',sans-serif] outline-none p-0"
+          // eslint-disable-next-line react/no-inline-styles -- dynamic: border highlights the box once its digit is filled
+          style={{ border: `1.5px solid ${d ? 'var(--acc)' : 'var(--border2)'}` }}
         />
       ))}
     </div>
@@ -103,7 +92,7 @@ function OtpBoxes({ digits, setDigits }: { digits: string[]; setDigits: (d: stri
 export default function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { me, requestCode, verify } = useAuth();
+  const { me, requestCode, verify, becomePro, enterMode } = useAuth();
   const { toast, showToast } = useToast();
   const { dark } = useSiteTheme();
 
@@ -112,6 +101,8 @@ export default function AuthPage() {
   const [digits, setDigits] = useState<string[]>(EMPTY_DIGITS);
   const [devCode, setDevCode] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  // Post-verify: choose customer vs pro entry, with a terms gate the first time a user goes pro.
+  const [doneView, setDoneView] = useState<DoneView>('choice');
 
   // Bounce away if a session already exists when this page is first shown (e.g. a direct nav
   // to /login while already logged in). Guarded by `step === 'email'` so a FRESH verify() within
@@ -149,6 +140,7 @@ export default function AuthPage() {
     setBusy(true);
     try {
       await verify(email.trim(), digits.join(''));
+      setDoneView('choice');
       setStep('done');
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('landing.auth.code.wrongCode'));
@@ -157,44 +149,60 @@ export default function AuthPage() {
     }
   };
 
+  const enterAsStandard = () => {
+    enterMode('standard');
+    navigate('/');
+  };
+
+  const enterAsPro = () => {
+    // Terms already accepted on a previous become-pro (or seeded pro user) — skip straight in.
+    if (me?.proTermsAcceptedAt) {
+      enterMode('pro');
+      navigate('/');
+      return;
+    }
+    setDoneView('terms');
+  };
+
+  const acceptProTerms = async () => {
+    if (busy) return;
+    setBusy(true);
+    try {
+      await becomePro();
+      enterMode('pro');
+      navigate('/');
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : t('common.error'));
+    } finally {
+      setBusy(false);
+    }
+  };
+
   return (
-    <div className="dt" data-dk={dark ? '1' : '0'} style={{ minHeight: '100vh', display: 'flex', flexWrap: 'wrap', background: 'var(--bg)' }}>
+    <div className="dt min-h-screen flex flex-wrap bg-bg" data-dk={dark ? '1' : '0'}>
       {/* BRAND PANEL — second (right on desktop) via order; dark orange↔purple gradient. */}
-      <div
-        style={{
-          order: 2,
-          flex: '1 1 440px',
-          minHeight: 'clamp(200px,32vh,100vh)',
-          position: 'relative',
-          overflow: 'hidden',
-          background: 'linear-gradient(140deg,#14101a 0%,#2f1c30 38%,#6b3348 70%,var(--acc) 118%)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          padding: 'clamp(28px,4vw,56px)',
-        }}
-      >
-        <div style={{ position: 'absolute', inset: 0, opacity: 0.08, background: 'repeating-linear-gradient(45deg,#c3a7e6,#c3a7e6 7px,#b599dc 7px,#b599dc 14px)' }} />
-        <div style={{ position: 'absolute', right: -120, bottom: -140, width: 360, height: 360, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,140,77,.28), transparent 68%)' }} />
-        <div style={{ position: 'absolute', right: -90, top: -90, width: 340, height: 340, borderRadius: '50%', background: 'rgba(255,255,255,.12)' }} />
+      <div className="order-2 flex-[1_1_440px] min-h-[clamp(200px,32vh,100vh)] relative overflow-hidden bg-[linear-gradient(140deg,#14101a_0%,#2f1c30_38%,#6b3348_70%,var(--acc)_118%)] flex flex-col justify-between p-[clamp(28px,4vw,56px)]">
+        <div className="absolute inset-0 opacity-[.08] bg-[repeating-linear-gradient(45deg,#c3a7e6,#c3a7e6_7px,#b599dc_7px,#b599dc_14px)]" />
+        <div className="absolute -right-[120px] -bottom-[140px] w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle,rgba(255,140,77,.28),transparent_68%)]" />
+        <div className="absolute -right-[90px] -top-[90px] w-[340px] h-[340px] rounded-full bg-white/[0.12]" />
         <span
           {...clickable(backToSite, { label: t('landing.backHome') })}
-          style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 11, cursor: 'pointer', width: 'fit-content' }}
+          className="relative flex items-center gap-[11px] cursor-pointer w-fit"
         >
           <Logo size={36} />
           <Wordmark size={24} variant="onDark" />
         </span>
-        <div style={{ position: 'relative' }}>
-          <h2 style={{ fontFamily: BRICO, fontSize: 'clamp(26px,3.4vw,40px)', fontWeight: 800, color: '#fff', lineHeight: 1.1, letterSpacing: '-.01em', margin: 0 }}>
+        <div className="relative">
+          <h2 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(26px,3.4vw,40px)] font-extrabold text-white leading-[1.1] tracking-[-0.01em] m-0">
             {t('landing.auth.brandTitle')}
           </h2>
-          <div style={{ fontSize: 'clamp(15px,1.6vw,18px)', color: 'rgba(255,255,255,.9)', lineHeight: 1.5, marginTop: 14, maxWidth: 420 }}>
+          <div className="text-[clamp(15px,1.6vw,18px)] text-white/90 leading-[1.5] mt-[14px] max-w-[420px]">
             {t('landing.auth.brandSub')}
           </div>
         </div>
-        <div style={{ position: 'relative', display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+        <div className="relative flex flex-wrap gap-2">
           {authChips.map((c) => (
-            <span key={c} style={{ background: 'rgba(255,255,255,.18)', color: '#fff', borderRadius: 11, padding: '8px 12px', fontSize: 13, fontWeight: 700 }}>
+            <span key={c} className="bg-white/[0.18] text-white rounded-[11px] p-[8px_12px] text-[13px] font-bold">
               {c}
             </span>
           ))}
@@ -202,25 +210,25 @@ export default function AuthPage() {
       </div>
 
       {/* FORM PANEL — first (left on desktop) via order. */}
-      <div style={{ order: 1, flex: '1 1 440px', display: 'flex', flexDirection: 'column', padding: 'clamp(24px,4vw,48px)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' }}>
-          <span {...clickable(backToSite)} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
+      <div className="order-1 flex-[1_1_440px] flex flex-col p-[clamp(24px,4vw,48px)]">
+        <div className="flex items-center justify-between gap-[10px] flex-wrap">
+          <span {...clickable(backToSite)} className="inline-flex items-center gap-[7px] text-sm font-bold text-[var(--acc)] cursor-pointer">
             <span aria-hidden="true">‹</span> {t('landing.backHome')}
           </span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div className="flex items-center gap-[10px]">
             <DarkModeToggle />
             <LangToggle />
           </div>
         </div>
 
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', maxWidth: 460, width: '100%', margin: '0 auto', padding: '24px 0' }}>
+        <div className="flex-1 flex flex-col justify-center max-w-[460px] w-full mx-auto p-[24px_0]">
           {step === 'email' && (
-            <div style={{ animation: 'dfade .3s ease' }}>
-              <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(28px,3.4vw,36px)', fontWeight: 800, color: 'var(--ink)', margin: 0, letterSpacing: '-.01em' }}>
+            <div className="animate-[dfade_0.3s_ease]">
+              <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(28px,3.4vw,36px)] font-extrabold text-[var(--ink)] m-0 tracking-[-0.01em]">
                 {t('landing.auth.email.title')}
               </h1>
-              <p style={{ fontSize: 15.5, color: 'var(--muted)', lineHeight: 1.5, margin: '12px 0 0' }}>{t('landing.auth.email.sub')}</p>
-              <label htmlFor="auth-email-input" style={{ display: 'block', fontSize: 12.5, fontWeight: 800, letterSpacing: '.05em', textTransform: 'uppercase', color: 'var(--muted2)', margin: '28px 0 8px' }}>
+              <p className="text-[15.5px] text-muted leading-[1.5] m-[12px_0_0]">{t('landing.auth.email.sub')}</p>
+              <label htmlFor="auth-email-input" className="block text-[12.5px] font-extrabold tracking-[.05em] uppercase text-muted2 m-[28px_0_8px]">
                 {t('landing.auth.email.label')}
               </label>
               <input
@@ -233,113 +241,119 @@ export default function AuthPage() {
                 type="email"
                 autoFocus
                 placeholder={t('landing.auth.email.placeholder')}
-                style={{
-                  width: '100%',
-                  boxSizing: 'border-box',
-                  borderRadius: 16,
-                  border: '1.5px solid var(--acc)',
-                  background: 'var(--surface)',
-                  color: 'var(--ink)',
-                  padding: 16,
-                  font: "600 16px 'Figtree', sans-serif",
-                  outline: 'none',
-                }}
+                className="w-full box-border rounded-2xl border-[1.5px] border-[var(--acc)] bg-surface text-[var(--ink)] p-4 font-semibold text-base font-['Figtree',sans-serif] outline-none"
               />
               <div
                 {...clickable(() => void sendCode(), { disabled: !emailOk || busy })}
+                className="mt-[14px] text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer"
+                // eslint-disable-next-line react/no-inline-styles -- dynamic: enabled/disabled visual state depends on emailOk
                 style={{
-                  marginTop: 14,
-                  textAlign: 'center',
                   background: emailOk ? 'var(--accGrad)' : 'var(--surface2)',
                   color: emailOk ? 'var(--onacc)' : 'var(--soft)',
-                  borderRadius: 16,
-                  padding: 16,
-                  fontSize: 16,
-                  fontWeight: 800,
-                  cursor: 'pointer',
                   boxShadow: emailOk ? '0 8px 22px rgba(122,79,192,.32)' : 'none',
                 }}
               >
                 {t('landing.auth.email.cta')}
               </div>
-              <div style={{ fontSize: 12.5, color: 'var(--soft)', textAlign: 'center', marginTop: 16, lineHeight: 1.5 }}>{t('landing.auth.email.legal')}</div>
+              <div className="text-[12.5px] text-[var(--soft)] text-center mt-4 leading-[1.5]">{t('landing.auth.email.legal')}</div>
             </div>
           )}
 
           {step === 'code' && (
-            <div style={{ animation: 'dfade .3s ease' }}>
+            <div className="animate-[dfade_0.3s_ease]">
               <span
                 {...clickable(() => setStep('email'))}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer', marginBottom: 18 }}
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer mb-[18px]"
               >
                 <span aria-hidden="true">‹</span> {t('landing.auth.code.changeEmail')}
               </span>
-              <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(28px,3.4vw,36px)', fontWeight: 800, color: 'var(--ink)', margin: 0, letterSpacing: '-.01em' }}>
+              <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(28px,3.4vw,36px)] font-extrabold text-[var(--ink)] m-0 tracking-[-0.01em]">
                 {t('landing.auth.code.title')}
               </h1>
-              <p style={{ fontSize: 15.5, color: 'var(--muted)', lineHeight: 1.5, margin: '12px 0 0' }}>
-                {t('landing.auth.code.subA')} <b style={{ color: 'var(--ink)' }}>{email.trim()}</b>
+              <p className="text-[15.5px] text-muted leading-[1.5] m-[12px_0_0]">
+                {t('landing.auth.code.subA')} <b className="text-[var(--ink)]">{email.trim()}</b>
               </p>
               <OtpBoxes digits={digits} setDigits={setDigits} />
               <div
                 {...clickable(() => void verifyCode(), { disabled: !codeFilled || busy })}
+                className="mt-[22px] text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer"
+                // eslint-disable-next-line react/no-inline-styles -- dynamic: enabled/disabled visual state depends on codeFilled
                 style={{
-                  marginTop: 22,
-                  textAlign: 'center',
                   background: codeFilled ? 'var(--accGrad)' : 'var(--surface2)',
                   color: codeFilled ? 'var(--onacc)' : 'var(--soft)',
-                  borderRadius: 16,
-                  padding: 16,
-                  fontSize: 16,
-                  fontWeight: 800,
-                  cursor: 'pointer',
                   boxShadow: codeFilled ? '0 8px 22px rgba(122,79,192,.32)' : 'none',
                 }}
               >
                 {t('landing.auth.code.cta')}
               </div>
-              <div style={{ textAlign: 'center', fontSize: 13, color: 'var(--muted2)', marginTop: 16 }}>
+              <div className="text-center text-[13px] text-muted2 mt-4">
                 {t('landing.auth.code.resendA')}{' '}
-                <span {...clickable(() => void sendCode())} style={{ color: 'var(--acc)', fontWeight: 800, cursor: 'pointer' }}>
+                <span {...clickable(() => void sendCode())} className="text-[var(--acc)] font-extrabold cursor-pointer">
                   {t('landing.auth.code.resend')}
                 </span>
               </div>
-              {devCode && <div style={{ textAlign: 'center', fontSize: 12, color: 'var(--bandMuted)', marginTop: 6 }}>{t('landing.auth.code.devHint', { code: devCode })}</div>}
+              {devCode && <div className="text-center text-xs text-[var(--bandMuted)] mt-1.5">{t('landing.auth.code.devHint', { code: devCode })}</div>}
             </div>
           )}
 
-          {step === 'done' && (
-            <div style={{ textAlign: 'center', animation: 'dfade .4s ease' }}>
+          {step === 'done' && doneView === 'choice' && (
+            <div className="text-center animate-[dfade_0.4s_ease]">
               <div
                 aria-hidden="true"
-                style={{
-                  width: 88,
-                  height: 88,
-                  margin: '0 auto',
-                  borderRadius: '50%',
-                  background: 'var(--okbg)',
-                  color: 'var(--okfg)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 42,
-                  fontWeight: 800,
-                }}
+                className="w-[88px] h-[88px] mx-auto rounded-full bg-[var(--okbg)] text-[var(--okfg)] flex items-center justify-center text-[42px] font-extrabold"
               >
                 ✓
               </div>
-              <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(28px,3.4vw,36px)', fontWeight: 800, color: 'var(--ink)', margin: '22px 0 0' }}>
+              <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(28px,3.4vw,36px)] font-extrabold text-[var(--ink)] m-[22px_0_0]">
                 {t('landing.auth.done.title')}
               </h1>
-              <p style={{ fontSize: 15.5, color: 'var(--muted)', lineHeight: 1.55, margin: '12px 0 26px' }}>{t('landing.auth.done.sub')}</p>
+              <p className="text-[15.5px] text-muted leading-[1.55] m-[12px_0_18px]">{t('landing.auth.done.sub')}</p>
+              <p className="text-[12.5px] font-extrabold tracking-[.03em] uppercase text-[var(--soft)] mb-2.5">
+                {t('landing.auth.done.chooseTitle')}
+              </p>
               <div
-                {...clickable(() => navigate('/'))}
-                style={{ textAlign: 'center', background: 'var(--accGrad)', color: 'var(--onacc)', borderRadius: 16, padding: 16, fontSize: 16, fontWeight: 800, cursor: 'pointer', boxShadow: '0 8px 22px rgba(122,79,192,.32)' }}
+                {...clickable(enterAsStandard)}
+                className="text-center bg-[var(--accGrad)] text-[var(--onacc)] rounded-2xl p-4 text-base font-extrabold cursor-pointer shadow-[0_8px_22px_rgba(122,79,192,.32)]"
               >
-                {t('landing.auth.done.cta')} <span aria-hidden="true">→</span>
+                {t('landing.auth.done.standardCta')} <span aria-hidden="true">→</span>
               </div>
-              <div {...clickable(() => navigate('/'))} style={{ marginTop: 14, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}>
+              <div
+                {...clickable(enterAsPro)}
+                className="mt-2.5 text-center bg-surface text-[var(--ink)] border-[1.5px] border-[var(--acc)] rounded-2xl p-4 text-base font-extrabold cursor-pointer"
+              >
+                {t('landing.auth.done.proCta')}
+              </div>
+              <div {...clickable(() => navigate('/'))} className="mt-[14px] text-sm font-bold text-[var(--acc)] cursor-pointer">
                 {t('landing.auth.done.back')}
+              </div>
+            </div>
+          )}
+
+          {step === 'done' && doneView === 'terms' && (
+            <div className="text-left animate-[dfade_0.3s_ease]">
+              <span
+                {...clickable(() => setDoneView('choice'))}
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer mb-[18px]"
+              >
+                <span aria-hidden="true">‹</span> {t('proTerms.back')}
+              </span>
+              <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(24px,3vw,30px)] font-extrabold text-[var(--ink)] m-0 tracking-[-0.01em]">
+                {t('proTerms.title')}
+              </h1>
+              <p className="text-[14px] text-muted leading-[1.6] m-[14px_0_0] whitespace-pre-line">
+                {t('proTerms.body')}
+              </p>
+              <div
+                {...clickable(() => void acceptProTerms(), { disabled: busy })}
+                className="mt-[22px] text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer bg-[var(--accGrad)] text-[var(--onacc)] shadow-[0_8px_22px_rgba(122,79,192,.32)]"
+              >
+                {busy ? t('proTerms.accepting') : t('proTerms.accept')}
+              </div>
+              <div
+                {...clickable(() => setDoneView('choice'), { disabled: busy })}
+                className="mt-2.5 text-center text-sm font-bold text-muted2 cursor-pointer"
+              >
+                {t('proTerms.cancel')}
               </div>
             </div>
           )}

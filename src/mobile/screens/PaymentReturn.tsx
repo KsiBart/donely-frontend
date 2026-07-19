@@ -57,8 +57,8 @@ export default function PaymentReturn() {
 
   if (!done) {
     return (
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span style={{ animation: 'ptpulse 1.6s infinite' }}>
+      <div className="flex-1 flex items-center justify-center">
+        <span className="animate-[ptpulse_1.6s_infinite]">
           <Logo size={54} />
         </span>
       </div>

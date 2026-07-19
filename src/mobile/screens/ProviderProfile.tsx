@@ -1,6 +1,7 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { useAddFavoriteMutation, useFavoritesQuery, useProviderQuery, useRemoveFavoriteMutation } from '../../api/hooks';
 import type { Service } from '../../api/models';
 import { toIntlLocale } from '../../i18n';
@@ -10,6 +11,21 @@ import { BRICO, bizLong, formatKm, formatRating } from '../../lib/format';
 import { useBrand } from '../../brand';
 import { useToast } from '../../state/ToastContext';
 import { clickable } from '../../lib/a11y';
+
+// Photo-caption badge on both the desktop "before" hero photo and the mobile photo strip.
+const photoCaptionCls = "font-semibold text-[10px] font-[ui-monospace,monospace] bg-[rgba(0,0,0,.5)] text-white rounded-lg py-[3px] px-2";
+// Top-of-photo round icon buttons (back / favorite) — desktop and mobile share the shape,
+// differing only in left/right placement and (favorite) color/size.
+const roundBtnBase = 'absolute top-[26px] w-[34px] h-[34px] rounded-full bg-surface flex items-center justify-center font-bold cursor-pointer shadow-[var(--shadow)]';
+// tagsRow pills (business type / travel radius / spot address / work hours) — identical shape on
+// desktop and mobile.
+const tagVerCls = 'bg-ver-bg text-ver-fg rounded-xl py-1.5 px-[11px] text-xs font-bold';
+const tagNeutralCls = 'bg-surface2 rounded-xl py-1.5 px-[11px] text-xs font-semibold text-muted2';
+// Service-location tag ("u Ciebie" / "w salonie") under each service row.
+const svcTagCls = (atClient: boolean) => clsx('inline-block text-[10.5px] font-bold mt-[5px] rounded-[9px] py-[3px] px-2', atClient ? 'bg-ver-bg text-ver-fg' : 'bg-surface2 text-accent');
+// Review card header (name + star rating).
+const reviewNameCls = 'font-bold text-[13.5px]';
+const reviewStarsCls = 'text-warn text-xs tracking-[1px]';
 
 export default function ProviderProfile() {
   const { t, i18n } = useTranslation();
@@ -61,148 +77,117 @@ export default function ProviderProfile() {
   };
 
   if (!pv) {
-    return <div style={{ flex: 1 }} />;
+    return <div className="flex-1" />;
   }
 
   if (isDesktop) {
     const tagsRow = (
-      <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-        <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 700 }}>
-          {bizLong(pv.businessType, t, brand.appName)}
-        </span>
-        <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
-          {t('providerProfile.travelRadius', { km: pv.travelRadiusKm ?? 10 })}
-        </span>
+      <div className="flex gap-2 mt-3 flex-wrap">
+        <span className={tagVerCls}>{bizLong(pv.businessType, t, brand.appName)}</span>
+        <span className={tagNeutralCls}>{t('providerProfile.travelRadius', { km: pv.travelRadiusKm ?? 10 })}</span>
         {pv.spotAddress && (
-          <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
+          <span className={tagNeutralCls}>
             <span aria-hidden="true">📍</span> {pv.spotAddress}
           </span>
         )}
-        <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
-          {t('providerProfile.workHours')}
-        </span>
+        <span className={tagNeutralCls}>{t('providerProfile.workHours')}</span>
       </div>
     );
 
     return (
-      <div style={{ maxWidth: 1120, margin: '0 auto', padding: '22px 28px 48px', animation: 'dwfade .3s ease' }}>
-        <span
-          {...clickable(() => navigate(-1))}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: 7, fontSize: 13, fontWeight: 700, color: 'var(--accent)', cursor: 'pointer' }}
-        >
+      <div className="max-w-[1120px] mx-auto pt-[22px] px-7 pb-12 animate-[dwfade_.3s_ease]">
+        <span {...clickable(() => navigate(-1))} className="inline-flex items-center gap-[7px] text-[13px] font-bold text-accent cursor-pointer">
           <span aria-hidden="true">‹</span> {t('providerProfile.backToResults')}
         </span>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: 26, alignItems: 'start', marginTop: 16 }}>
+        <div className="grid grid-cols-[1fr_380px] gap-[26px] items-start mt-4">
           <div>
-            <div style={{ height: 230, display: 'flex', gap: 8 }}>
-              <div style={{ flex: 2, borderRadius: 18, background: stripes(45, 8), display: 'flex', alignItems: 'flex-end', padding: 12 }}>
-                <span style={{ font: "600 10px ui-monospace, monospace", background: 'rgba(0,0,0,.5)', color: '#fff', borderRadius: 8, padding: '3px 8px' }}>
-                  {t('providerProfile.photoBefore')}
-                </span>
+            <div className="h-[230px] flex gap-2">
+              <div
+                className="flex-[2] rounded-[18px] flex items-end p-3"
+                style={{ background: stripes(45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
+              >
+                <span className={photoCaptionCls}>{t('providerProfile.photoBefore')}</span>
               </div>
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
-                <div style={{ flex: 1, borderRadius: 18, background: stripes(-45, 8) }} />
-                <div style={{ flex: 1, borderRadius: 18, background: stripes(45, 8), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#fff' }}>{t('providerProfile.morePhotosCount')}</span>
+              <div className="flex-1 flex flex-col gap-2">
+                <div
+                  className="flex-1 rounded-[18px]"
+                  style={{ background: stripes(-45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
+                />
+                <div
+                  className="flex-1 rounded-[18px] flex items-center justify-center"
+                  style={{ background: stripes(45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
+                >
+                  <span className="text-[13px] font-bold text-white">{t('providerProfile.morePhotosCount')}</span>
                 </div>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 18 }}>
-              <h1 style={{ fontFamily: BRICO, fontSize: 26, fontWeight: 700, margin: 0 }}>{pv.name}</h1>
-              {pv.verified && (
-                <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '3px 9px', fontSize: 11, fontWeight: 700 }}>
-                  {t('common.verifiedFull')}
-                </span>
-              )}
+            <div className="flex items-center gap-2.5 mt-[18px]">
+              {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+              <h1 style={{ fontFamily: BRICO }} className="text-[26px] font-bold m-0">
+                {pv.name}
+              </h1>
+              {pv.verified && <span className="bg-ver-bg text-ver-fg rounded-[10px] py-[3px] px-[9px] text-[11px] font-bold">{t('common.verifiedFull')}</span>}
               <span
                 {...clickable(() => void toggleFav(), { pressed: fav, label: t('a11y.favorite', 'Ulubione') })}
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: '50%',
-                  background: 'var(--surface)',
-                  boxShadow: 'var(--shadow)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: 'var(--accent)',
-                  fontSize: 15,
-                  cursor: 'pointer',
-                }}
+                className="w-[30px] h-[30px] rounded-full bg-surface shadow-[var(--shadow)] flex items-center justify-center text-accent text-[15px] cursor-pointer"
               >
                 {fav ? '♥' : '♡'}
               </span>
             </div>
-            <div style={{ fontSize: 13.5, color: 'var(--muted)', marginTop: 4 }}>
+            <div className="text-[13.5px] text-muted mt-1">
               {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
               {t('providerProfile.respondsIn', { minutes: pv.responseMinutes ?? 15 })}
             </div>
-            <div style={{ fontSize: 14, color: 'var(--muted2)', lineHeight: 1.55, marginTop: 12, maxWidth: 620 }}>{pv.bio}</div>
+            <div className="text-sm text-muted2 leading-[1.55] mt-3 max-w-[620px]">{pv.bio}</div>
             {tagsRow}
 
-            <h2 style={{ fontFamily: BRICO, fontSize: 18, fontWeight: 700, margin: '26px 0 10px' }}>
+            {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+            <h2 style={{ fontFamily: BRICO }} className="text-lg font-bold mx-0 mt-[26px] mb-2.5">
               {t('providerProfile.reviewsTitle')}{' '}
-              <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>
+              <span className="text-[13px] text-muted font-semibold">
                 <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount})
               </span>
             </h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div className="flex flex-col gap-2.5">
               {pv.reviews.map((r) => (
-                <div key={r.id} style={{ background: 'var(--surface)', borderRadius: 18, padding: '14px 16px', boxShadow: 'var(--shadow)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                    <span style={{ fontWeight: 700, fontSize: 13.5 }}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
-                    <span aria-hidden="true" style={{ color: '#e8a13c', fontSize: 12, letterSpacing: 1 }}>
+                <div key={r.id} className="bg-surface rounded-[18px] py-3.5 px-4 shadow-[var(--shadow)]">
+                  <div className="flex justify-between items-baseline">
+                    <span className={reviewNameCls}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
+                    <span aria-hidden="true" className={reviewStarsCls}>
                       {'★★★★★'.slice(0, Math.max(1, Math.min(5, r.rating)))}
                     </span>
                   </div>
-                  <div style={{ fontSize: 13.5, color: 'var(--muted2)', lineHeight: 1.5, marginTop: 5 }}>{r.text}</div>
+                  <div className="text-[13.5px] text-muted2 leading-[1.5] mt-[5px]">{r.text}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div style={{ position: 'sticky', top: 20, background: 'var(--surface)', borderRadius: 22, padding: 18, boxShadow: 'var(--shadow)' }}>
-            <h2 style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: 0, marginBottom: 12 }}>{t('providerProfile.servicesTitle')}</h2>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+          <div className="sticky top-5 bg-surface rounded-[22px] p-[18px] shadow-[var(--shadow)]">
+            {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+            <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold m-0 mb-3">
+              {t('providerProfile.servicesTitle')}
+            </h2>
+            <div className="flex flex-col gap-[9px]">
               {pv.services.map((s) => {
                 const instant = s.priceType !== 'QUOTE';
                 const atClient = s.location === 'CLIENT';
                 return (
-                  <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--bg)', borderRadius: 16, padding: '12px 13px' }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontWeight: 700, fontSize: 13.5 }}>{s.title}</div>
-                      <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
+                  <div key={s.id} className="flex items-center gap-2.5 bg-bg rounded-2xl py-3 px-[13px]">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-bold text-[13.5px]">{s.title}</div>
+                      <div className="text-xs text-muted mt-0.5">
                         {s.durationLabel} · {s.priceLabel}
                       </div>
-                      <div
-                        style={{
-                          display: 'inline-block',
-                          fontSize: 10.5,
-                          fontWeight: 700,
-                          marginTop: 5,
-                          borderRadius: 9,
-                          padding: '3px 8px',
-                          background: atClient ? 'var(--ver-bg)' : 'var(--surface2)',
-                          color: atClient ? 'var(--ver-fg)' : 'var(--accent)',
-                        }}
-                      >
-                        {atClient ? t('providerProfile.atClientTag') : t('providerProfile.atSpotTag', { address: pv.spotAddress ?? '' })}
-                      </div>
+                      <div className={svcTagCls(atClient)}>{atClient ? t('providerProfile.atClientTag') : t('providerProfile.atSpotTag', { address: pv.spotAddress ?? '' })}</div>
                     </div>
                     <span
                       {...clickable(() => book(s))}
-                      style={{
-                        flex: 'none',
-                        background: instant ? 'var(--accent)' : 'transparent',
-                        color: instant ? 'var(--onaccent)' : 'var(--accent)',
-                        border: instant ? 'none' : '1.5px solid var(--accent)',
-                        borderRadius: 13,
-                        padding: '7px 12px',
-                        fontSize: 11.5,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                      }}
+                      className={clsx(
+                        'flex-none rounded-[13px] py-[7px] px-3 text-[11.5px] font-bold cursor-pointer',
+                        instant ? 'bg-accent text-onaccent border-none' : 'bg-transparent text-accent border-[1.5px] border-accent',
+                      )}
                     >
                       {instant ? t('providerProfile.bookInstant') : t('providerProfile.bookQuote')}
                     </span>
@@ -210,126 +195,90 @@ export default function ProviderProfile() {
                 );
               })}
             </div>
-            <div style={{ fontSize: 11.5, color: 'var(--muted)', lineHeight: 1.5, marginTop: 12 }}>{t('providerProfile.paymentNoteDesktop')}</div>
+            <div className="text-[11.5px] text-muted leading-[1.5] mt-3">{t('providerProfile.paymentNoteDesktop')}</div>
           </div>
         </div>
       </div>
     );
   }
 
-  const roundBtn: CSSProperties = {
-    position: 'absolute',
-    top: 26,
-    width: 34,
-    height: 34,
-    borderRadius: '50%',
-    background: 'var(--surface)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: 16,
-    fontWeight: 700,
-    cursor: 'pointer',
-    boxShadow: 'var(--shadow)',
-  };
-
   return (
-    <div style={{ flex: 1, overflow: 'auto', position: 'relative' }}>
-      <div style={{ position: 'relative', height: 200, display: 'flex', gap: 6, padding: '20px 6px 6px', background: 'var(--map)' }}>
-        <div style={{ flex: 2, borderRadius: 16, background: stripes(45, 8), display: 'flex', alignItems: 'flex-end', padding: 10 }}>
-          <span style={{ font: '600 10px ui-monospace, monospace', background: 'rgba(0,0,0,.5)', color: '#fff', borderRadius: 8, padding: '3px 8px' }}>
-            {t('providerProfile.photoBefore')}
-          </span>
+    <div className="flex-1 overflow-auto relative">
+      <div className="relative h-[200px] flex gap-1.5 pt-5 px-1.5 pb-1.5 bg-[var(--map)]">
+        <div
+          className="flex-[2] rounded-2xl flex items-end p-2.5"
+          style={{ background: stripes(45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
+        >
+          <span className={photoCaptionCls}>{t('providerProfile.photoBefore')}</span>
         </div>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <div style={{ flex: 1, borderRadius: 16, background: stripes(-45, 8) }} />
-          <div style={{ flex: 1, borderRadius: 16, background: stripes(45, 8), display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: '#fff' }}>{t('providerProfile.morePhotosCount')}</span>
+        <div className="flex-1 flex flex-col gap-1.5">
+          <div
+            className="flex-1 rounded-2xl"
+            style={{ background: stripes(-45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
+          />
+          <div
+            className="flex-1 rounded-2xl flex items-center justify-center"
+            style={{ background: stripes(45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
+          >
+            <span className="text-xs font-bold text-white">{t('providerProfile.morePhotosCount')}</span>
           </div>
         </div>
-        <span {...clickable(() => navigate(-1), { label: t('a11y.back', 'Wstecz') })} style={{ ...roundBtn, left: 14 }}>
+        <span {...clickable(() => navigate(-1), { label: t('a11y.back', 'Wstecz') })} className={clsx(roundBtnBase, 'left-3.5 text-base')}>
           ‹
         </span>
-        <span
-          {...clickable(() => void toggleFav(), { pressed: fav, label: t('a11y.favorite', 'Ulubione') })}
-          style={{ ...roundBtn, right: 14, color: 'var(--accent)', fontSize: 17 }}
-        >
+        <span {...clickable(() => void toggleFav(), { pressed: fav, label: t('a11y.favorite', 'Ulubione') })} className={clsx(roundBtnBase, 'right-3.5 text-accent text-[17px]')}>
           {fav ? '♥' : '♡'}
         </span>
       </div>
 
-      <div style={{ padding: '16px 20px 40px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <h1 style={{ fontFamily: BRICO, fontSize: 22, fontWeight: 700, margin: 0 }}>{pv.name}</h1>
-          {pv.verified && (
-            <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 8px', fontSize: 10.5, fontWeight: 700 }}>
-              {t('common.verifiedFull')}
-            </span>
-          )}
+      <div className="pt-4 px-5 pb-10">
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+          <h1 style={{ fontFamily: BRICO }} className="text-[22px] font-bold m-0">
+            {pv.name}
+          </h1>
+          {pv.verified && <span className="bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-2 text-[10.5px] font-bold">{t('common.verifiedFull')}</span>}
         </div>
-        <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 4 }}>
+        <div className="text-[13px] text-muted mt-1">
           {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
           {t('providerProfile.respondsIn', { minutes: pv.responseMinutes ?? 15 })}
         </div>
-        <div style={{ fontSize: 13.5, color: 'var(--muted2)', lineHeight: 1.5, marginTop: 10 }}>{pv.bio}</div>
+        <div className="text-[13.5px] text-muted2 leading-[1.5] mt-2.5">{pv.bio}</div>
 
-        <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
-          <span style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 700 }}>
-            {bizLong(pv.businessType, t, brand.appName)}
-          </span>
-          <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
-            {t('providerProfile.travelRadius', { km: pv.travelRadiusKm ?? 10 })}
-          </span>
+        <div className="flex gap-2 mt-3 flex-wrap">
+          <span className={tagVerCls}>{bizLong(pv.businessType, t, brand.appName)}</span>
+          <span className={tagNeutralCls}>{t('providerProfile.travelRadius', { km: pv.travelRadiusKm ?? 10 })}</span>
           {pv.spotAddress && (
-            <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
+            <span className={tagNeutralCls}>
               <span aria-hidden="true">📍</span> {pv.spotAddress}
             </span>
           )}
-          <span style={{ background: 'var(--surface2)', borderRadius: 12, padding: '6px 11px', fontSize: 12, fontWeight: 600, color: 'var(--muted2)' }}>
-            {t('providerProfile.workHours')}
-          </span>
+          <span className={tagNeutralCls}>{t('providerProfile.workHours')}</span>
         </div>
 
-        <h2 style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: '22px 0 10px' }}>{t('providerProfile.servicesTitle')}</h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+        {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+        <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold mx-0 mt-[22px] mb-2.5">
+          {t('providerProfile.servicesTitle')}
+        </h2>
+        <div className="flex flex-col gap-[9px]">
           {pv.services.map((s) => {
             const instant = s.priceType !== 'QUOTE';
             const atClient = s.location === 'CLIENT';
             return (
-              <div key={s.id} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--surface)', borderRadius: 18, padding: '13px 14px', boxShadow: 'var(--shadow)' }}>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 14 }}>{s.title}</div>
-                  <div style={{ fontSize: 12.5, color: 'var(--muted)', marginTop: 2 }}>
+              <div key={s.id} className="flex items-center gap-2.5 bg-surface rounded-[18px] py-[13px] px-3.5 shadow-[var(--shadow)]">
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-sm">{s.title}</div>
+                  <div className="text-[12.5px] text-muted mt-0.5">
                     {s.durationLabel} · {s.priceLabel}
                   </div>
-                  <div
-                    style={{
-                      display: 'inline-block',
-                      fontSize: 10.5,
-                      fontWeight: 700,
-                      marginTop: 5,
-                      borderRadius: 9,
-                      padding: '3px 8px',
-                      background: atClient ? 'var(--ver-bg)' : 'var(--surface2)',
-                      color: atClient ? 'var(--ver-fg)' : 'var(--accent)',
-                    }}
-                  >
-                    {atClient ? t('providerProfile.atClientTag') : t('providerProfile.atSpotTag', { address: pv.spotAddress ?? '' })}
-                  </div>
+                  <div className={svcTagCls(atClient)}>{atClient ? t('providerProfile.atClientTag') : t('providerProfile.atSpotTag', { address: pv.spotAddress ?? '' })}</div>
                 </div>
                 <span
                   {...clickable(() => book(s))}
-                  style={{
-                    flex: 'none',
-                    background: instant ? 'var(--accent)' : 'transparent',
-                    color: instant ? 'var(--onaccent)' : 'var(--accent)',
-                    border: instant ? 'none' : '1.5px solid var(--accent)',
-                    borderRadius: 14,
-                    padding: '7px 13px',
-                    fontSize: 12,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
+                  className={clsx(
+                    'flex-none rounded-[14px] py-[7px] px-[13px] text-xs font-bold cursor-pointer',
+                    instant ? 'bg-accent text-onaccent border-none' : 'bg-transparent text-accent border-[1.5px] border-accent',
+                  )}
                 >
                   {instant ? t('providerProfile.bookInstant') : t('providerProfile.bookQuote')}
                 </span>
@@ -338,22 +287,23 @@ export default function ProviderProfile() {
           })}
         </div>
 
-        <h2 style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, margin: '22px 0 10px' }}>
+        {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+        <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold mx-0 mt-[22px] mb-2.5">
           {t('providerProfile.reviewsTitle')}{' '}
-          <span style={{ fontSize: 13, color: 'var(--muted)', fontWeight: 600 }}>
+          <span className="text-[13px] text-muted font-semibold">
             <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount})
           </span>
         </h2>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
+        <div className="flex flex-col gap-[9px]">
           {pv.reviews.map((r) => (
-            <div key={r.id} style={{ background: 'var(--surface)', borderRadius: 18, padding: '13px 14px', boxShadow: 'var(--shadow)' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                <span style={{ fontWeight: 700, fontSize: 13.5 }}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
-                <span aria-hidden="true" style={{ color: '#e8a13c', fontSize: 12, letterSpacing: 1 }}>
+            <div key={r.id} className="bg-surface rounded-[18px] py-[13px] px-3.5 shadow-[var(--shadow)]">
+              <div className="flex justify-between items-baseline">
+                <span className={reviewNameCls}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
+                <span aria-hidden="true" className={reviewStarsCls}>
                   {'★★★★★'.slice(0, Math.max(1, Math.min(5, r.rating)))}
                 </span>
               </div>
-              <div style={{ fontSize: 13, color: 'var(--muted2)', lineHeight: 1.5, marginTop: 5 }}>{r.text}</div>
+              <div className="text-[13px] text-muted2 leading-[1.5] mt-[5px]">{r.text}</div>
             </div>
           ))}
         </div>

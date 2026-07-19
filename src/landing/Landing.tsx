@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { SparkleIcon } from '../components/ui';
-import { BRICO } from '../lib/format';
 import { clickable } from '../lib/a11y';
 import { useToast } from '../state/ToastContext';
 import { useSiteTheme } from '../state/SiteThemeContext';
@@ -50,21 +49,9 @@ interface ValueItem {
 
 const REVEAL_DIRS = ['left', 'up', 'right'] as const;
 
-const kicker: CSSProperties = {
-  fontSize: 13,
-  fontWeight: 800,
-  letterSpacing: '.14em',
-  textTransform: 'uppercase',
-  color: 'var(--soft)',
-};
-const sectionTitle: CSSProperties = {
-  fontFamily: BRICO,
-  fontSize: 'clamp(30px,4vw,44px)',
-  fontWeight: 800,
-  color: 'var(--ink)',
-  margin: '10px 0 0',
-  letterSpacing: '-.01em',
-};
+const kicker = 'text-[13px] font-extrabold tracking-[.14em] uppercase text-[var(--soft)]';
+const sectionTitle =
+  "font-['Bricolage_Grotesque',sans-serif] text-[clamp(30px,4vw,44px)] font-extrabold text-[var(--ink)] m-[10px_0_0] tracking-[-0.01em]";
 
 /**
  * Marketing landing page (donely-landing.dc.html `isLanding` branch). Rendered at `/` for
@@ -137,90 +124,45 @@ export default function Landing() {
   }));
 
   return (
-    <div className="dt" data-dk={dark ? '1' : '0'} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bgGrad)' }}>
+    <div className="dt min-h-screen flex flex-col bg-[var(--bgGrad)]" data-dk={dark ? '1' : '0'}>
       <SiteHeader />
 
       {/* HERO */}
+      {/* No `overflow: hidden` here: the card's soft glow + the corner blobs must bleed past
+          the 1200px column onto the full-width page bg instead of being clipped into a visible
+          rectangle. Horizontal scroll from the bleed is contained by `.dt { overflow-x: hidden }`. */}
       <section
         id="top"
-        style={{
-          position: 'relative',
-          // No `overflow: hidden` here: the card's soft glow + the corner blobs must bleed past
-          // the 1200px column onto the full-width page bg instead of being clipped into a visible
-          // rectangle. Horizontal scroll from the bleed is contained by `.dt { overflow-x: hidden }`.
-          maxWidth: 1200,
-          margin: '0 auto',
-          width: '100%',
-          boxSizing: 'border-box',
-          padding: 'clamp(36px,6vw,80px) 22px clamp(30px,5vw,56px)',
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: 44,
-          alignItems: 'center',
-        }}
+        className="relative max-w-[1200px] mx-auto w-full box-border p-[clamp(36px,6vw,80px)_22px_clamp(30px,5vw,56px)] flex flex-wrap gap-[44px] items-center"
       >
         <div
           data-plx="0.12"
-          style={{
-            position: 'absolute',
-            top: -120,
-            left: -90,
-            width: 360,
-            height: 360,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 40% 40%,var(--blob1),transparent 70%)',
-            opacity: 0.75,
-            pointerEvents: 'none',
-            zIndex: 0,
-            transform: 'translate3d(0,var(--plx,0px),0)',
-          }}
+          className="absolute -top-[120px] -left-[90px] w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle_at_40%_40%,var(--blob1),transparent_70%)] opacity-75 pointer-events-none z-0"
+          // eslint-disable-next-line react/no-inline-styles -- dynamic: --plx is written at runtime by useParallax()
+          style={{ transform: 'translate3d(0,var(--plx,0px),0)' }}
         />
         <div
           data-plx="-0.08"
-          style={{
-            position: 'absolute',
-            bottom: -140,
-            right: -70,
-            width: 320,
-            height: 320,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 60% 60%,var(--blob2),transparent 70%)',
-            opacity: 0.75,
-            pointerEvents: 'none',
-            zIndex: 0,
-            transform: 'translate3d(0,var(--plx,0px),0)',
-          }}
+          className="absolute -bottom-[140px] -right-[70px] w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle_at_60%_60%,var(--blob2),transparent_70%)] opacity-75 pointer-events-none z-0"
+          // eslint-disable-next-line react/no-inline-styles -- dynamic: --plx is written at runtime by useParallax()
+          style={{ transform: 'translate3d(0,var(--plx,0px),0)' }}
         />
 
-        <div style={{ flex: '1 1 440px', minWidth: 0, position: 'relative', zIndex: 1, animation: 'dfade .5s ease' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--tint)', color: 'var(--accInk)', borderRadius: 99, padding: '7px 14px', fontSize: 13, fontWeight: 700 }}>
-            <span aria-hidden="true" style={{ background: 'var(--okbg)', color: 'var(--okfg)', borderRadius: 7, padding: '2px 7px', fontSize: 11, fontWeight: 800 }}>✓</span>
+        <div className="flex-[1_1_440px] min-w-0 relative z-[1] animate-[dfade_0.5s_ease]">
+          <div className="inline-flex items-center gap-2 bg-[var(--tint)] text-[var(--accInk)] rounded-[99px] p-[7px_14px] text-[13px] font-bold">
+            <span aria-hidden="true" className="bg-[var(--okbg)] text-[var(--okfg)] rounded-[7px] p-[2px_7px] text-[11px] font-extrabold">✓</span>
             {t('landing.hero.badge')}
           </div>
-          <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(40px,6.2vw,74px)', fontWeight: 800, lineHeight: 1.02, letterSpacing: '-.02em', color: 'var(--ink)', margin: '20px 0 0' }}>
+          <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(40px,6.2vw,74px)] font-extrabold leading-[1.02] tracking-[-0.02em] text-[var(--ink)] m-[20px_0_0]">
             {t('landing.hero.title')}
           </h1>
-          <p style={{ fontSize: 'clamp(16px,1.7vw,20px)', color: 'var(--muted)', lineHeight: 1.5, margin: '20px 0 0', maxWidth: 560 }}>{t('landing.hero.sub')}</p>
+          <p className="text-[clamp(16px,1.7vw,20px)] text-muted leading-[1.5] m-[20px_0_0] max-w-[560px]">{t('landing.hero.sub')}</p>
 
-          <div style={{ marginTop: 26, maxWidth: 560 }}>
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: 6,
-                background: 'var(--band)',
-                color: 'var(--bandInk)',
-                borderRadius: 99,
-                padding: '5px 12px',
-                fontSize: 11.5,
-                fontWeight: 800,
-                letterSpacing: '.02em',
-                marginBottom: 10,
-              }}
-            >
+          <div className="mt-[26px] max-w-[560px]">
+            <div className="inline-flex items-center gap-1.5 bg-[var(--band)] text-[var(--bandInk)] rounded-[99px] p-[5px_12px] text-[11.5px] font-extrabold tracking-[.02em] mb-[10px]">
               <span aria-hidden="true">✨</span> {t('landing.hero.aiBadge')}
             </div>
-            <div style={{ background: 'var(--surface)', border: '1.5px solid var(--acc)', borderRadius: 20, padding: '7px 7px 7px 16px', display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 12px 30px rgba(74,52,102,.15)' }}>
+            <div className="bg-surface border-[1.5px] border-[var(--acc)] rounded-[20px] p-[7px_7px_7px_16px] flex items-center gap-[10px] shadow-[0_12px_30px_rgba(74,52,102,.15)]">
               <SparkleIcon size={18} />
               <input
                 value={query}
@@ -229,20 +171,19 @@ export default function Landing() {
                   if (e.key === 'Enter') goLogin();
                 }}
                 placeholder={t('landing.hero.searchPlaceholder')}
-                style={{ flex: 1, minWidth: 0, border: 'none', background: 'transparent', color: 'var(--ink)', font: "600 15px 'Figtree', sans-serif", outline: 'none', padding: '9px 0' }}
+                className="flex-1 min-w-0 border-none bg-transparent text-[var(--ink)] font-semibold text-[15px] font-['Figtree',sans-serif] outline-none py-[9px]"
               />
-              <span {...clickable(goLogin)} className="dt-btn-accent" style={{ flex: 'none', background: 'var(--accGrad)', color: 'var(--onacc)', borderRadius: 14, padding: '12px 20px', fontSize: 15, fontWeight: 800, cursor: 'pointer' }}>
+              <span {...clickable(goLogin)} className="dt-btn-accent flex-none bg-[var(--accGrad)] text-[var(--onacc)] rounded-[14px] p-[12px_20px] text-[15px] font-extrabold cursor-pointer">
                 {t('landing.hero.searchBtn')} <span aria-hidden="true">→</span>
               </span>
             </div>
-            <div style={{ fontSize: 13.5, color: 'var(--soft)', lineHeight: 1.5, marginTop: 10 }}>{t('landing.hero.aiHint')}</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+            <div className="text-[13.5px] text-[var(--soft)] leading-[1.5] mt-[10px]">{t('landing.hero.aiHint')}</div>
+            <div className="flex flex-wrap gap-2 mt-3">
               {searchChips.map((c) => (
                 <span
                   key={c}
                   {...clickable(() => setQuery(c.split(' ').slice(1).join(' ')))}
-                  className="dt-chip"
-                  style={{ background: 'var(--surface)', border: '1px solid var(--border2)', borderRadius: 99, padding: '8px 13px', fontSize: 13, fontWeight: 600, color: 'var(--muted)', cursor: 'pointer' }}
+                  className="dt-chip bg-surface border border-[var(--border2)] rounded-[99px] p-[8px_13px] text-[13px] font-semibold text-muted cursor-pointer"
                 >
                   {c}
                 </span>
@@ -250,55 +191,51 @@ export default function Landing() {
             </div>
           </div>
 
-          <div style={{ marginTop: 20 }}>
-            <span {...clickable(() => document.getElementById('pros')?.scrollIntoView({ behavior: 'smooth' }))} style={{ fontSize: 15, fontWeight: 800, color: 'var(--acc)', cursor: 'pointer' }}>
+          <div className="mt-5">
+            <span {...clickable(() => document.getElementById('pros')?.scrollIntoView({ behavior: 'smooth' }))} className="text-[15px] font-extrabold text-[var(--acc)] cursor-pointer">
               {t('landing.hero.cta2')} <span aria-hidden="true">→</span>
             </span>
           </div>
 
-          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 18, marginTop: 26, fontSize: 14, color: 'var(--soft)' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-              <span aria-hidden="true" style={{ color: '#e8a13c', letterSpacing: 1 }}>★★★★★</span> {t('landing.hero.rating')}
+          <div className="flex flex-wrap items-center gap-[18px] mt-[26px] text-sm text-[var(--soft)]">
+            <span className="inline-flex items-center gap-[7px]">
+              <span aria-hidden="true" className="text-[#e8a13c] tracking-[1px]">★★★★★</span> {t('landing.hero.rating')}
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 7 }}>
-              <span aria-hidden="true" style={{ color: 'var(--okfg)' }}>✓</span> {t('landing.hero.trust2')}
+            <span className="inline-flex items-center gap-[7px]">
+              <span aria-hidden="true" className="text-[var(--okfg)]">✓</span> {t('landing.hero.trust2')}
             </span>
           </div>
         </div>
 
-        <div style={{ flex: '1 1 380px', minWidth: 0, position: 'relative', zIndex: 1, display: 'flex', justifyContent: 'center' }}>
-          <div style={{ position: 'relative', width: '100%', maxWidth: 460 }}>
-            <div style={{ position: 'absolute', inset: '-26px', borderRadius: 44, background: 'linear-gradient(135deg,var(--acc),var(--accHover))', opacity: 0.38, filter: 'blur(46px)' }} />
-            <div style={{ position: 'relative', background: 'var(--surface)', borderRadius: 28, padding: 20, boxShadow: '0 30px 70px rgba(74,52,102,.26)', animation: 'dfloat 6s ease-in-out infinite' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 9, flexWrap: 'wrap' }}>
-                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'var(--tint)', color: 'var(--accInk)', borderRadius: 99, padding: '6px 12px', fontSize: 12.5, fontWeight: 800 }}>
+        <div className="flex-[1_1_380px] min-w-0 relative z-[1] flex justify-center">
+          <div className="relative w-full max-w-[460px]">
+            <div className="absolute -inset-[26px] rounded-[44px] bg-[linear-gradient(135deg,var(--acc),var(--accHover))] opacity-[.38] blur-[46px]" />
+            <div className="relative bg-surface rounded-[28px] p-5 shadow-[0_30px_70px_rgba(74,52,102,.26)] animate-[dfloat_6s_ease-in-out_infinite]">
+              <div className="flex items-center gap-[9px] flex-wrap">
+                <span className="inline-flex items-center gap-1.5 bg-[var(--tint)] text-[var(--accInk)] rounded-[99px] p-[6px_12px] text-[12.5px] font-extrabold">
                   <span aria-hidden="true">✨</span> {t('landing.hero.matchedTitle')}
                 </span>
-                <span style={{ fontSize: 12, color: 'var(--soft)' }}>{t('landing.hero.matchedNote')}</span>
+                <span className="text-xs text-[var(--soft)]">{t('landing.hero.matchedNote')}</span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 14, padding: '11px 13px', marginTop: 14 }}>
+              <div className="flex items-center gap-2 bg-bg border border-border rounded-[14px] p-[11px_13px] mt-[14px]">
                 <SparkleIcon size={15} />
-                <span style={{ fontSize: 13.5, color: 'var(--muted)', fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>„{heroQueryShown}"</span>
+                <span className="text-[13.5px] text-muted font-semibold whitespace-nowrap overflow-hidden text-ellipsis">„{heroQueryShown}"</span>
               </div>
-              <div key={sceneKey} style={{ display: 'flex', flexDirection: 'column', gap: 9, marginTop: 14 }}>
+              <div key={sceneKey} className="flex flex-col gap-[9px] mt-[14px]">
                 {heroMatched.map((p, i) => (
                   <div
                     key={p.init + p.slot}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 12,
-                      background: 'var(--surface)',
-                      border: '1px solid var(--border)',
-                      borderRadius: 16,
-                      padding: '10px 12px',
-                      animation: 'dfade .5s ease both',
-                      animationDelay: `${p.delay}ms`,
-                    }}
+                    className="flex items-center gap-3 bg-surface border border-border rounded-2xl p-[10px_12px] animate-[dfade_0.5s_ease_both]"
+                    // eslint-disable-next-line react/no-inline-styles -- dynamic: per-item stagger delay computed from array index
+                    style={{ animationDelay: `${p.delay}ms` }}
                   >
-                    <div style={{ position: 'relative', width: 48, height: 48, flex: 'none' }}>
-                      <div style={{ width: 48, height: 48, borderRadius: 14, overflow: 'hidden', background: p.bg }}>
-                        <svg aria-hidden="true" viewBox="0 0 64 64" style={{ width: '100%', height: '100%', display: 'block' }}>
+                    <div className="relative w-12 h-12 flex-none">
+                      <div
+                        className="w-12 h-12 rounded-[14px] overflow-hidden"
+                        // eslint-disable-next-line react/no-inline-styles -- dynamic: avatar color varies per matched pro (AVATAR_COLORS[i])
+                        style={{ background: p.bg }}
+                      >
+                        <svg aria-hidden="true" viewBox="0 0 64 64" className="w-full h-full block">
                           <circle cx="32" cy="25" r="12" fill="rgba(255,255,255,.92)" />
                           <path d="M11 60c1-13 10-20 21-20s20 7 21 20z" fill="rgba(255,255,255,.92)" />
                         </svg>
@@ -306,34 +243,19 @@ export default function Landing() {
                       {p.verified && (
                         <span
                           aria-hidden="true"
-                          style={{
-                            position: 'absolute',
-                            right: -4,
-                            bottom: -4,
-                            width: 20,
-                            height: 20,
-                            borderRadius: '50%',
-                            background: 'var(--okbg)',
-                            color: 'var(--okfg)',
-                            border: '2px solid var(--surface)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: 11,
-                            fontWeight: 800,
-                          }}
+                          className="absolute -right-1 -bottom-1 w-5 h-5 rounded-full bg-[var(--okbg)] text-[var(--okfg)] border-2 border-surface flex items-center justify-center text-[11px] font-extrabold"
                         >
                           ✓
                         </span>
                       )}
                     </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: 14.5, fontWeight: 800, color: 'var(--ink)' }}>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[14.5px] font-extrabold text-[var(--ink)]">
                         {p.name} · {p.cat}
                       </div>
-                      <div style={{ fontSize: 12.5, color: 'var(--muted2)', marginTop: 1 }}>{p.meta}</div>
+                      <div className="text-[12.5px] text-muted2 mt-px">{p.meta}</div>
                     </div>
-                    <span style={{ flex: 'none', background: 'var(--acc)', color: 'var(--onacc)', borderRadius: 12, padding: '7px 12px', fontSize: 12, fontWeight: 800, whiteSpace: 'nowrap' }}>{p.slot}</span>
+                    <span className="flex-none bg-[var(--acc)] text-[var(--onacc)] rounded-xl p-[7px_12px] text-xs font-extrabold whitespace-nowrap">{p.slot}</span>
                   </div>
                 ))}
               </div>
@@ -343,63 +265,53 @@ export default function Landing() {
       </section>
 
       {/* TRUST STRIP (dark band, matches design in both themes) */}
-      <section style={{ background: 'var(--band)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: '2px 24px', padding: '26px 22px' }}>
+      <section className="bg-[var(--band)]">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-[2px_24px] p-[26px_22px]">
           {stats.map((s) => (
-            <div key={s.k} style={{ textAlign: 'center', padding: '8px 6px' }}>
-              <div style={{ fontFamily: BRICO, fontSize: 'clamp(24px,3vw,32px)', fontWeight: 800, color: 'var(--bandAcc)' }}>{s.v}</div>
-              <div style={{ fontSize: 13, color: 'var(--bandMuted)', marginTop: 2 }}>{s.k}</div>
+            <div key={s.k} className="text-center p-[8px_6px]">
+              <div className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(24px,3vw,32px)] font-extrabold text-[var(--bandAcc)]">{s.v}</div>
+              <div className="text-[13px] text-[var(--bandMuted)] mt-0.5">{s.k}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* CATEGORIES */}
-      <section id="cats" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: 'clamp(48px,6vw,80px) 22px' }}>
-        <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
-          <div style={kicker}>{t('landing.cats.kicker')}</div>
-          <h2 style={sectionTitle}>{t('landing.cats.title')}</h2>
-          <p style={{ fontSize: 17, color: 'var(--muted)', lineHeight: 1.5, margin: '14px 0 0' }}>{t('landing.cats.sub')}</p>
+      <section id="cats" className="max-w-[1200px] mx-auto w-full box-border p-[clamp(48px,6vw,80px)_22px]">
+        <div className="text-center max-w-[640px] mx-auto">
+          <div className={kicker}>{t('landing.cats.kicker')}</div>
+          <h2 className={sectionTitle}>{t('landing.cats.title')}</h2>
+          <p className="text-[17px] text-muted leading-[1.5] m-[14px_0_0]">{t('landing.cats.sub')}</p>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 16, marginTop: 38 }}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-[38px]">
           {cats.map((c) => (
             <div
               key={c.name}
               {...clickable(goLogin)}
               data-reveal={c.dir}
-              className="dt-card"
+              className="dt-card bg-surface border border-border rounded-[22px] overflow-hidden cursor-pointer"
+              // Must include opacity+transform here (inline overrides the [data-reveal] stylesheet
+              // transition): without them the reveal snapped instead of sliding.
+              // eslint-disable-next-line react/no-inline-styles -- css-cascade: must stay inline to out-prioritize the .dt [data-reveal] stylesheet transition (inline always wins over stylesheet regardless of specificity)
               style={{
-                background: 'var(--surface)',
-                border: '1px solid var(--border)',
-                borderRadius: 22,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                // Must include opacity+transform here (inline overrides the [data-reveal] stylesheet
-                // transition): without them the reveal snapped instead of sliding.
                 transition:
                   'opacity .55s ease, transform .7s cubic-bezier(.2,.75,.3,1), box-shadow .25s ease, border-color .25s ease',
               }}
             >
               <div
-                style={{
-                  height: 120,
-                  position: 'relative',
-                  overflow: 'hidden',
-                  background: `linear-gradient(135deg,${c.sA},${c.sB})`,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className="h-[120px] relative overflow-hidden flex items-center justify-center"
+                // eslint-disable-next-line react/no-inline-styles -- dynamic: per-category gradient stops (CAT_GRADIENTS[i])
+                style={{ background: `linear-gradient(135deg,${c.sA},${c.sB})` }}
               >
-                <div style={{ position: 'absolute', right: -30, top: -30, width: 110, height: 110, borderRadius: '50%', background: 'rgba(255,255,255,.16)' }} />
-                <div style={{ position: 'absolute', left: -24, bottom: -24, width: 80, height: 80, borderRadius: '50%', background: 'rgba(255,255,255,.12)' }} />
-                <div style={{ position: 'absolute', inset: 0, opacity: 0.1, background: 'repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 14px)' }} />
-                <span aria-hidden="true" style={{ position: 'relative', fontSize: 46, filter: 'drop-shadow(0 4px 8px rgba(0,0,0,.18))' }}>{c.icon}</span>
+                <div className="absolute -right-[30px] -top-[30px] w-[110px] h-[110px] rounded-full bg-white/[0.16]" />
+                <div className="absolute -left-[24px] -bottom-[24px] w-20 h-20 rounded-full bg-white/[0.12]" />
+                <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,#fff,#fff_6px,transparent_6px,transparent_14px)]" />
+                <span aria-hidden="true" className="relative text-[46px] drop-shadow-[0_4px_8px_rgba(0,0,0,.18)]">{c.icon}</span>
               </div>
-              <div style={{ padding: '16px 20px 20px' }}>
-                <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, color: 'var(--ink)' }}>{c.name}</div>
-                <div style={{ fontSize: 13.5, color: 'var(--muted2)', marginTop: 4 }}>{c.ex}</div>
-                <div style={{ fontSize: 13, fontWeight: 800, color: 'var(--acc)', marginTop: 12 }}>{c.from}</div>
+              <div className="p-[16px_20px_20px]">
+                <div className="font-['Bricolage_Grotesque',sans-serif] text-[19px] font-bold text-[var(--ink)]">{c.name}</div>
+                <div className="text-[13.5px] text-muted2 mt-1">{c.ex}</div>
+                <div className="text-[13px] font-extrabold text-[var(--acc)] mt-3">{c.from}</div>
               </div>
             </div>
           ))}
@@ -407,36 +319,20 @@ export default function Landing() {
       </section>
 
       {/* HOW IT WORKS (dark, matches design's --howGrad) */}
-      <section id="how" style={{ position: 'relative', overflow: 'hidden', background: 'var(--howGrad)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: 'clamp(48px,6vw,84px) 22px' }}>
-          <div style={{ textAlign: 'center', maxWidth: 640, margin: '0 auto' }}>
-            <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--bandKicker)' }}>{t('landing.how.kicker')}</div>
-            <h2 style={{ fontFamily: BRICO, fontSize: 'clamp(30px,4vw,44px)', fontWeight: 800, color: 'var(--bandInk)', margin: '10px 0 0', letterSpacing: '-.01em' }}>{t('landing.how.title')}</h2>
+      <section id="how" className="relative overflow-hidden bg-[var(--howGrad)]">
+        <div className="max-w-[1200px] mx-auto w-full box-border p-[clamp(48px,6vw,84px)_22px]">
+          <div className="text-center max-w-[640px] mx-auto">
+            <div className="text-[13px] font-extrabold tracking-[.14em] uppercase text-[var(--bandKicker)]">{t('landing.how.kicker')}</div>
+            <h2 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(30px,4vw,44px)] font-extrabold text-[var(--bandInk)] m-[10px_0_0] tracking-[-0.01em]">{t('landing.how.title')}</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 24, marginTop: 44 }}>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-6 mt-[44px]">
             {steps.map((s, i) => (
-              <div key={s.n} data-reveal={REVEAL_DIRS[i % 3]} style={{ textAlign: 'center', padding: 8 }}>
-                <div
-                  style={{
-                    width: 58,
-                    height: 58,
-                    margin: '0 auto',
-                    borderRadius: '50%',
-                    background: 'var(--acc)',
-                    color: 'var(--onacc)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: BRICO,
-                    fontSize: 24,
-                    fontWeight: 800,
-                    boxShadow: '0 8px 20px rgba(122,79,192,.3)',
-                  }}
-                >
+              <div key={s.n} data-reveal={REVEAL_DIRS[i % 3]} className="text-center p-2">
+                <div className="w-[58px] h-[58px] mx-auto rounded-full bg-[var(--acc)] text-[var(--onacc)] flex items-center justify-center font-['Bricolage_Grotesque',sans-serif] text-2xl font-extrabold shadow-[0_8px_20px_rgba(122,79,192,.3)]">
                   {s.n}
                 </div>
-                <div style={{ fontFamily: BRICO, fontSize: 21, fontWeight: 700, color: 'var(--bandInk)', marginTop: 18 }}>{s.t}</div>
-                <div style={{ fontSize: 15, color: 'var(--bandMuted)', lineHeight: 1.55, marginTop: 8, maxWidth: 320, marginLeft: 'auto', marginRight: 'auto' }}>{s.d}</div>
+                <div className="font-['Bricolage_Grotesque',sans-serif] text-[21px] font-bold text-[var(--bandInk)] mt-[18px]">{s.t}</div>
+                <div className="text-[15px] text-[var(--bandMuted)] leading-[1.55] mt-2 max-w-[320px] mx-auto">{s.d}</div>
               </div>
             ))}
           </div>
@@ -444,105 +340,98 @@ export default function Landing() {
       </section>
 
       {/* VALUE PROPS */}
-      <section style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: 'clamp(48px,6vw,80px) 22px' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 18 }}>
+      <section className="max-w-[1200px] mx-auto w-full box-border p-[clamp(48px,6vw,80px)_22px]">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-[18px]">
           {values.map((v, i) => (
-            <div key={v.t} data-reveal={REVEAL_DIRS[i % 3]} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 22, padding: 26 }}>
-              <div aria-hidden="true" style={{ width: 48, height: 48, borderRadius: 14, background: v.bg, color: v.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>{v.icon}</div>
-              <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, color: 'var(--ink)', marginTop: 16 }}>{v.t}</div>
-              <div style={{ fontSize: 15, color: 'var(--muted)', lineHeight: 1.55, marginTop: 8 }}>{v.d}</div>
+            <div key={v.t} data-reveal={REVEAL_DIRS[i % 3]} className="bg-surface border border-border rounded-[22px] p-[26px]">
+              <div
+                aria-hidden="true"
+                className="w-12 h-12 rounded-[14px] flex items-center justify-center text-[22px]"
+                // eslint-disable-next-line react/no-inline-styles -- dynamic: per-value icon tint comes from i18n data (v.bg/v.fg)
+                style={{ background: v.bg, color: v.fg }}
+              >
+                {v.icon}
+              </div>
+              <div className="font-['Bricolage_Grotesque',sans-serif] text-xl font-bold text-[var(--ink)] mt-4">{v.t}</div>
+              <div className="text-[15px] text-muted leading-[1.55] mt-2">{v.d}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* FOR PROS (dark) */}
-      <section id="pros" style={{ background: 'var(--prosGrad)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'relative', maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: 'clamp(48px,6vw,88px) 22px' }}>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 48, alignItems: 'center' }}>
-            <div data-reveal="left" style={{ flex: '1 1 440px', minWidth: 0 }}>
-              <div style={{ fontSize: 13, fontWeight: 800, letterSpacing: '.14em', textTransform: 'uppercase', color: 'var(--bandKicker)' }}>{t('landing.pros.kicker')}</div>
-              <h2 style={{ fontFamily: BRICO, fontSize: 'clamp(32px,4.6vw,52px)', fontWeight: 800, color: 'var(--bandInk)', margin: '12px 0 0', lineHeight: 1.04, letterSpacing: '-.01em' }}>
+      <section id="pros" className="relative overflow-hidden bg-[var(--prosGrad)]">
+        <div className="relative max-w-[1200px] mx-auto w-full box-border p-[clamp(48px,6vw,88px)_22px]">
+          <div className="flex flex-wrap gap-12 items-center">
+            <div data-reveal="left" className="flex-[1_1_440px] min-w-0">
+              <div className="text-[13px] font-extrabold tracking-[.14em] uppercase text-[var(--bandKicker)]">{t('landing.pros.kicker')}</div>
+              <h2 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(32px,4.6vw,52px)] font-extrabold text-[var(--bandInk)] m-[12px_0_0] leading-[1.04] tracking-[-0.01em]">
                 {t('landing.pros.title')}
               </h2>
-              <p style={{ fontSize: 'clamp(16px,1.8vw,19px)', color: 'var(--bandMuted)', lineHeight: 1.55, margin: '18px 0 0' }}>{t('landing.pros.sub')}</p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 24 }}>
+              <p className="text-[clamp(16px,1.8vw,19px)] text-[var(--bandMuted)] leading-[1.55] m-[18px_0_0]">{t('landing.pros.sub')}</p>
+              <div className="flex flex-wrap gap-[10px] mt-6">
                 {prosBullets.map((b) => (
-                  <span key={b} style={{ background: 'var(--bandChip)', color: 'var(--bandChipFg)', borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 700 }}>
+                  <span key={b} className="bg-[var(--bandChip)] text-[var(--bandChipFg)] rounded-xl p-[10px_14px] text-sm font-bold">
                     {b}
                   </span>
                 ))}
               </div>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 30, alignItems: 'center' }}>
+              <div className="flex flex-wrap gap-3 mt-[30px] items-center">
                 {/* This white/dark-text pill (not `var(--acc)`-based like the other CTAs) always sits on
                     the dark `--prosGrad` band regardless of the site's own light/dark mode, so it's kept
                     unchanged in light mode; only in dark mode does it pick up the theme's gradient CTA
                     fill (with the theme's dark on-accent ink for contrast) to match the other primary CTAs. */}
                 <span
                   {...clickable(goLogin)}
-                  className="dt-btn-ghost"
-                  style={{ background: dark ? 'var(--accGrad)' : '#fff', color: dark ? 'var(--onacc)' : '#2a2430', borderRadius: 15, padding: '15px 26px', fontSize: 16, fontWeight: 800, cursor: 'pointer' }}
+                  className="dt-btn-ghost rounded-[15px] p-[15px_26px] text-base font-extrabold cursor-pointer"
+                  // eslint-disable-next-line react/no-inline-styles -- dynamic: swaps per site dark/light mode (see comment above)
+                  style={{ background: dark ? 'var(--accGrad)' : '#fff', color: dark ? 'var(--onacc)' : '#2a2430' }}
                 >
                   {t('landing.pros.cta')} <span aria-hidden="true">→</span>
                 </span>
-                <span style={{ color: 'var(--bandSoft)', fontSize: 14 }}>{t('landing.pros.note')}</span>
+                <span className="text-[var(--bandSoft)] text-sm">{t('landing.pros.note')}</span>
               </div>
             </div>
-            <div data-reveal="right" style={{ flex: '1 1 340px', minWidth: 0 }}>
-              <div style={{ background: 'var(--surface)', borderRadius: 24, padding: 22, boxShadow: '0 30px 70px rgba(0,0,0,.42)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ position: 'relative', width: 52, height: 52, flex: 'none' }}>
-                    <div style={{ width: 52, height: 52, borderRadius: 15, overflow: 'hidden', background: 'var(--acc)' }}>
-                      <svg aria-hidden="true" viewBox="0 0 64 64" style={{ width: '100%', height: '100%', display: 'block' }}>
+            <div data-reveal="right" className="flex-[1_1_340px] min-w-0">
+              <div className="bg-surface rounded-3xl p-[22px] shadow-[0_30px_70px_rgba(0,0,0,.42)]">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-[52px] h-[52px] flex-none">
+                    <div className="w-[52px] h-[52px] rounded-[15px] overflow-hidden bg-[var(--acc)]">
+                      <svg aria-hidden="true" viewBox="0 0 64 64" className="w-full h-full block">
                         <circle cx="32" cy="25" r="12" fill="rgba(255,255,255,.92)" />
                         <path d="M11 60c1-13 10-20 21-20s20 7 21 20z" fill="rgba(255,255,255,.92)" />
                       </svg>
                     </div>
                     <span
                       aria-hidden="true"
-                      style={{
-                        position: 'absolute',
-                        right: -4,
-                        bottom: -4,
-                        width: 20,
-                        height: 20,
-                        borderRadius: '50%',
-                        background: 'var(--okbg)',
-                        color: 'var(--okfg)',
-                        border: '2px solid var(--surface)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: 11,
-                        fontWeight: 800,
-                      }}
+                      className="absolute -right-1 -bottom-1 w-5 h-5 rounded-full bg-[var(--okbg)] text-[var(--okfg)] border-2 border-surface flex items-center justify-center text-[11px] font-extrabold"
                     >
                       ✓
                     </span>
                   </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 15.5, fontWeight: 800, color: 'var(--ink)' }}>{t('landing.pros.card.name')}</div>
-                    <div style={{ fontSize: 12.5, color: 'var(--muted2)' }}>{t('landing.pros.card.role')}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[15.5px] font-extrabold text-[var(--ink)]">{t('landing.pros.card.name')}</div>
+                    <div className="text-[12.5px] text-muted2">{t('landing.pros.card.role')}</div>
                   </div>
                 </div>
-                <div style={{ marginTop: 18, background: 'var(--tint)', borderRadius: 18, padding: '16px 18px' }}>
-                  <div style={{ fontSize: 11, fontWeight: 800, color: 'var(--accInk)', letterSpacing: '.06em' }}>{t('landing.pros.card.earnLabel')}</div>
-                  <div style={{ fontFamily: BRICO, fontSize: 34, fontWeight: 800, color: 'var(--ink)', marginTop: 2 }}>{t('landing.pros.card.earn')}</div>
-                  <div style={{ fontSize: 12, color: 'var(--muted2)', marginTop: 2 }}>{t('landing.pros.card.earnNote')}</div>
+                <div className="mt-[18px] bg-[var(--tint)] rounded-[18px] p-[16px_18px]">
+                  <div className="text-[11px] font-extrabold text-[var(--accInk)] tracking-[.06em]">{t('landing.pros.card.earnLabel')}</div>
+                  <div className="font-['Bricolage_Grotesque',sans-serif] text-[34px] font-extrabold text-[var(--ink)] mt-0.5">{t('landing.pros.card.earn')}</div>
+                  <div className="text-xs text-muted2 mt-0.5">{t('landing.pros.card.earnNote')}</div>
                 </div>
-                <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
-                  <div style={{ flex: 1, background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 14, padding: '12px 14px' }}>
-                    <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 800, color: 'var(--ink)' }}>{t('landing.pros.card.jobs')}</div>
-                    <div style={{ fontSize: 11.5, color: 'var(--muted2)', marginTop: 1 }}>{t('landing.pros.card.jobsLabel')}</div>
+                <div className="flex gap-[10px] mt-3">
+                  <div className="flex-1 bg-bg border border-border rounded-[14px] p-[12px_14px]">
+                    <div className="font-['Bricolage_Grotesque',sans-serif] text-xl font-extrabold text-[var(--ink)]">{t('landing.pros.card.jobs')}</div>
+                    <div className="text-[11.5px] text-muted2 mt-px">{t('landing.pros.card.jobsLabel')}</div>
                   </div>
-                  <div style={{ flex: 1, background: 'var(--bg)', border: '1px solid var(--border)', borderRadius: 14, padding: '12px 14px' }}>
-                    <div style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 800, color: 'var(--ink)' }}>★ {t('landing.pros.card.rating')}</div>
-                    <div style={{ fontSize: 11.5, color: 'var(--muted2)', marginTop: 1 }}>{t('landing.pros.card.ratingLabel')}</div>
+                  <div className="flex-1 bg-bg border border-border rounded-[14px] p-[12px_14px]">
+                    <div className="font-['Bricolage_Grotesque',sans-serif] text-xl font-extrabold text-[var(--ink)]">★ {t('landing.pros.card.rating')}</div>
+                    <div className="text-[11.5px] text-muted2 mt-px">{t('landing.pros.card.ratingLabel')}</div>
                   </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 9, background: 'var(--okbg)', borderRadius: 14, padding: '11px 14px', marginTop: 12 }}>
-                  <span aria-hidden="true" style={{ width: 24, height: 24, borderRadius: '50%', background: '#fff', color: 'var(--okfg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 800, flex: 'none' }}>✓</span>
-                  <span style={{ fontSize: 12.5, color: 'var(--okfg)', fontWeight: 700 }}>{t('landing.pros.card.tax')}</span>
+                <div className="flex items-center gap-[9px] bg-[var(--okbg)] rounded-[14px] p-[11px_14px] mt-3">
+                  <span aria-hidden="true" className="w-6 h-6 rounded-full bg-white text-[var(--okfg)] flex items-center justify-center text-[13px] font-extrabold flex-none">✓</span>
+                  <span className="text-[12.5px] text-[var(--okfg)] font-bold">{t('landing.pros.card.tax')}</span>
                 </div>
               </div>
             </div>
@@ -551,49 +440,27 @@ export default function Landing() {
       </section>
 
       {/* APP DOWNLOAD */}
-      <section id="app" style={{ maxWidth: 1200, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: 'clamp(48px,6vw,84px) 22px' }}>
-        <div
-          style={{
-            background: 'linear-gradient(135deg,var(--tint),var(--bg))',
-            border: '1px solid var(--tintBd)',
-            borderRadius: 28,
-            padding: 'clamp(28px,4vw,52px)',
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 32,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <div data-reveal="left" style={{ flex: '1 1 380px', minWidth: 0 }}>
-            <h2 style={{ fontFamily: BRICO, fontSize: 'clamp(28px,3.6vw,40px)', fontWeight: 800, color: 'var(--ink)', margin: 0, letterSpacing: '-.01em' }}>{t('landing.app.title')}</h2>
-            <p style={{ fontSize: 16.5, color: 'var(--muted)', lineHeight: 1.55, margin: '14px 0 0', maxWidth: 480 }}>{t('landing.app.sub')}</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, marginTop: 24 }}>
-              <div {...clickable(install)} style={{ background: '#17141c', color: '#fff', borderRadius: 14, padding: '11px 20px', cursor: 'pointer' }}>
-                <div style={{ fontSize: 10, color: '#a89fb8' }}>{t('landing.app.dlOn')}</div>
-                <div style={{ fontSize: 18, fontWeight: 800 }}>App Store</div>
+      <section id="app" className="max-w-[1200px] mx-auto w-full box-border p-[clamp(48px,6vw,84px)_22px]">
+        <div className="bg-[linear-gradient(135deg,var(--tint),var(--bg))] border border-[var(--tintBd)] rounded-[28px] p-[clamp(28px,4vw,52px)] flex flex-wrap gap-8 items-center justify-between">
+          <div data-reveal="left" className="flex-[1_1_380px] min-w-0">
+            <h2 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(28px,3.6vw,40px)] font-extrabold text-[var(--ink)] m-0 tracking-[-0.01em]">{t('landing.app.title')}</h2>
+            <p className="text-[16.5px] text-muted leading-[1.55] m-[14px_0_0] max-w-[480px]">{t('landing.app.sub')}</p>
+            <div className="flex flex-wrap gap-3 mt-6">
+              <div {...clickable(install)} className="bg-[#17141c] text-white rounded-[14px] p-[11px_20px] cursor-pointer">
+                <div className="text-[10px] text-[#a89fb8]">{t('landing.app.dlOn')}</div>
+                <div className="text-lg font-extrabold">App Store</div>
               </div>
-              <div {...clickable(install)} style={{ background: '#17141c', color: '#fff', borderRadius: 14, padding: '11px 20px', cursor: 'pointer' }}>
-                <div style={{ fontSize: 10, color: '#a89fb8' }}>{t('landing.app.dlFrom')}</div>
-                <div style={{ fontSize: 18, fontWeight: 800 }}>Google Play</div>
+              <div {...clickable(install)} className="bg-[#17141c] text-white rounded-[14px] p-[11px_20px] cursor-pointer">
+                <div className="text-[10px] text-[#a89fb8]">{t('landing.app.dlFrom')}</div>
+                <div className="text-lg font-extrabold">Google Play</div>
               </div>
             </div>
           </div>
           <div
             data-reveal="right"
-            style={{
-              flex: 'none',
-              width: 150,
-              height: 150,
-              borderRadius: 32,
-              background: 'linear-gradient(135deg,var(--acc),#9d6fd6)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              boxShadow: '0 20px 44px rgba(74,52,102,.3)',
-            }}
+            className="flex-none w-[150px] h-[150px] rounded-[32px] bg-[linear-gradient(135deg,var(--acc),#9d6fd6)] flex items-center justify-center shadow-[0_20px_44px_rgba(74,52,102,.3)]"
           >
-            <svg aria-hidden="true" viewBox="0 0 48 48" style={{ width: 64, color: '#fff' }}>
+            <svg aria-hidden="true" viewBox="0 0 48 48" className="w-16 text-white">
               <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
               <path d="M15 24.5l6.5 6.5L34 18" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
               <path d="M40 2l1.7 5.3L47 9l-5.3 1.7L40 16l-1.7-5.3L34 9l5.3-1.7z" fill="currentColor" opacity=".85" />

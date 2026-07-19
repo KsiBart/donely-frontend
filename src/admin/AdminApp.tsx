@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +21,8 @@ import Categories from './sections/Categories';
 import Billing from './sections/Billing';
 
 const SECTION_PATHS = ['', 'users', 'providers', 'bookings', 'calendars', 'categories', 'billing'] as const;
+
+const BRICO_STYLE = { fontFamily: BRICO };
 
 // ---------- Pending-verification queue shared between Pulpit and Wykonawcy ----------
 
@@ -112,8 +115,8 @@ export default function AdminApp() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-        <span style={{ animation: 'ptpulse 1.6s infinite' }}>
+      <div className="flex min-h-screen items-center justify-center bg-bg">
+        <span className="animate-[ptpulse_1.6s_infinite]">
           <Logo size={54} />
         </span>
         <span className="sr-only" role="status">
@@ -127,16 +130,19 @@ export default function AdminApp() {
 
   if (!isAdmin) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--bg)' }}>
-        <div style={{ background: 'var(--surface)', borderRadius: 20, boxShadow: 'var(--shadow)', padding: '32px 36px', maxWidth: 420, textAlign: 'center' }}>
+      <div className="flex min-h-screen items-center justify-center bg-bg">
+        <div className="max-w-[420px] rounded-[20px] bg-surface px-9 py-8 text-center shadow-[var(--shadow)]">
           <Logo size={40} />
-          <h1 style={{ fontFamily: BRICO, fontSize: 20, fontWeight: 700, margin: '14px 0 8px' }}>{t('admin.common.noAccessTitle')}</h1>
-          <div style={{ fontSize: 13.5, color: 'var(--muted2)', lineHeight: 1.5, marginBottom: 18 }}>
+          {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping */}
+          <h1 className="mt-3.5 mb-2 text-[20px] font-bold" style={BRICO_STYLE}>
+            {t('admin.common.noAccessTitle')}
+          </h1>
+          <div className="mb-[18px] text-[13.5px] leading-[1.5] text-muted2">
             {t('admin.common.noAccessBody', { email: me.email })}
           </div>
           <div
             {...clickable(logout)}
-            style={{ display: 'inline-block', background: 'var(--accent)', color: '#fff', borderRadius: 14, padding: '10px 22px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+            className="inline-block cursor-pointer rounded-[14px] bg-accent px-[22px] py-2.5 text-[13px] font-bold text-white"
           >
             {t('admin.common.logout')}
           </div>
@@ -155,28 +161,23 @@ export default function AdminApp() {
 
   return (
     <PendingCtx.Provider value={pendingValue}>
-      <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)' }}>
+      <div className="flex min-h-screen bg-bg text-text">
         {/* Sidebar */}
         <nav
           aria-label={t('a11y.adminNav', 'Menu administratora')}
-          style={{
-            flex: 'none',
-            width: 224,
-            background: 'var(--surface)',
-            borderRight: '1px solid var(--border)',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '20px 12px',
-          }}
+          className="flex flex-none w-[224px] flex-col border-r border-border bg-surface px-3 py-5"
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '0 10px 20px' }}>
+          <div className="flex items-center gap-[9px] px-2.5 pb-5">
             <Logo size={34} />
             <div>
-              <div style={{ fontFamily: BRICO, fontSize: 15, fontWeight: 700 }}>{brand.appName}</div>
-              <div style={{ fontSize: 10.5, color: 'var(--muted)', fontWeight: 600 }}>{t('admin.common.panelLabel')}</div>
+              {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping */}
+              <div className="text-[15px] font-bold" style={BRICO_STYLE}>
+                {brand.appName}
+              </div>
+              <div className="text-[10.5px] font-semibold text-muted">{t('admin.common.panelLabel')}</div>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <div className="flex flex-col gap-0.5">
             {SECTIONS.map((s) => {
               const active = activePath === s.path;
               const badge = s.path === 'providers' && pendingCount > 0;
@@ -184,34 +185,14 @@ export default function AdminApp() {
                 <div
                   key={s.path || 'dashboard'}
                   {...clickable(() => navigate(s.path ? `/admin/${s.path}` : '/admin'), { pressed: active })}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '10px 12px',
-                    borderRadius: 12,
-                    cursor: 'pointer',
-                    background: active ? 'var(--accent)' : 'transparent',
-                    color: active ? '#fff' : 'var(--muted2)',
-                  }}
+                  className={clsx(
+                    'flex cursor-pointer items-center gap-2.5 rounded-xl px-3 py-2.5',
+                    active ? 'bg-accent text-white' : 'bg-transparent text-muted2',
+                  )}
                 >
-                  <span style={{ flex: 1, fontSize: 13.5, fontWeight: active ? 700 : 600 }}>{s.label}</span>
+                  <span className={clsx('flex-1 text-[13.5px]', active ? 'font-bold' : 'font-semibold')}>{s.label}</span>
                   {badge && (
-                    <span
-                      style={{
-                        minWidth: 18,
-                        height: 18,
-                        borderRadius: 9,
-                        background: '#d64550',
-                        color: '#fff',
-                        fontSize: 10.5,
-                        fontWeight: 700,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '0 5px',
-                      }}
-                    >
+                    <span className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[9px] bg-[#d64550] px-[5px] text-[10.5px] font-bold text-white">
                       {pendingCount}
                     </span>
                   )}
@@ -219,59 +200,31 @@ export default function AdminApp() {
               );
             })}
           </div>
-          <div style={{ marginTop: 'auto' }}>
+          <div className="mt-auto">
             <div
               {...clickable(toggleLang)}
               title={t('admin.common.language') ?? ''}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 9,
-                padding: '9px 12px',
-                cursor: 'pointer',
-                borderRadius: 12,
-              }}
+              className="flex cursor-pointer items-center justify-between gap-[9px] rounded-xl px-3 py-[9px]"
             >
-              <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--muted2)' }}>{t('admin.common.language')}</span>
-              <span style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--accent)', background: 'var(--surface2)', borderRadius: 9, padding: '3px 8px' }}>
-                {lang.toUpperCase()}
-              </span>
+              <span className="text-[12.5px] font-semibold text-muted2">{t('admin.common.language')}</span>
+              <span className="rounded-[9px] bg-surface2 px-2 py-[3px] text-[11.5px] font-bold text-accent">{lang.toUpperCase()}</span>
             </div>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 9,
-                padding: '10px 12px',
-                borderTop: '1px solid var(--border)',
-              }}
-            >
+            <div className="flex items-center gap-[9px] border-t border-border px-3 py-2.5">
               <span
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: '50%',
-                  background: stripes(45, 5),
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: 11,
-                  fontWeight: 700,
-                  color: '#fff',
-                  flex: 'none',
-                }}
+                className="flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full text-[11px] font-bold text-white"
+                // eslint-disable-next-line react/no-inline-styles -- dynamic: stripes() generates a per-avatar gradient string at runtime
+                style={{ background: stripes(45, 5) }}
               >
                 AD
               </span>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 12.5, fontWeight: 700 }}>Admin</div>
-                <div style={{ fontSize: 10.5, color: 'var(--muted)', overflow: 'hidden', textOverflow: 'ellipsis' }}>{me.email}</div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[12.5px] font-bold">Admin</div>
+                <div className="overflow-hidden text-ellipsis text-[10.5px] text-muted">{me.email}</div>
               </div>
               <span
                 {...clickable(logout, { label: t('admin.common.logout') })}
                 title={t('admin.common.logout') ?? ''}
-                style={{ fontSize: 11, fontWeight: 700, color: '#d64550', cursor: 'pointer' }}
+                className="cursor-pointer text-[11px] font-bold text-[#d64550]"
               >
                 <span aria-hidden="true">⎋</span>
               </span>
@@ -280,22 +233,15 @@ export default function AdminApp() {
         </nav>
 
         {/* Main column */}
-        <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-          <div
-            style={{
-              flex: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 14,
-              padding: '16px 28px',
-              background: 'var(--surface)',
-              borderBottom: '1px solid var(--border)',
-            }}
-          >
-            <h1 style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, margin: 0 }}>{sectionTitle}</h1>
-            <span style={{ marginLeft: 'auto', fontSize: 12, color: 'var(--muted)' }}>{headerDate(toIntlLocale(i18n.language))}</span>
+        <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex flex-none items-center gap-3.5 border-b border-border bg-surface px-7 py-4">
+            {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping */}
+            <h1 className="m-0 text-[19px] font-bold" style={BRICO_STYLE}>
+              {sectionTitle}
+            </h1>
+            <span className="ml-auto text-[12px] text-muted">{headerDate(toIntlLocale(i18n.language))}</span>
           </div>
-          <main style={{ flex: 1, overflow: 'auto', padding: '24px 28px', position: 'relative' }}>
+          <main className="relative flex-1 overflow-auto px-7 py-6">
             <Routes>
               <Route index element={<Dashboard />} />
               <Route path="users" element={<Users />} />
@@ -310,22 +256,7 @@ export default function AdminApp() {
         </div>
 
         {toast && (
-          <div
-            style={{
-              position: 'fixed',
-              left: '50%',
-              bottom: 28,
-              transform: 'translateX(-50%)',
-              background: '#2a2430',
-              color: '#faf7f2',
-              borderRadius: 14,
-              padding: '12px 20px',
-              fontSize: 13,
-              fontWeight: 600,
-              animation: 'crmfade .25s ease',
-              zIndex: 20,
-            }}
-          >
+          <div className="fixed bottom-7 left-1/2 z-20 -translate-x-1/2 animate-[crmfade_.25s_ease] rounded-[14px] bg-[#2a2430] px-5 py-3 text-[13px] font-semibold text-[#faf7f2]">
             {toast}
           </div>
         )}

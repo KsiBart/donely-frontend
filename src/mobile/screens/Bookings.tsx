@@ -1,5 +1,6 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import {
   useAcceptQuoteMutation,
   useApproveCompletionMutation,
@@ -33,6 +34,13 @@ function hasReview(b: Booking): boolean {
 function isFrozen(b: Booking): boolean {
   return b.payment?.status === 'HELD';
 }
+
+// Bookings.tsx section eyebrow ("NADCHODZĄCE" / "ZAKOŃCZONE").
+const sectionLabelCls = 'text-xs font-bold text-muted tracking-[0.06em] uppercase mb-2.5';
+
+// Full-width accent CTA rows (payNow / approveCompletion / reviewSend) share this padding=11 shape
+// — 1px off buttonVariants('md') (which pairs 16/10, not a uniform 11), so built by hand here.
+const ctaGlowCls = 'text-center bg-accent text-onaccent rounded-[14px] p-[11px] text-[13px] font-bold cursor-pointer shadow-[var(--glow)]';
 
 export default function BookingsTab() {
   const { t, i18n } = useTranslation();
@@ -156,30 +164,16 @@ export default function BookingsTab() {
     }
   };
 
-  const sectionLabel: CSSProperties = {
-    fontSize: 12,
-    fontWeight: 700,
-    color: 'var(--muted)',
-    letterSpacing: '.06em',
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  };
-
   return (
-    <div
-      style={
-        isDesktop
-          ? { maxWidth: 760, margin: '0 auto', padding: '28px 28px 48px' }
-          : { flex: 1, overflow: 'auto', padding: '20px 20px 18px' }
-      }
-    >
-      <h1 style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: '8px 0 18px' }}>{t('bookings.title')}</h1>
+    <div className={clsx(isDesktop ? 'max-w-[760px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-[18px]')}>
+      {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-[18px]">
+        {t('bookings.title')}
+      </h1>
 
-      <div style={sectionLabel}>{t('bookings.upcomingLabel')}</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 22 }}>
-        {upcoming.length === 0 && (
-          <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('bookings.noneUpcoming')}</div>
-        )}
+      <div className={sectionLabelCls}>{t('bookings.upcomingLabel')}</div>
+      <div className="flex flex-col gap-2.5 mb-[22px]">
+        {upcoming.length === 0 && <div className="text-[13px] text-muted">{t('bookings.noneUpcoming')}</div>}
         {upcoming.map((b) => {
           const quoted = b.type === 'QUOTE' && b.status === 'PENDING' && b.quoteStatus === 'QUOTED';
           const awaiting = b.type === 'QUOTE' && b.status === 'PENDING' && b.quoteStatus === 'AWAITING';
@@ -213,198 +207,112 @@ export default function BookingsTab() {
           return (
             <div
               key={b.id}
-              style={{
-                background: 'var(--surface)',
-                borderRadius: 20,
-                padding: 14,
-                boxShadow: 'var(--shadow)',
-                animation: 'dwfade .3s ease',
-                border: awaitingApproval || needsPayment ? '1.5px solid var(--accent)' : '1.5px solid transparent',
-              }}
+              className={clsx(
+                'bg-surface rounded-[20px] p-3.5 shadow-[var(--shadow)] animate-[dwfade_.3s_ease] border-[1.5px]',
+                awaitingApproval || needsPayment ? 'border-accent' : 'border-transparent',
+              )}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <div className="flex items-center gap-2.5">
                 <AvatarTile init={providerInit(b)} size={44} radius={13} fontSize={14} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 14.5 }}>{serviceTitle(b)}</div>
-                  <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-[14.5px]">{serviceTitle(b)}</div>
+                  <div className="text-[12.5px] text-muted">
                     {providerName(b)} · {when}
                   </div>
-                  <div style={{ fontSize: 11.5, color: 'var(--muted2)', marginTop: 2 }}>{locLine(b)}</div>
+                  <div className="text-[11.5px] text-muted2 mt-0.5">{locLine(b)}</div>
                 </div>
                 <span
-                  style={{
-                    flex: 'none',
-                    fontSize: 11,
-                    fontWeight: 700,
-                    borderRadius: 10,
-                    padding: '4px 9px',
-                    background: stOk ? 'var(--ver-bg)' : 'var(--surface2)',
-                    color: stOk ? 'var(--ver-fg)' : needsPayment ? 'var(--warn)' : 'var(--muted2)',
-                  }}
+                  className={clsx(
+                    'flex-none text-[11px] font-bold rounded-[10px] py-1 px-[9px]',
+                    stOk ? 'bg-ver-bg text-ver-fg' : 'bg-surface2',
+                    !stOk && (needsPayment ? 'text-warn' : 'text-muted2'),
+                  )}
                 >
                   {statusLabel}
                 </span>
               </div>
               {frozen && (
-                <div style={{ marginTop: 8 }}>
-                  <span
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 5,
-                      fontSize: 10.5,
-                      fontWeight: 700,
-                      borderRadius: 9,
-                      padding: '3px 8px',
-                      background: 'var(--surface2)',
-                      color: 'var(--accent)',
-                    }}
-                  >
+                <div className="mt-2">
+                  <span className="inline-flex items-center gap-[5px] text-[10.5px] font-bold rounded-[9px] py-[3px] px-2 bg-surface2 text-accent">
                     <span aria-hidden="true">🔒</span> {t('bookings.frozenBadge')}
                   </span>
                 </div>
               )}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 11, paddingTop: 11, borderTop: '1px solid var(--border)' }}>
-                <span style={{ fontSize: 13, color: 'var(--muted2)' }}>{price}</span>
-                <span
-                  {...clickable(() => setExpanded(isExpanded ? null : b.id), { expanded: isExpanded })}
-                  style={{ fontSize: 12.5, fontWeight: 700, color: 'var(--accent)', cursor: 'pointer' }}
-                >
+              <div className="flex justify-between items-center mt-[11px] pt-[11px] border-t border-border">
+                <span className="text-[13px] text-muted2">{price}</span>
+                <span {...clickable(() => setExpanded(isExpanded ? null : b.id), { expanded: isExpanded })} className="text-[12.5px] font-bold text-accent cursor-pointer">
                   {t('bookings.detailsCta')}
                 </span>
               </div>
               {quoted && (
-                <div style={{ display: 'flex', gap: 9, marginTop: 12 }}>
+                <div className="flex gap-[9px] mt-3">
                   <span
                     {...clickable(() => void declineQuote(b))}
-                    style={{ flex: 1, textAlign: 'center', border: '1.5px solid var(--border)', color: 'var(--muted2)', borderRadius: 14, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+                    className="flex-1 text-center border-[1.5px] border-border text-muted2 rounded-[14px] p-2.5 text-[13px] font-bold cursor-pointer"
                   >
                     {t('bookings.decline')}
                   </span>
                   <span
                     {...clickable(() => void acceptQuote(b))}
-                    style={{ flex: 2, textAlign: 'center', background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: 10, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+                    className="flex-[2] text-center bg-accent text-onaccent rounded-[14px] p-2.5 text-[13px] font-bold cursor-pointer"
                   >
                     {t('bookings.accept')}
                   </span>
                 </div>
               )}
               {needsPayment && (
-                <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+                <div className="mt-3 pt-3 border-t border-border">
                   {payFor === b.id ? (
                     <>
-                      <div
-                        style={{
-                          fontSize: 11.5,
-                          fontWeight: 700,
-                          color: 'var(--muted)',
-                          letterSpacing: '.05em',
-                          textTransform: 'uppercase',
-                          marginBottom: 8,
-                        }}
-                      >
-                        {t('booking.paymentMethodLabel')}
-                      </div>
-                      <div role="radiogroup" aria-label={t('booking.paymentMethodLabel')} style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 10 }}>
+                      <div className="text-[11.5px] font-bold text-muted tracking-[0.05em] uppercase mb-2">{t('booking.paymentMethodLabel')}</div>
+                      <div role="radiogroup" aria-label={t('booking.paymentMethodLabel')} className="flex flex-col gap-2 mb-2.5">
                         {brand.paymentMethods.map((m) => {
                           const sel = m === payMethod;
                           return (
                             <div
                               key={m}
                               {...clickable(() => setPayMethod(m), { pressed: sel })}
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 10,
-                                borderRadius: 14,
-                                padding: '10px 12px',
-                                cursor: 'pointer',
-                                border: sel ? '2px solid var(--accent)' : '1.5px solid var(--border)',
-                              }}
+                              className={clsx('flex items-center gap-2.5 rounded-[14px] py-2.5 px-3 cursor-pointer', sel ? 'border-2 border-accent' : 'border-[1.5px] border-border')}
                             >
-                              <span
-                                style={{
-                                  width: 16,
-                                  height: 16,
-                                  borderRadius: '50%',
-                                  border: sel ? '5px solid var(--accent)' : '2px solid var(--border)',
-                                  flex: 'none',
-                                }}
-                              />
-                              <span style={{ fontSize: 13, fontWeight: 700 }}>{paymentMethodLabel(m, t)}</span>
+                              <span className={clsx('w-4 h-4 rounded-full flex-none', sel ? 'border-[5px] border-accent' : 'border-2 border-border')} />
+                              <span className="text-[13px] font-bold">{paymentMethodLabel(m, t)}</span>
                             </div>
                           );
                         })}
                       </div>
                       <div
                         {...clickable(() => void payNow(b))}
-                        style={{
-                          textAlign: 'center',
-                          background: payMethod ? 'var(--accent)' : 'var(--surface2)',
-                          color: payMethod ? 'var(--onaccent)' : 'var(--navmuted)',
-                          borderRadius: 14,
-                          padding: 11,
-                          fontSize: 13,
-                          fontWeight: 700,
-                          cursor: 'pointer',
-                          boxShadow: payMethod ? 'var(--glow)' : 'none',
-                          opacity: payBusy ? 0.7 : 1,
-                        }}
+                        className={clsx(
+                          'text-center rounded-[14px] p-[11px] text-[13px] font-bold cursor-pointer',
+                          payMethod ? 'bg-accent text-onaccent shadow-[var(--glow)]' : 'bg-surface2 text-[var(--navmuted)] shadow-none',
+                          payBusy && 'opacity-70',
+                        )}
                       >
                         {t('bookings.payNowCta')}
                       </div>
                     </>
                   ) : (
-                    <div
-                      {...clickable(() => setPayFor(b.id))}
-                      style={{
-                        textAlign: 'center',
-                        background: 'var(--accent)',
-                        color: 'var(--onaccent)',
-                        borderRadius: 14,
-                        padding: 11,
-                        fontSize: 13,
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        boxShadow: 'var(--glow)',
-                      }}
-                    >
+                    <div {...clickable(() => setPayFor(b.id))} className={ctaGlowCls}>
                       {t('bookings.payNowCta')}
                     </div>
                   )}
                 </div>
               )}
               {awaitingApproval && (
-                <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--border)' }}>
-                  <div style={{ fontSize: 12, color: 'var(--muted2)', lineHeight: 1.45, marginBottom: 10 }}>
-                    {t('bookings.approveCompletionNote')}
-                  </div>
-                  <div
-                    {...clickable(() => void approveCompletion(b))}
-                    style={{
-                      textAlign: 'center',
-                      background: 'var(--accent)',
-                      color: 'var(--onaccent)',
-                      borderRadius: 14,
-                      padding: 11,
-                      fontSize: 13,
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      boxShadow: 'var(--glow)',
-                      opacity: approving === b.id ? 0.7 : 1,
-                    }}
-                  >
+                <div className="mt-3 pt-3 border-t border-border">
+                  <div className="text-xs text-muted2 leading-[1.45] mb-2.5">{t('bookings.approveCompletionNote')}</div>
+                  <div {...clickable(() => void approveCompletion(b))} className={clsx(ctaGlowCls, approving === b.id && 'opacity-70')}>
                     {t('bookings.approveCompletionCta')}
                   </div>
                 </div>
               )}
               {isExpanded && (
-                <div style={{ marginTop: 10, fontSize: 12.5, color: 'var(--muted2)', lineHeight: 1.5 }}>
-                  {b.notes && <div style={{ marginBottom: 8 }}>{b.notes}</div>}
+                <div className="mt-2.5 text-[12.5px] text-muted2 leading-[1.5]">
+                  {b.notes && <div className="mb-2">{b.notes}</div>}
                   {(b.status === 'CONFIRMED' || b.status === 'PENDING') && (
                     <div
                       {...clickable(() => void cancel(b))}
-                      style={{ textAlign: 'center', border: '1.5px solid #d64550', color: '#d64550', borderRadius: 14, padding: 9, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+                      className="text-center border-[1.5px] border-danger text-danger rounded-[14px] p-[9px] text-[13px] font-bold cursor-pointer"
                     >
                       {t('bookings.cancel')}
                     </div>
@@ -416,49 +324,37 @@ export default function BookingsTab() {
         })}
       </div>
 
-      <div style={sectionLabel}>{t('bookings.completedLabel')}</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {completed.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('bookings.noneCompleted')}</div>}
+      <div className={sectionLabelCls}>{t('bookings.completedLabel')}</div>
+      <div className="flex flex-col gap-2.5">
+        {completed.length === 0 && <div className="text-[13px] text-muted">{t('bookings.noneCompleted')}</div>}
         {completed.map((b) => {
           const canReview = b.status === 'COMPLETED' && !hasReview(b) && !reviewed.has(b.id);
           const isReviewing = reviewFor === b.id;
           return (
-            <div key={b.id} style={{ background: 'var(--surface)', borderRadius: 20, padding: 14, boxShadow: 'var(--shadow)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div key={b.id} className="bg-surface rounded-[20px] p-3.5 shadow-[var(--shadow)]">
+              <div className="flex items-center gap-2.5">
                 <AvatarTile init={providerInit(b)} size={44} radius={13} fontSize={14} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontWeight: 700, fontSize: 14.5 }}>{serviceTitle(b)}</div>
-                  <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-[14.5px]">{serviceTitle(b)}</div>
+                  <div className="text-[12.5px] text-muted">
                     {providerName(b)} · {dayLabel(b.startAt, t) || whenLabel(b.startAt, b.preferredWindow, t)} · {b.priceLabel}
                   </div>
                 </div>
                 {b.status !== 'COMPLETED' && (
-                  <span
-                    style={{
-                      flex: 'none',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      borderRadius: 10,
-                      padding: '4px 9px',
-                      background: 'var(--danger-bg)',
-                      color: '#d64550',
-                    }}
-                  >
-                    {bookingStatusLabel(b.status, t)}
-                  </span>
+                  <span className="flex-none text-[11px] font-bold rounded-[10px] py-1 px-[9px] bg-danger-bg text-danger">{bookingStatusLabel(b.status, t)}</span>
                 )}
               </div>
               {canReview && !isReviewing && (
                 <div
                   {...clickable(() => setReviewFor(b.id))}
-                  style={{ marginTop: 11, textAlign: 'center', border: '1.5px solid var(--accent)', color: 'var(--accent)', borderRadius: 14, padding: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
+                  className="mt-[11px] text-center border-[1.5px] border-accent text-accent rounded-[14px] p-2 text-[13px] font-bold cursor-pointer"
                 >
                   {t('bookings.reviewCta')}
                 </div>
               )}
               {canReview && isReviewing && (
-                <div style={{ marginTop: 11, paddingTop: 11, borderTop: '1px solid var(--border)' }}>
-                  <div role="radiogroup" aria-label={t('a11y.starRating', 'Ocena w gwiazdkach')} style={{ display: 'flex', justifyContent: 'center', gap: 6, marginBottom: 10 }}>
+                <div className="mt-[11px] pt-[11px] border-t border-border">
+                  <div role="radiogroup" aria-label={t('a11y.starRating', 'Ocena w gwiazdkach')} className="flex justify-center gap-1.5 mb-2.5">
                     {[1, 2, 3, 4, 5].map((n) => (
                       <span
                         key={n}
@@ -466,7 +362,7 @@ export default function BookingsTab() {
                           pressed: n <= reviewRating,
                           label: t('a11y.starLabel', '{{n}} z 5 gwiazdek', { n }),
                         })}
-                        style={{ fontSize: 26, cursor: 'pointer', color: n <= reviewRating ? '#e8a13c' : 'var(--border)' }}
+                        className={clsx('text-[26px] cursor-pointer', n <= reviewRating ? 'text-warn' : 'text-border')}
                       >
                         ★
                       </span>
@@ -477,24 +373,9 @@ export default function BookingsTab() {
                     onChange={(e) => setReviewText(e.target.value)}
                     placeholder={t('bookings.reviewPlaceholder') ?? ''}
                     aria-label={t('bookings.reviewPlaceholder') ?? ''}
-                    style={{
-                      width: '100%',
-                      boxSizing: 'border-box',
-                      height: 80,
-                      borderRadius: 16,
-                      border: '1.5px solid var(--border)',
-                      background: 'var(--surface)',
-                      color: 'var(--text)',
-                      padding: '12px 14px',
-                      font: "500 14px 'Figtree', sans-serif",
-                      resize: 'none',
-                      outline: 'none',
-                    }}
+                    className="w-full box-border h-20 rounded-2xl border-[1.5px] border-border bg-surface text-text py-3 px-3.5 font-medium text-sm font-['Figtree',sans-serif] resize-none outline-none"
                   />
-                  <div
-                    {...clickable(() => void sendReview(b))}
-                    style={{ marginTop: 10, textAlign: 'center', background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: 9, fontSize: 13, fontWeight: 700, cursor: 'pointer' }}
-                  >
+                  <div {...clickable(() => void sendReview(b))} className="mt-2.5 text-center bg-accent text-onaccent rounded-[14px] p-[9px] text-[13px] font-bold cursor-pointer">
                     {t('bookings.reviewSend')}
                   </div>
                 </div>

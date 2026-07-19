@@ -24,6 +24,7 @@ function RouteTitle() {
     let section = exact[pathname];
     if (!section) {
       if (pathname.startsWith('/admin')) section = t('title.admin');
+      else if (pathname.startsWith('/pro')) section = t('title.pro');
       else if (pathname.startsWith('/provider')) section = t('title.provider');
       else if (pathname.startsWith('/book')) section = t('title.book');
     }

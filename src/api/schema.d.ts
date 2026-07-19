@@ -68,6 +68,22 @@ export interface paths {
         patch: operations["UsersController_updateMe"];
         trace?: never;
     };
+    "/me/become-pro": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["UsersController_becomePro"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/categories": {
         parameters: {
             query?: never;
@@ -976,16 +992,26 @@ export interface components {
             lng?: number | null;
             savedAddresses?: components["schemas"]["SavedAddressEntity"][] | null;
             providerProfileId?: number | null;
+            providerStatus?: string | null;
+            isPro: boolean;
+            proTermsAcceptedAt?: string | null;
+            emailNotifications: boolean;
         };
         VerifyResponseEntity: {
             accessToken: string;
             user: components["schemas"]["MeEntity"];
+        };
+        SavedAddressDto: {
+            label?: string;
+            addr?: string;
         };
         UpdateMeDto: {
             name?: string;
             locationLabel?: string;
             lat?: number;
             lng?: number;
+            savedAddresses?: components["schemas"]["SavedAddressDto"][];
+            emailNotifications?: boolean;
         };
         CategoryEntity: {
             id: number;
@@ -1258,10 +1284,11 @@ export interface components {
             taxMonthLabel: string;
         };
         EventLogItemEntity: {
-            id: number;
             text: string;
-            dotColor: string;
-            createdAt: string;
+            /** @description dot color hex */
+            dot: string;
+            /** @description pre-formatted relative time, e.g. "3 min temu" */
+            time: string;
         };
         AdminUserEntity: {
             id: number;
@@ -1294,29 +1321,23 @@ export interface components {
             rating?: number;
             reviewCount?: number;
         };
-        AdminBookingCustomerSummary: {
-            name: string;
-        };
-        AdminBookingProviderSummary: {
-            name: string;
-        };
-        AdminBookingServiceSummary: {
-            title: string;
-        };
         AdminBookingRowEntity: {
             id: number;
+            /** @description customer display name */
+            customer: string;
+            /** @description provider display name */
+            provider: string;
+            /** @description service title */
+            service: string;
+            /** @description pre-formatted schedule label, e.g. "wt 21.07 9:00" or "do ustalenia" */
+            when: string;
+            /** @description pre-formatted price label, e.g. "120 zł" */
+            price: string;
             /** @enum {string} */
             status: "PENDING" | "CONFIRMED" | "AWAITING_APPROVAL" | "COMPLETED" | "CANCELLED" | "DECLINED";
-            customerName?: string;
-            customer?: components["schemas"]["AdminBookingCustomerSummary"] | null;
-            providerName?: string;
-            provider?: components["schemas"]["AdminBookingProviderSummary"] | null;
-            serviceTitle?: string;
-            service?: components["schemas"]["AdminBookingServiceSummary"] | null;
-            startAt?: string | null;
-            preferredWindow?: string | null;
-            whenLabel?: string;
-            priceLabel?: string;
+            /** @description pre-formatted status label (PL) */
+            statusLabel: string;
+            canCancel: boolean;
         };
         AdminCalendarCellEntity: {
             /** @enum {string} */
@@ -1355,18 +1376,17 @@ export interface components {
         UpdateCategoryDto: {
             active: boolean;
         };
-        AdminDocumentProviderSummary: {
-            name: string;
-        };
         AdminDocumentEntity: {
             number: string;
-            who?: string;
+            /** @description provider display name (canonical field — always present) */
+            who: string;
+            /** @description alias of `who` */
             providerName?: string;
-            provider?: components["schemas"]["AdminDocumentProviderSummary"] | null;
+            provider?: Record<string, never> | null;
             type: string;
             status: string;
-            amount?: string;
-            tax?: string;
+            amount: string;
+            tax: string;
         };
         AdminBillingEntity: {
             docsCount: number;
@@ -1376,54 +1396,57 @@ export interface components {
             privatePersonsCount?: number;
             documents: components["schemas"]["AdminDocumentEntity"][];
         };
-        AdminPaymentCustomerSummary: {
-            name: string;
-        };
-        AdminPaymentProviderSummary: {
-            name: string;
-        };
         AdminPaymentRowEntity: {
             id: number;
             bookingId: number;
             /** @enum {string} */
             method: "P24_BLIK" | "PAYPAL";
+            methodLabel: string;
             /** @enum {string} */
             status: "PENDING" | "HELD" | "CAPTURED" | "RELEASED" | "REFUNDED" | "FAILED";
+            statusLabel: string;
             /** @description grosze (int) */
             amount: number;
+            /** @description pre-formatted, e.g. "120 zł" */
             amountLabel?: string;
-            currency?: string;
-            customerName?: string;
-            customer?: components["schemas"]["AdminPaymentCustomerSummary"] | null;
-            providerName?: string;
-            provider?: components["schemas"]["AdminPaymentProviderSummary"] | null;
-            createdAt?: string;
+            currency: string;
+            /** @description customer display name */
+            customerName: string;
+            /** @description provider display name */
+            providerName: string;
+            customer?: Record<string, never> | null;
+            provider?: Record<string, never> | null;
+            externalId?: string | null;
+            redirectUrl?: string | null;
             heldAt?: string | null;
+            capturedAt?: string | null;
             releasedAt?: string | null;
-        };
-        AdminPayoutProviderSummary: {
-            name: string;
+            refundedAt?: string | null;
+            createdAt: string;
         };
         AdminPayoutRowEntity: {
             id: number;
-            providerProfileId?: number;
-            bookingId?: number;
-            providerName?: string;
-            provider?: components["schemas"]["AdminPayoutProviderSummary"] | null;
+            /** @description provider display name */
+            providerName: string;
+            provider?: Record<string, never> | null;
+            bookingId: number;
             /** @description grosze (int) */
-            grossAmount?: number;
+            grossAmount: number;
+            /** @description pre-formatted, e.g. "120 zł" */
             grossAmountLabel?: string;
             /** @description grosze (int) */
-            taxAmount?: number;
+            taxAmount: number;
+            /** @description pre-formatted, e.g. "120 zł" */
             taxAmountLabel?: string;
             /** @description grosze (int) */
-            netAmount?: number;
+            netAmount: number;
+            /** @description pre-formatted, e.g. "120 zł" */
             netAmountLabel?: string;
             /** @enum {string} */
             status: "PENDING" | "PAID";
-            statusLabel?: string;
+            statusLabel: string;
             batchDate?: string | null;
-            createdAt?: string;
+            createdAt: string;
         };
         RunPayoutBatchResponseEntity: {
             batched?: number;
@@ -1534,6 +1557,25 @@ export interface operations {
                 "application/json": components["schemas"]["UpdateMeDto"];
             };
         };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeEntity"];
+                };
+            };
+        };
+    };
+    UsersController_becomePro: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             200: {
                 headers: {

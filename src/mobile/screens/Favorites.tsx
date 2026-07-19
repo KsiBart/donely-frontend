@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { useFavoritesQuery } from '../../api/hooks';
 import { toIntlLocale } from '../../i18n';
 import { useIsDesktop } from '../../lib/useIsDesktop';
@@ -26,48 +27,23 @@ export default function Favorites() {
   }, [error]);
 
   return (
-    <div
-      style={
-        isDesktop
-          ? { maxWidth: 900, margin: '0 auto', padding: '28px 28px 48px' }
-          : { flex: 1, overflow: 'auto', padding: '20px 20px 18px' }
-      }
-    >
-      <h1 style={{ fontFamily: BRICO, fontSize: 24, fontWeight: 700, margin: '8px 0 18px' }}>{t('favorites.title')}</h1>
-      <div style={isDesktop ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 } : { display: 'flex', flexDirection: 'column', gap: 10 }}>
-        {loaded && favs.length === 0 && (
-          <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('favorites.empty')}</div>
-        )}
+    <div className={clsx(isDesktop ? 'max-w-[900px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-[18px]')}>
+      {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
+      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-[18px]">
+        {t('favorites.title')}
+      </h1>
+      <div className={clsx(isDesktop ? 'grid grid-cols-2 gap-3.5' : 'flex flex-col gap-2.5')}>
+        {loaded && favs.length === 0 && <div className="text-[13px] text-muted">{t('favorites.empty')}</div>}
         {favs.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              display: 'flex',
-              gap: 12,
-              background: 'var(--surface)',
-              borderRadius: 20,
-              padding: 12,
-              boxShadow: 'var(--shadow)',
-              alignItems: 'center',
-            }}
-          >
+          <div key={p.id} className="flex gap-3 items-center bg-surface rounded-[20px] p-3 shadow-[var(--shadow)]">
             <AvatarTile init={p.init} size={52} radius={14} fontSize={16} />
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 700, fontSize: 14.5 }}>{p.name}</div>
-              <div style={{ fontSize: 12.5, color: 'var(--muted)' }}>{providerMeta(p, locale)}</div>
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-[14.5px]">{p.name}</div>
+              <div className="text-[12.5px] text-muted">{providerMeta(p, locale)}</div>
             </div>
             <span
               {...clickable(() => navigate(`/provider/${p.id}`))}
-              style={{
-                flex: 'none',
-                background: 'var(--accent)',
-                color: 'var(--onaccent)',
-                borderRadius: 14,
-                padding: '7px 12px',
-                fontSize: 12,
-                fontWeight: 700,
-                cursor: 'pointer',
-              }}
+              className="flex-none bg-accent text-onaccent rounded-[14px] py-[7px] px-3 text-xs font-bold cursor-pointer"
             >
               {t('favorites.bookCta')}
             </span>

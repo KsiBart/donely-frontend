@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { clickable } from '../lib/a11y';
 
 const ITEMS: { key: string; path: string; icon: 'search' | 'cal' | 'heart' | 'user' }[] = [
@@ -24,7 +25,12 @@ function Icon({ type }: { type: 'search' | 'cal' | 'heart' | 'user' }) {
         <line x1="2.5" y1="8.5" x2="17.5" y2="8.5" stroke="currentColor" strokeWidth="2" />
       </svg>
     );
-  if (type === 'heart') return <span aria-hidden="true" style={{ fontSize: 18, lineHeight: '20px' }}>♡</span>;
+  if (type === 'heart')
+    return (
+      <span aria-hidden="true" className="text-[18px] leading-[20px]">
+        ♡
+      </span>
+    );
   return (
     <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true">
       <circle cx="10" cy="6.5" r="3.5" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -45,34 +51,17 @@ export default function BottomNav() {
   const { pathname } = useLocation();
 
   return (
-    <nav
-      aria-label={t('a11y.primaryNav', 'Nawigacja')}
-      style={{
-        flex: 'none',
-        display: 'flex',
-        background: 'var(--surface)',
-        borderTop: '1px solid var(--border)',
-        padding: '10px 8px 18px',
-      }}
-    >
+    <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} className="flex-none flex bg-surface border-t border-border px-2 pt-[10px] pb-[18px]">
       {ITEMS.map((item) => {
         const active = pathname === item.path;
         return (
           <div
             key={item.path}
             {...clickable(() => navigate(item.path))}
-            style={{
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 3,
-              color: active ? 'var(--accent)' : 'var(--navmuted)',
-              cursor: 'pointer',
-            }}
+            className={clsx('flex-1 flex flex-col items-center gap-[3px] cursor-pointer', active ? 'text-accent' : 'text-[var(--navmuted)]')}
           >
             <Icon type={item.icon} />
-            <span style={{ fontSize: 10.5, fontWeight: active ? 700 : 600 }}>{t(item.key)}</span>
+            <span className={clsx('text-[10.5px]', active ? 'font-bold' : 'font-semibold')}>{t(item.key)}</span>
           </div>
         );
       })}

@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { useAuth } from '../state/AuthContext';
 import { useToast } from '../state/ToastContext';
 import { useIsDesktop } from '../lib/useIsDesktop';
@@ -18,22 +19,36 @@ import Success from './screens/Success';
 import BookingsTab from './screens/Bookings';
 import Favorites from './screens/Favorites';
 import ProfileTab from './screens/Profile';
+import ProApp from './pro/ProApp';
+import ProNav from './pro/ProNav';
 
 const NAV_PATHS = ['/', '/bookings', '/favorites', '/profile'];
+// Bug-fix Stage B — pro app shell: the 5 sections ProNav renders, kept here (not in ProNav.tsx)
+// so this file's showNav/showProNav split stays the single source of truth for "which bottom bar
+// (if any) shows on this path", mirroring NAV_PATHS above.
+const PRO_NAV_PATHS = ['/pro', '/pro/requests', '/pro/calendar', '/pro/payouts', '/pro/profile'];
+
+const TOAST_BASE = 'bg-[var(--text)] text-[var(--bg)] rounded-2xl text-[13px] font-semibold text-center whitespace-nowrap animate-[dwfade_.25s_ease] z-10';
 
 export default function MobileApp() {
   const { t } = useTranslation();
-  const { me, loading } = useAuth();
+  const { me, loading, isPro, mode } = useAuth();
   const { toast } = useToast();
   const location = useLocation();
   const isDesktop = useIsDesktop();
-  const showNav = !!me && !!me.locationLabel && NAV_PATHS.includes(location.pathname);
+  // Pro mode: an isPro user who chose (login-choice screen or Profile's mode switch) to browse
+  // the provider/wykonawca area instead of the customer app. Purely a client-side view flag —
+  // `isPro` itself only flips server-side via `POST /me/become-pro`, so a non-pro user can never
+  // land here no matter what `mode` says (see modeState.ts + AuthContext.becomePro).
+  const proMode = !!me && isPro && mode === 'pro';
+  const showNav = !proMode && !!me && !!me.locationLabel && NAV_PATHS.includes(location.pathname);
+  const showProNav = proMode && !!me?.locationLabel && PRO_NAV_PATHS.includes(location.pathname);
   // Phase 2.5 — Web Desktop: only the authenticated + located customer flow gets desktop
   // chrome (top nav). Loading / auth / location-ask screens have no desktop design and stay
   // in the mobile card at any width.
   const authed = !!me && !!me.locationLabel;
 
-  const routes = (
+  const customerRoutes = (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/ai" element={<AiResults />} />
@@ -45,11 +60,17 @@ export default function MobileApp() {
       <Route path="/bookings" element={<BookingsTab />} />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/profile" element={<ProfileTab />} />
+      {/* A pro-eligible user whose mode is 'standard' (or anyone else) hitting a bare /pro* URL
+          falls through to this catch-all and bounces home — matches the "redirect" half of the
+          non-pro-guard requirement; the terms/become-pro CTA lives on /profile one tap away. */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
+  // `ProApp` owns its own `/pro/*` <Routes> tree (dashboard/requests/calendar/payouts/profile) —
+  // only mounted once `proMode` is true, i.e. only for a user the server already confirmed isPro.
+  const routes = proMode ? <ProApp /> : customerRoutes;
 
-  if (authed && isDesktop) {
+  if (authed && isDesktop && !proMode) {
     return (
       <div className="desktop-page">
         <div className="desktop-shell">
@@ -61,28 +82,7 @@ export default function MobileApp() {
           <main id="main" className="desktop-content">
             {routes}
           </main>
-          {toast && (
-            <div
-              style={{
-                position: 'absolute',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                bottom: 28,
-                background: 'var(--text)',
-                color: 'var(--bg)',
-                borderRadius: 16,
-                padding: '12px 22px',
-                fontSize: 13,
-                fontWeight: 600,
-                textAlign: 'center',
-                whiteSpace: 'nowrap',
-                animation: 'dwfade .25s ease',
-                zIndex: 10,
-              }}
-            >
-              {toast}
-            </div>
-          )}
+          {toast && <div className={clsx(TOAST_BASE, 'absolute left-1/2 -translate-x-1/2 bottom-7 px-[22px] py-3')}>{toast}</div>}
         </div>
       </div>
     );
@@ -104,8 +104,8 @@ export default function MobileApp() {
   // `locationLabel` yet → post-login "share your location" gate. The same inner components
   // render on mobile and desktop; only the surrounding chrome differs.
   const authContent = loading ? (
-    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <span style={{ animation: 'ptpulse 1.6s infinite' }}>
+    <div className="flex-1 flex items-center justify-center">
+      <span className="animate-[ptpulse_1.6s_infinite]">
         <Logo size={54} />
       </span>
     </div>
@@ -128,28 +128,7 @@ export default function MobileApp() {
             <div className="auth-desktop-card">{authContent}</div>
           </div>
         )}
-        {toast && (
-          <div
-            style={{
-              position: 'fixed',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              bottom: 28,
-              background: 'var(--text)',
-              color: 'var(--bg)',
-              borderRadius: 16,
-              padding: '12px 22px',
-              fontSize: 13,
-              fontWeight: 600,
-              textAlign: 'center',
-              whiteSpace: 'nowrap',
-              animation: 'dwfade .25s ease',
-              zIndex: 10,
-            }}
-          >
-            {toast}
-          </div>
-        )}
+        {toast && <div className={clsx(TOAST_BASE, 'fixed left-1/2 -translate-x-1/2 bottom-7 px-[22px] py-3')}>{toast}</div>}
       </>
     );
   }
@@ -163,35 +142,16 @@ export default function MobileApp() {
               {t('common.skipToContent')}
             </a>
             <InstallBanner />
-            <main id="main" style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+            <main id="main" className="flex-1 min-h-0 flex flex-col">
               {routes}
             </main>
             {showNav && <BottomNav />}
+            {showProNav && <ProNav />}
           </>
         ) : (
           authContent
         )}
-        {toast && (
-          <div
-            style={{
-              position: 'absolute',
-              left: 20,
-              right: 20,
-              bottom: 110,
-              background: 'var(--text)',
-              color: 'var(--bg)',
-              borderRadius: 16,
-              padding: '12px 16px',
-              fontSize: 13,
-              fontWeight: 600,
-              textAlign: 'center',
-              animation: 'dwfade .25s ease',
-              zIndex: 10,
-            }}
-          >
-            {toast}
-          </div>
-        )}
+        {toast && <div className={clsx(TOAST_BASE, 'absolute left-5 right-5 bottom-[110px] px-4 py-3')}>{toast}</div>}
       </div>
     </div>
   );

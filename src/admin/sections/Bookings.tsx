@@ -5,7 +5,7 @@ import type { AdminBookingRow, BookingStatus } from '../../api/models';
 import { bookingStatusLabel, statusChipColors, whenLabel } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
-import { FilterChip, StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
+import { CARD_CLASS, FilterChip, StatusChip, TableHead, rowClass } from '../ui';
 
 const COLS = '.6fr 1.1fr 1.1fr 1.3fr 1fr .7fr .9fr .8fr';
 
@@ -45,31 +45,36 @@ export default function Bookings() {
 
   return (
     <>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+      <div className="mb-4 flex gap-2">
         {filterLabels.map((label, i) => (
           <FilterChip key={label} label={label} active={i === filter} onClick={() => setFilter(i)} />
         ))}
       </div>
-      <div style={{ ...cardStyle, overflow: 'hidden' }}>
+      <div className={`${CARD_CLASS} overflow-hidden`}>
         <TableHead cols={COLS} columns={columns} />
         {filtered.map((b) => {
           const [stBg, stFg] = statusChipColors(b.status);
           const canCancel = b.status === 'CONFIRMED' || b.status === 'PENDING';
           return (
-            <div key={b.id} style={{ ...rowStyle(COLS), fontSize: 12.5 }}>
-              <span style={{ color: 'var(--navmuted)', fontWeight: 700 }}>#{b.id}</span>
-              <span style={{ fontWeight: 700 }}>{b.customerName ?? b.customer?.name ?? ''}</span>
-              <span>{b.providerName ?? b.provider?.name ?? ''}</span>
-              <span style={{ color: 'var(--muted2)' }}>{b.serviceTitle ?? b.service?.title ?? ''}</span>
-              <span style={{ color: 'var(--muted2)' }}>{b.whenLabel ?? whenLabel(b.startAt, b.preferredWindow, t, ' ')}</span>
-              <span style={{ fontWeight: 700 }}>{b.priceLabel ?? ''}</span>
+            <div
+              key={b.id}
+              className={rowClass(12.5)}
+              // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns is a runtime string constant, Tailwind JIT can't scan it
+              style={{ gridTemplateColumns: COLS }}
+            >
+              <span className="font-bold text-[var(--navmuted)]">#{b.id}</span>
+              <span className="font-bold">{b.customer}</span>
+              <span>{b.provider}</span>
+              <span className="text-muted2">{b.service}</span>
+              <span className="text-muted2">{b.when}</span>
+              <span className="font-bold">{b.price}</span>
               <StatusChip bg={stBg} fg={stFg}>
                 {bookingStatusLabel(b.status, t)}
               </StatusChip>
               {canCancel ? (
                 <span
                   {...clickable(() => void cancel(b))}
-                  style={{ fontSize: 12, fontWeight: 700, color: '#d64550', cursor: 'pointer', justifySelf: 'end' }}
+                  className="justify-self-end cursor-pointer text-[12px] font-bold text-[#d64550]"
                 >
                   {t('admin.bookings.cancel')}
                 </span>

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -11,7 +12,7 @@ import { toIntlLocale } from '../../i18n';
 import { formatZl, monthName, paymentMethodLabel, paymentStatusLabel, payoutStatusLabel } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
-import { KpiCard, StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
+import { CARD_CLASS, KpiCard, StatusChip, TableHead, rowClass } from '../ui';
 
 const DOC_COLS = '1fr 1.3fr 1fr .8fr .8fr .9fr';
 const PAYMENT_COLS = '.7fr 1.1fr 1.1fr 1fr .9fr 1fr';
@@ -87,7 +88,7 @@ export default function Billing() {
 
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14, marginBottom: 22 }}>
+      <div className="mb-[22px] grid grid-cols-3 gap-3.5">
         <KpiCard
           label={t('admin.billing.kpiDocs', { month: monthName(locale) })}
           value={billing ? String(billing.docsCount) : '—'}
@@ -110,18 +111,23 @@ export default function Billing() {
         />
       </div>
 
-      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.billing.documentsTitle')}</h2>
-      <div style={{ ...cardStyle, overflow: 'hidden', marginBottom: 24 }}>
+      <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.billing.documentsTitle')}</h2>
+      <div className={`${CARD_CLASS} mb-6 overflow-hidden`}>
         <TableHead cols={DOC_COLS} columns={docColumns} />
         {(billing?.documents ?? []).map((d) => {
           const paidOut = d.status === 'Wypłacona' || d.status === 'Paid out';
           return (
-            <div key={d.number} style={{ ...rowStyle(DOC_COLS), fontSize: 12.5 }}>
-              <span style={{ fontWeight: 700, color: 'var(--accent)' }}>{d.number}</span>
-              <span style={{ fontWeight: 700 }}>{d.who ?? d.providerName ?? d.provider?.name ?? ''}</span>
-              <span style={{ color: 'var(--muted2)', fontSize: 12 }}>{d.type}</span>
-              <span style={{ fontWeight: 700 }}>{d.amount ?? ''}</span>
-              <span style={{ color: 'var(--muted2)' }}>{d.tax ?? '—'}</span>
+            <div
+              key={d.number}
+              className={rowClass(12.5)}
+              // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns is a runtime string constant, Tailwind JIT can't scan it
+              style={{ gridTemplateColumns: DOC_COLS }}
+            >
+              <span className="font-bold text-accent">{d.number}</span>
+              <span className="font-bold">{d.who}</span>
+              <span className="text-[12px] text-muted2">{d.type}</span>
+              <span className="font-bold">{d.amount}</span>
+              <span className="text-muted2">{d.tax || '—'}</span>
               <StatusChip bg={paidOut ? 'var(--ver-bg)' : 'var(--app-tint)'} fg={paidOut ? '#3e7a48' : 'var(--accent)'}>
                 {d.status}
               </StatusChip>
@@ -130,19 +136,24 @@ export default function Billing() {
         })}
       </div>
 
-      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.billing.paymentsTitle')}</h2>
-      <div style={{ ...cardStyle, overflow: 'hidden', marginBottom: 24 }}>
+      <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.billing.paymentsTitle')}</h2>
+      <div className={`${CARD_CLASS} mb-6 overflow-hidden`}>
         <TableHead cols={PAYMENT_COLS} columns={paymentColumns} />
-        {payments.length === 0 && <div style={{ padding: '14px 18px', fontSize: 12.5, color: 'var(--muted)' }}>{t('admin.billing.noPayments')}</div>}
+        {payments.length === 0 && <div className="px-[18px] py-3.5 text-[12.5px] text-muted">{t('admin.billing.noPayments')}</div>}
         {payments.map((p) => {
           const [bg, fg] = paymentStatusColors(p.status);
           return (
-            <div key={p.id} style={{ ...rowStyle(PAYMENT_COLS), fontSize: 12.5 }}>
-              <span style={{ color: 'var(--navmuted)', fontWeight: 700 }}>#{p.bookingId}</span>
-              <span style={{ fontWeight: 700 }}>{p.customerName ?? p.customer?.name ?? ''}</span>
-              <span>{p.providerName ?? p.provider?.name ?? ''}</span>
-              <span style={{ color: 'var(--muted2)', fontSize: 12 }}>{paymentMethodLabel(p.method, t)}</span>
-              <span style={{ fontWeight: 700 }}>{p.amountLabel ?? formatZl(p.amount, locale)}</span>
+            <div
+              key={p.id}
+              className={rowClass(12.5)}
+              // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns is a runtime string constant, Tailwind JIT can't scan it
+              style={{ gridTemplateColumns: PAYMENT_COLS }}
+            >
+              <span className="font-bold text-[var(--navmuted)]">#{p.bookingId}</span>
+              <span className="font-bold">{p.customerName}</span>
+              <span>{p.providerName}</span>
+              <span className="text-[12px] text-muted2">{paymentMethodLabel(p.method, t)}</span>
+              <span className="font-bold">{p.amountLabel ?? formatZl(p.amount, locale)}</span>
               <StatusChip bg={bg} fg={fg}>
                 {paymentStatusLabel(p.status, t)}
               </StatusChip>
@@ -151,39 +162,35 @@ export default function Billing() {
         })}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-        <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: 0 }}>{t('admin.billing.payoutsTitle')}</h2>
+      <div className="mb-3 flex items-center justify-between">
+        <h2 className="text-[14.5px] font-bold">{t('admin.billing.payoutsTitle')}</h2>
         <span
           {...clickable(() => void runBatch())}
-          style={{
-            background: 'var(--accent)',
-            color: '#fff',
-            borderRadius: 12,
-            padding: '9px 16px',
-            fontSize: 12.5,
-            fontWeight: 700,
-            cursor: 'pointer',
-            opacity: running ? 0.7 : 1,
-          }}
+          className={clsx('cursor-pointer rounded-xl bg-accent px-4 py-[9px] text-[12.5px] font-bold text-white', running && 'opacity-70')}
         >
           {t('admin.billing.runBatchCta')}
         </span>
       </div>
-      <div style={{ ...cardStyle, overflow: 'hidden' }}>
+      <div className={`${CARD_CLASS} overflow-hidden`}>
         <TableHead cols={PAYOUT_COLS} columns={payoutColumns} />
-        {payouts.length === 0 && <div style={{ padding: '14px 18px', fontSize: 12.5, color: 'var(--muted)' }}>{t('admin.billing.noPayouts')}</div>}
+        {payouts.length === 0 && <div className="px-[18px] py-3.5 text-[12.5px] text-muted">{t('admin.billing.noPayouts')}</div>}
         {payouts.map((p) => {
           const [bg, fg] = payoutStatusColors(p.status);
           return (
-            <div key={p.id} style={{ ...rowStyle(PAYOUT_COLS), fontSize: 12.5 }}>
-              <span style={{ fontWeight: 700 }}>{p.providerName ?? p.provider?.name ?? ''}</span>
-              <span>{p.grossAmountLabel ?? (p.grossAmount != null ? formatZl(p.grossAmount, locale) : '—')}</span>
-              <span style={{ color: 'var(--muted2)' }}>{p.taxAmountLabel ?? (p.taxAmount != null ? formatZl(p.taxAmount, locale) : '—')}</span>
-              <span style={{ fontWeight: 700 }}>{p.netAmountLabel ?? (p.netAmount != null ? formatZl(p.netAmount, locale) : '—')}</span>
+            <div
+              key={p.id}
+              className={rowClass(12.5)}
+              // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns is a runtime string constant, Tailwind JIT can't scan it
+              style={{ gridTemplateColumns: PAYOUT_COLS }}
+            >
+              <span className="font-bold">{p.providerName}</span>
+              <span>{p.grossAmountLabel ?? formatZl(p.grossAmount, locale)}</span>
+              <span className="text-muted2">{p.taxAmountLabel ?? formatZl(p.taxAmount, locale)}</span>
+              <span className="font-bold">{p.netAmountLabel ?? formatZl(p.netAmount, locale)}</span>
               <StatusChip bg={bg} fg={fg}>
                 {payoutStatusLabel(p.status, t)}
               </StatusChip>
-              <span style={{ color: 'var(--muted2)' }}>{p.batchDate ? new Date(p.batchDate).toLocaleDateString(locale) : '—'}</span>
+              <span className="text-muted2">{p.batchDate ? new Date(p.batchDate).toLocaleDateString(locale) : '—'}</span>
             </div>
           );
         })}

@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAdminCalendarQuery, useAdminCreateBlockMutation, useAdminDeleteBlockMutation, useAdminProvidersQuery } from '../../api/hooks';
@@ -5,7 +6,7 @@ import type { AdminCalendarCell, AdminCalendarResponse, AdminProvider } from '..
 import { isoDay } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
-import { FilterChip, cardStyle } from '../ui';
+import { CARD_CLASS, FilterChip } from '../ui';
 
 /** Monday of the upcoming week (today if Monday). */
 function nextMonday(): Date {
@@ -36,6 +37,16 @@ function normalize(res: AdminCalendarResponse): NormRow[] {
     return { hour: h, label: row.label ?? `${h}:00`, cells };
   });
 }
+
+/** Static Tailwind classes per calendar-cell status — the possible bg/border/fg combinations are a
+ * fixed closed set (free/off/booked/blocked), so unlike StatusChip's caller-supplied colors these
+ * are fully expressible as literal classNames. */
+const CELL_TONE: Record<'free' | 'off' | 'booked' | 'blocked', { bg: string; fg: string }> = {
+  free: { bg: 'bg-surface border-[1.5px] border-dashed border-border', fg: 'text-muted2' },
+  off: { bg: 'bg-surface2', fg: 'text-white' },
+  booked: { bg: 'bg-accent', fg: 'text-white' },
+  blocked: { bg: 'bg-border', fg: 'text-muted2' },
+};
 
 export default function Calendars() {
   const { t } = useTranslation();
@@ -122,25 +133,16 @@ export default function Calendars() {
   };
 
   const cellView = (cell: AdminCalendarCell, dayIdx: number, hour: number) => {
-    let bg = 'var(--surface)';
-    let bd = '1.5px dashed var(--border)';
-    let fg = 'var(--muted2)';
+    const status = (cell.status ?? 'free') as keyof typeof CELL_TONE;
+    const tone = CELL_TONE[status] ?? CELL_TONE.free;
     let label = '';
     let tip = t('admin.calendars.tipBlock');
     if (cell.status === 'off') {
-      bg = 'var(--surface2)';
-      bd = 'none';
-      fg = '#fff';
       tip = t('admin.calendars.tipOff');
     } else if (cell.status === 'booked') {
-      bg = 'var(--accent)';
-      bd = 'none';
-      fg = '#fff';
       label = cell.label ?? '';
       tip = cell.label ?? '';
     } else if (cell.status === 'blocked') {
-      bg = 'var(--border)';
-      bd = 'none';
       label = t('admin.calendars.blockedLabel');
       tip = t('admin.calendars.tipUnblock');
     }
@@ -150,74 +152,52 @@ export default function Calendars() {
         key={`${hour}-${dayIdx}`}
         {...clickable(() => void onCell(cell, dayIdx, hour), { label: `${dayLabel} ${hour}:00 — ${tip}` })}
         title={tip}
-        style={{
-          height: 34,
-          borderRadius: 8,
-          cursor: 'pointer',
-          background: bg,
-          border: bd,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-        }}
+        className={clsx('flex h-[34px] items-center justify-center overflow-hidden rounded-lg cursor-pointer', tone.bg)}
       >
-        <span
-          style={{
-            fontSize: 10,
-            fontWeight: 700,
-            color: fg,
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis',
-            overflow: 'hidden',
-            padding: '0 4px',
-          }}
-        >
-          {label}
-        </span>
+        <span className={clsx('overflow-hidden text-ellipsis whitespace-nowrap px-1 text-[10px] font-bold', tone.fg)}>{label}</span>
       </div>
     );
   };
 
   return (
     <>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center', flexWrap: 'wrap' }}>
-        <span style={{ fontSize: 12.5, color: 'var(--muted)', fontWeight: 600, marginRight: 4 }}>{t('admin.calendars.providerLabel')}</span>
+      <div className="mb-4 flex flex-wrap items-center gap-2">
+        <span className="mr-1 text-[12.5px] font-semibold text-muted">{t('admin.calendars.providerLabel')}</span>
         {providers.map((p, i) => (
           <FilterChip key={p.id} label={p.name} active={i === sel} onClick={() => setSel(i)} />
         ))}
       </div>
-      <div style={{ ...cardStyle, padding: 18, overflow: 'auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '52px repeat(6,1fr)', gap: 5, minWidth: 760 }}>
+      <div className={`${CARD_CLASS} overflow-auto p-[18px]`}>
+        <div className="grid min-w-[760px] grid-cols-[52px_repeat(6,1fr)] gap-[5px]">
           <span />
           {heads.map((h, i) => (
-            <span key={i} style={{ textAlign: 'center', fontSize: 11.5, fontWeight: 700, color: 'var(--muted)', paddingBottom: 4 }}>
+            <span key={i} className="pb-1 text-center text-[11.5px] font-bold text-muted">
               {h}
             </span>
           ))}
           {rows.map((row) => (
             <React.Fragment key={row.hour}>
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--navmuted)', paddingTop: 8 }}>{row.label}</span>
+              <span className="pt-2 text-[11px] font-bold text-[var(--navmuted)]">{row.label}</span>
               {row.cells.map((cell, dayIdx) => cellView(cell, dayIdx, row.hour))}
             </React.Fragment>
           ))}
         </div>
-        {!cal && <div style={{ fontSize: 12.5, color: 'var(--muted)', padding: '12px 0' }}>{t('admin.calendars.loading')}</div>}
-        <div style={{ display: 'flex', gap: 16, marginTop: 14, fontSize: 11.5, color: 'var(--muted2)', flexWrap: 'wrap' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, background: 'var(--accent)' }} />
+        {!cal && <div className="py-3 text-[12.5px] text-muted">{t('admin.calendars.loading')}</div>}
+        <div className="mt-3.5 flex flex-wrap gap-4 text-[11.5px] text-muted2">
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded bg-accent" />
             {t('admin.calendars.legendBooked')}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, background: 'var(--border)' }} />
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded bg-border" />
             {t('admin.calendars.legendBlocked')}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, border: '1.5px dashed var(--border)', background: 'var(--surface)' }} />
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded border-[1.5px] border-dashed border-border bg-surface" />
             {t('admin.calendars.legendFree')}
           </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ width: 12, height: 12, borderRadius: 4, background: 'var(--surface2)' }} />
+          <span className="flex items-center gap-1.5">
+            <span className="h-3 w-3 rounded bg-surface2" />
             {t('admin.calendars.legendOff')}
           </span>
         </div>

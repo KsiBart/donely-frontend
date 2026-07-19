@@ -6,7 +6,7 @@ import { monthName, relTime } from '../../lib/format';
 import { useToast } from '../../state/ToastContext';
 import { usePending } from '../AdminApp';
 import { PendingRow } from '../PendingQueue';
-import { KpiCard, cardStyle } from '../ui';
+import { CARD_CLASS, KpiCard } from '../ui';
 
 export default function Dashboard() {
   const { t, i18n } = useTranslation();
@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 14, marginBottom: 22 }}>
+      <div className="mb-[22px] grid grid-cols-4 gap-3.5">
         <KpiCard
           label={t('admin.dashboard.kpiUsers')}
           value={stats ? stats.users.toLocaleString(locale) : '—'}
@@ -54,25 +54,29 @@ export default function Dashboard() {
           subColor="#3e7a48"
         />
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 14 }}>
-        <div style={{ ...cardStyle, padding: 18 }}>
-          <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.dashboard.pendingTitle')}</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {pending.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('admin.dashboard.pendingEmpty')}</div>}
+      <div className="grid grid-cols-[1.2fr_1fr] gap-3.5">
+        <div className={`${CARD_CLASS} p-[18px]`}>
+          <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.dashboard.pendingTitle')}</h2>
+          <div className="flex flex-col gap-2.5">
+            {pending.length === 0 && <div className="text-[13px] text-muted">{t('admin.dashboard.pendingEmpty')}</div>}
             {pending.map((p) => (
               <PendingRow key={p.id} p={p} variant="dashboard" onApprove={approve} onReject={reject} />
             ))}
           </div>
         </div>
-        <div style={{ ...cardStyle, padding: 18 }}>
-          <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.dashboard.feedTitle')}</h2>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {feed.map((f) => (
-              <div key={f.id} style={{ display: 'flex', gap: 10, padding: '9px 0', borderBottom: '1px solid var(--border)' }}>
-                <span style={{ flex: 'none', width: 8, height: 8, borderRadius: '50%', background: f.dotColor, marginTop: 5 }} />
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 12.5, lineHeight: 1.4 }}>{f.text}</div>
-                  <div style={{ fontSize: 11, color: 'var(--navmuted)', marginTop: 1 }}>{relTime(f.createdAt, t)}</div>
+        <div className={`${CARD_CLASS} p-[18px]`}>
+          <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.dashboard.feedTitle')}</h2>
+          <div className="flex flex-col">
+            {feed.map((f, i) => (
+              <div key={i} className="flex gap-2.5 border-b border-border py-[9px]">
+                <span
+                  className="mt-[5px] h-2 w-2 flex-none rounded-full"
+                  // eslint-disable-next-line react/no-inline-styles -- dynamic: f.dot is a per-feed-item color from backend data
+                  style={{ background: f.dot }}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="text-[12.5px] leading-[1.4]">{f.text}</div>
+                  <div className="mt-px text-[11px] text-[var(--navmuted)]">{f.time}</div>
                 </div>
               </div>
             ))}

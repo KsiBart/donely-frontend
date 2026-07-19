@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { useAiSearchMutation } from '../../api/hooks';
 import { useBrand } from '../../brand';
 import { toIntlLocale } from '../../i18n';
@@ -31,106 +32,53 @@ export default function AiResults() {
   }, [q]);
 
   return (
-    <div
-      style={
-        isDesktop
-          ? { maxWidth: 720, margin: '0 auto', padding: '28px 28px 48px', animation: 'dwfade .3s ease' }
-          : { flex: 1, overflow: 'auto', padding: '20px 20px 20px', animation: 'dwfade .3s ease' }
-      }
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+    <div className={clsx('animate-[dwfade_.3s_ease]', isDesktop ? 'max-w-[720px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto p-5')}>
+      <div className="flex items-center gap-2.5 mb-4">
         <span
           {...clickable(() => navigate('/'), { label: t('a11y.back', 'Wstecz') })}
-          style={{
-            width: 34,
-            height: 34,
-            borderRadius: '50%',
-            background: 'var(--surface2)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 16,
-            fontWeight: 700,
-            cursor: 'pointer',
-          }}
+          className="w-[34px] h-[34px] rounded-full bg-surface2 flex items-center justify-center text-base font-bold cursor-pointer"
         >
           ‹
         </span>
-        <h1 style={{ fontWeight: 700, fontSize: 15, margin: 0 }}>{t('aiResults.title', { appName: brand.appName })}</h1>
+        <h1 className="font-bold text-[15px] m-0">{t('aiResults.title', { appName: brand.appName })}</h1>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
-        <span
-          style={{
-            maxWidth: '78%',
-            background: 'var(--accent)',
-            color: 'var(--onaccent)',
-            borderRadius: '18px 18px 4px 18px',
-            padding: '11px 14px',
-            fontSize: 13.5,
-            fontWeight: 600,
-          }}
-        >
-          {q}
-        </span>
+      <div className="flex justify-end mb-3">
+        <span className="max-w-[78%] bg-accent text-onaccent rounded-[18px_18px_4px_18px] py-[11px] px-3.5 text-[13.5px] font-semibold">{q}</span>
       </div>
 
-      <div style={{ display: 'flex', gap: 9, marginBottom: 16 }}>
-        <span style={{ animation: res ? undefined : 'ptpulse 1.6s infinite' }}>
+      <div className="flex gap-[9px] mb-4">
+        <span className={clsx(!res && 'animate-[ptpulse_1.6s_infinite]')}>
           <Logo size={30} />
         </span>
-        <span
-          style={{
-            maxWidth: '82%',
-            background: 'var(--surface)',
-            borderRadius: '4px 18px 18px 18px',
-            padding: '11px 14px',
-            fontSize: 13.5,
-            color: 'var(--muted2)',
-            lineHeight: 1.5,
-            boxShadow: 'var(--shadow)',
-          }}
-        >
+        <span className="max-w-[82%] bg-surface rounded-[4px_18px_18px_18px] py-[11px] px-3.5 text-[13.5px] text-muted2 leading-[1.5] shadow-[var(--shadow)]">
           {res ? res.response : '…'}
         </span>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div className="flex flex-col gap-2.5">
         {(res?.matches ?? []).map((p) => (
-          <div
-            key={p.id}
-            {...clickable(() => navigate(`/provider/${p.id}`))}
-            style={{ background: 'var(--surface)', borderRadius: 20, padding: 12, cursor: 'pointer', boxShadow: 'var(--shadow)' }}
-          >
-            <div style={{ display: 'flex', gap: 12 }}>
+          <div key={p.id} {...clickable(() => navigate(`/provider/${p.id}`))} className="bg-surface rounded-[20px] p-3 cursor-pointer shadow-[var(--shadow)]">
+            <div className="flex gap-3">
               <AvatarTile init={p.init} size={56} radius={14} fontSize={16} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ fontWeight: 700, fontSize: 14.5 }}>{p.name}</span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="font-bold text-[14.5px]">{p.name}</span>
                   {p.verified && (
-                    <span aria-hidden="true" style={{ background: 'var(--ver-bg)', color: 'var(--ver-fg)', borderRadius: 10, padding: '2px 7px', fontSize: 10, fontWeight: 700 }}>
+                    <span aria-hidden="true" className="bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-[7px] text-[10px] font-bold">
                       {t('common.verifiedShort')}
                     </span>
                   )}
                 </div>
-                <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>{providerMeta(p, locale)}</div>
-                <div style={{ fontSize: 12, color: 'var(--muted2)', marginTop: 2 }}>{p.locLine}</div>
+                <div className="text-xs text-muted mt-0.5">{providerMeta(p, locale)}</div>
+                <div className="text-xs text-muted2 mt-0.5">{p.locLine}</div>
               </div>
             </div>
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: 10,
-                paddingTop: 10,
-                borderTop: '1px solid var(--border)',
-              }}
-            >
-              <span style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--accent)', background: 'var(--surface2)', borderRadius: 10, padding: '4px 9px' }}>
+            <div className="flex justify-between items-center mt-2.5 pt-2.5 border-t border-border">
+              <span className="text-[11.5px] font-bold text-accent bg-surface2 rounded-[10px] py-1 px-[9px]">
                 <span aria-hidden="true">✦</span> {p.why}
               </span>
-              <span style={{ background: 'var(--accent)', color: 'var(--onaccent)', borderRadius: 14, padding: '6px 12px', fontSize: 12, fontWeight: 700 }}>
+              <span className="bg-accent text-onaccent rounded-[14px] py-1.5 px-3 text-xs font-bold">
                 {p.nextSlotLabel} <span aria-hidden="true">→</span>
               </span>
             </div>

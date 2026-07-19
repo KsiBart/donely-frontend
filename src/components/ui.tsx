@@ -37,9 +37,13 @@ export function Wordmark({ size = 23, variant = 'default' }: { size?: number; va
   const doneColor = variant === 'onDark' ? '#fff' : 'var(--ink, var(--text))';
   const lyColor = variant === 'onDark' ? 'rgba(255,255,255,.85)' : 'var(--accent)';
   return (
+    // eslint-disable-next-line react/no-inline-styles -- dynamic: base merges fontSize from the `size` prop with the BRICO font-family constant, neither expressible as static Tailwind
     <span style={base}>
+      {/* eslint-disable-next-line react/no-inline-styles -- dynamic: color depends on `variant` prop */}
       <span style={{ color: doneColor }}>Done</span>
+      {/* eslint-disable-next-line react/no-inline-styles -- dynamic: color depends on `variant` prop */}
       <span style={{ color: lyColor }}>Ly</span>
+      {/* eslint-disable-next-line react/no-inline-styles -- dynamic: multi-stop animated gradient text-clip, not expressible as static utilities */}
       <span className="wordmark-ai" style={AI_GRADIENT}> AI</span>
     </span>
   );
@@ -48,7 +52,7 @@ export function Wordmark({ size = 23, variant = 'default' }: { size?: number; va
 /** Donely logo: circle-check with sparkle (exact SVG from designs). */
 export function Logo({ size = 34 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 48 48" style={{ flex: 'none', color: 'var(--accent)' }}>
+    <svg width={size} height={size} viewBox="0 0 48 48" className="flex-none text-accent">
       <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
       <path
         d="M15 24.5l6.5 6.5L34 18"
@@ -66,7 +70,7 @@ export function Logo({ size = 34 }: { size?: number }) {
 /** AI sparkle icon used in the search bar. */
 export function SparkleIcon({ size = 16 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 16 16" style={{ flex: 'none' }}>
+    <svg width={size} height={size} viewBox="0 0 16 16" className="flex-none">
       <path d="M8 1l1.6 4.4L14 7l-4.4 1.6L8 13l-1.6-4.4L2 7l4.4-1.6z" fill="var(--accent)" />
     </svg>
   );
@@ -92,17 +96,13 @@ export function AvatarTile({
 }) {
   return (
     <div
+      className="flex-none flex items-center justify-center font-bold text-white"
+      // eslint-disable-next-line react/no-inline-styles -- dynamic: size/radius/fontSize come from props, background from stripes()
       style={{
-        flex: 'none',
         width: size,
         height: size,
         borderRadius: round ? '50%' : (radius ?? 14),
         background: stripes(),
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontWeight: 700,
-        color: '#fff',
         fontSize: fontSize ?? Math.round(size * 0.28),
       }}
     >

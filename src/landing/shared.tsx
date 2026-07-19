@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import clsx from 'clsx';
 import { useTranslation } from 'react-i18next';
 import { SUPPORTED_LANGS, type Lang } from '../i18n';
 import { useSiteTheme } from '../state/SiteThemeContext';
@@ -16,22 +16,17 @@ export function LangToggle() {
   const { i18n } = useTranslation();
   const lang = (i18n.language as Lang) ?? 'pl';
 
-  const wrap: CSSProperties = { display: 'flex', background: 'var(--surface2)', borderRadius: 12, padding: 3 };
-  const pill = (active: boolean): CSSProperties => ({
-    padding: '6px 11px',
-    borderRadius: 9,
-    fontSize: 12.5,
-    fontWeight: 800,
-    cursor: 'pointer',
-    background: active ? 'var(--surface)' : 'transparent',
-    color: active ? 'var(--acc)' : 'var(--muted2)',
-    boxShadow: active ? '0 2px 6px rgba(74,52,102,.15)' : 'none',
-  });
+  const wrap = 'flex bg-surface2 rounded-xl p-[3px]';
+  const pill = (active: boolean) =>
+    clsx(
+      'p-[6px_11px] rounded-[9px] text-[12.5px] font-extrabold cursor-pointer',
+      active ? 'bg-surface text-[var(--acc)] shadow-[0_2px_6px_rgba(74,52,102,.15)]' : 'bg-transparent text-muted2 shadow-none',
+    );
 
   return (
-    <div style={wrap}>
+    <div className={wrap}>
       {SUPPORTED_LANGS.map((l) => (
-        <span key={l} {...clickable(() => void i18n.changeLanguage(l), { pressed: lang === l })} style={pill(lang === l)}>
+        <span key={l} {...clickable(() => void i18n.changeLanguage(l), { pressed: lang === l })} className={pill(lang === l)}>
           {l.toUpperCase()}
         </span>
       ))}
@@ -49,20 +44,7 @@ export function DarkModeToggle() {
   return (
     <span
       {...clickable(toggle, { label: t('landing.darkModeToggle') })}
-      style={{
-        width: 34,
-        height: 34,
-        borderRadius: 11,
-        background: 'var(--surface2)',
-        color: 'var(--ink)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        fontSize: 16,
-        lineHeight: 1,
-        flex: 'none',
-      }}
+      className="w-[34px] h-[34px] rounded-[11px] bg-surface2 text-[var(--ink)] flex items-center justify-center cursor-pointer text-base leading-none flex-none"
     >
       {dark ? '☀' : '☾'}
     </span>
@@ -74,25 +56,7 @@ export function DarkModeToggle() {
 export function ToastBubble({ toast }: { toast: string | null }) {
   if (!toast) return null;
   return (
-    <div
-      style={{
-        position: 'fixed',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        bottom: 28,
-        background: '#221d2b',
-        color: '#fff',
-        borderRadius: 16,
-        padding: '12px 22px',
-        fontSize: 13,
-        fontWeight: 600,
-        textAlign: 'center',
-        whiteSpace: 'nowrap',
-        animation: 'dwfade .25s ease',
-        zIndex: 1000,
-        boxShadow: '0 12px 30px rgba(0,0,0,.22)',
-      }}
-    >
+    <div className="fixed left-1/2 -translate-x-1/2 bottom-7 bg-[#221d2b] text-white rounded-2xl p-[12px_22px] text-[13px] font-semibold text-center whitespace-nowrap animate-[dwfade_0.25s_ease] z-[1000] shadow-[0_12px_30px_rgba(0,0,0,.22)]">
       {toast}
     </div>
   );

@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { Logo, stripes, Wordmark } from '../components/ui';
 import { useAuth } from '../state/AuthContext';
 import { useInstallAction } from '../mobile/AppPromo';
@@ -21,73 +22,47 @@ export default function TopNav() {
   const install = useInstallAction();
 
   return (
-    <div style={{ flex: 'none', background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-      <div style={{ maxWidth: 1120, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 26, padding: '14px 28px' }}>
-        <div
-          {...clickable(() => navigate('/'))}
-          style={{ display: 'flex', alignItems: 'center', gap: 9, flex: 'none', cursor: 'pointer' }}
-        >
+    <div className="flex-none bg-surface border-b border-border">
+      <div className="max-w-[1120px] mx-auto flex items-center gap-[26px] px-[28px] py-[14px]">
+        <div {...clickable(() => navigate('/'))} className="flex items-center gap-[9px] flex-none cursor-pointer">
           <Logo size={30} />
           <Wordmark size={19} />
         </div>
-        <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+        <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} className="flex items-center gap-1">
           {LINKS.map((link) => {
             const active = pathname === link.path;
             return (
               <span
                 key={link.path}
                 {...clickable(() => navigate(link.path))}
-                className="dw-nav-pill"
-                style={{
-                  padding: '8px 14px',
-                  borderRadius: 12,
-                  background: active ? 'var(--app-tint)' : 'transparent',
-                  color: active ? 'var(--accent)' : 'var(--muted2)',
-                  fontSize: 13.5,
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                }}
+                className={clsx(
+                  'dw-nav-pill py-2 px-3.5 rounded-xl text-[13.5px] font-bold cursor-pointer',
+                  active ? 'bg-[var(--app-tint)] text-accent' : 'bg-transparent text-muted2',
+                )}
               >
                 {t(link.key)}
               </span>
             );
           })}
         </nav>
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 16 }}>
-          <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>
+        <div className="ml-auto flex items-center gap-4">
+          <span className="text-[12.5px] text-muted">
             <span aria-hidden="true">◉</span> {me?.locationLabel || t('profile.defaultLocation')}
           </span>
           <span
             {...clickable(install)}
-            className="dw-install-btn"
-            style={{
-              border: '1.5px solid var(--accent)',
-              color: 'var(--accent)',
-              borderRadius: 13,
-              padding: '7px 14px',
-              fontSize: 12.5,
-              fontWeight: 700,
-              cursor: 'pointer',
-            }}
+            className="dw-install-btn border-[1.5px] border-accent text-accent rounded-[13px] py-[7px] px-3.5 text-[12.5px] font-bold cursor-pointer"
           >
             {t('promo.installAppCta')}
           </span>
           <div
             {...clickable(() => navigate('/profile'), { label: t('title.profile') })}
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: 14,
-              background: stripes(),
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 700,
-              color: '#fff',
-              fontSize: 13,
-              cursor: 'pointer',
-              boxShadow: pathname === '/profile' ? '0 0 0 2.5px var(--accent)' : 'none',
-            }}
+            className={clsx(
+              'w-9 h-9 rounded-[14px] flex items-center justify-center font-bold text-white text-[13px] cursor-pointer',
+              pathname === '/profile' ? 'shadow-[0_0_0_2.5px_var(--accent)]' : 'shadow-none',
+            )}
+            // eslint-disable-next-line react/no-inline-styles -- dynamic: stripes() generates a randomized-looking repeating-gradient string at call time
+            style={{ background: stripes() }}
           >
             {initials(me?.name)}
           </div>

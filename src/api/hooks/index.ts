@@ -8,3 +8,4 @@ export * from './bookings';
 export * from './favorites';
 export * from './payments';
 export * from './admin';
+export * from './provider';

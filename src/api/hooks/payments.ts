@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { apiClient, getToken, unwrap } from '../client';
+import { apiClient, unwrap } from '../client';
 import { qk } from '../keys';
-import type { CheckoutResponse, Payment, PaymentMethod, Payout } from '../models';
+import type { CheckoutResponse, Payment, PaymentMethod } from '../models';
 
 export function useCheckoutMutation() {
   return useMutation({
@@ -25,10 +25,3 @@ export function usePaymentQuery(id: number | undefined) {
   });
 }
 
-export function useProviderPayoutsQuery() {
-  return useQuery({
-    queryKey: qk.providerPayouts.list(),
-    queryFn: () => unwrap<Payout[]>(apiClient.GET('/provider/payouts')),
-    enabled: !!getToken(),
-  });
-}

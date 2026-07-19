@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 import { BRICO } from '../lib/format';
 import { useIsDesktop } from '../lib/useIsDesktop';
 import { useLocate } from '../lib/useLocate';
@@ -15,75 +16,19 @@ import { clickable } from '../lib/a11y';
 function MapBackdrop({ pinTop }: { pinTop?: boolean }) {
   const { t } = useTranslation();
   return (
-    <div style={{ position: 'absolute', inset: 0, background: 'var(--map)' }}>
-      <div
-        style={{
-          position: 'absolute',
-          left: '-20%',
-          top: '26%',
-          width: '140%',
-          height: 26,
-          background: 'var(--road)',
-          transform: 'rotate(-8deg)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          left: '55%',
-          top: '-10%',
-          width: 22,
-          height: '120%',
-          background: 'var(--road)',
-          transform: 'rotate(12deg)',
-        }}
-      />
+    <div className="absolute inset-0 bg-[var(--map)]">
+      <div className="absolute -left-[20%] top-[26%] w-[140%] h-[26px] bg-[var(--road)] rotate-[-8deg]" />
+      <div className="absolute left-[55%] -top-[10%] w-[22px] h-[120%] bg-[var(--road)] rotate-[12deg]" />
       {pinTop && (
-        <div
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: '48%',
-            transform: 'translate(-50%,-100%)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <span
-            style={{
-              background: 'var(--accent)',
-              color: 'var(--onaccent)',
-              borderRadius: 14,
-              padding: '6px 12px',
-              fontSize: 12.5,
-              fontWeight: 700,
-              boxShadow: 'var(--glow)',
-            }}
-          >
+        <div className="absolute left-1/2 top-[48%] -translate-x-1/2 -translate-y-full flex flex-col items-center">
+          <span className="bg-accent text-onaccent rounded-[14px] px-3 py-1.5 text-[12.5px] font-bold shadow-[var(--glow)]">
             {t('auth.location.pin')}
           </span>
-          <span style={{ width: 3, height: 14, background: 'var(--accent)' }} />
-          <span
-            style={{
-              width: 12,
-              height: 12,
-              borderRadius: '50%',
-              background: 'var(--accent)',
-              animation: 'ptpulse 1.6s infinite',
-            }}
-          />
+          <span className="w-[3px] h-[14px] bg-accent" />
+          <span className="w-3 h-3 rounded-full bg-accent animate-[ptpulse_1.6s_infinite]" />
         </div>
       )}
-      {!pinTop && (
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'linear-gradient(to bottom, transparent 20%, var(--bg) 62%)',
-          }}
-        />
-      )}
+      {!pinTop && <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_20%,var(--bg)_62%)]" />}
     </div>
   );
 }
@@ -102,32 +47,28 @@ function LocationCardBody({ compact }: { compact: boolean }) {
 
   return (
     <>
-      <h1 style={{ fontFamily: BRICO, fontSize: compact ? 22 : 26, fontWeight: 700, margin: 0, marginBottom: compact ? 8 : 10 }}>
+      <h1
+        style={{ fontFamily: BRICO }} // eslint-disable-line react/no-inline-styles -- dynamic: font-family constant from lib/format.ts, not a Tailwind token
+        className={clsx('font-bold mt-0', compact ? 'text-[22px] mb-2' : 'text-[26px] mb-2.5')}
+      >
         {t('auth.location.title')}
       </h1>
-      <div style={{ fontSize: compact ? 13.5 : 14.5, color: 'var(--muted)', lineHeight: 1.55, marginBottom: compact ? 18 : 24 }}>
+      <div className={clsx('text-[var(--muted)] leading-[1.55]', compact ? 'text-[13.5px] mb-[18px]' : 'text-[14.5px] mb-6')}>
         {t('auth.location.subtitle')}
       </div>
       <div
         {...clickable(() => void useCurrent())}
-        style={{
-          textAlign: 'center',
-          background: 'var(--accent)',
-          color: 'var(--onaccent)',
-          borderRadius: 18,
-          padding: compact ? 14 : 15,
-          fontSize: compact ? 15 : 15.5,
-          fontWeight: 700,
-          cursor: busy ? 'default' : 'pointer',
-          opacity: busy ? 0.7 : 1,
-          boxShadow: 'var(--glow)',
-        }}
+        className={clsx(
+          'text-center bg-accent text-onaccent rounded-[18px] font-bold shadow-[var(--glow)]',
+          compact ? 'p-3.5 text-[15px]' : 'p-[15px] text-[15.5px]',
+          busy ? 'cursor-default opacity-70' : 'cursor-pointer',
+        )}
       >
         {busy ? t('auth.location.locating') : t('auth.location.share')}
       </div>
 
       {manualMode ? (
-        <div style={{ marginTop: 14 }}>
+        <div className="mt-3.5">
           <input
             value={addr}
             autoFocus
@@ -137,33 +78,14 @@ function LocationCardBody({ compact }: { compact: boolean }) {
             }}
             placeholder={t('auth.location.manualPlaceholder')}
             aria-label={t('auth.location.manualPlaceholder')}
-            style={{
-              width: '100%',
-              boxSizing: 'border-box',
-              border: '1.5px solid var(--border)',
-              background: 'var(--surface2)',
-              color: 'var(--text)',
-              borderRadius: 14,
-              padding: '13px 14px',
-              fontSize: 14.5,
-              outline: 'none',
-            }}
+            className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-[13px] px-3.5 text-[14.5px] outline-none"
           />
           <div
             {...clickable(submitManual)}
-            style={{
-              textAlign: 'center',
-              marginTop: 10,
-              background: 'var(--surface2)',
-              color: 'var(--accent)',
-              border: '1.5px solid var(--accent)',
-              borderRadius: 14,
-              padding: 12,
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: busy ? 'default' : 'pointer',
-              opacity: busy ? 0.7 : 1,
-            }}
+            className={clsx(
+              'text-center mt-2.5 bg-surface2 text-accent border-[1.5px] border-accent rounded-[14px] p-3 text-sm font-bold',
+              busy ? 'cursor-default opacity-70' : 'cursor-pointer',
+            )}
           >
             {busy ? t('auth.location.locating') : t('auth.location.manualConfirm')}
           </div>
@@ -171,7 +93,7 @@ function LocationCardBody({ compact }: { compact: boolean }) {
       ) : (
         <div
           {...clickable(() => setManualMode(true))}
-          style={{ textAlign: 'center', fontSize: compact ? 13 : 13.5, fontWeight: 700, color: 'var(--accent)', marginTop: compact ? 12 : 14, cursor: 'pointer' }}
+          className={clsx('text-center font-bold text-accent cursor-pointer', compact ? 'text-[13px] mt-3' : 'text-[13.5px] mt-3.5')}
         >
           {t('auth.location.manual')}
         </div>
@@ -188,24 +110,9 @@ export function LocationScreen() {
   // MapBackdrop as mobile) with a single floating card holding the same copy/actions.
   if (isDesktop) {
     return (
-      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', animation: 'dwfade .3s ease' }}>
+      <div className="fixed inset-0 overflow-hidden animate-[dwfade_.3s_ease]">
         <MapBackdrop pinTop />
-        <div
-          style={{
-            position: 'absolute',
-            left: '8%',
-            top: '50%',
-            transform: 'translateY(-50%)',
-            width: '100%',
-            maxWidth: 440,
-            background: 'var(--surface)',
-            color: 'var(--text)',
-            borderRadius: 26,
-            padding: '32px 30px 34px',
-            boxShadow: 'var(--shadow)',
-            zIndex: 1,
-          }}
-        >
+        <div className="absolute left-[8%] top-1/2 -translate-y-1/2 w-full max-w-[440px] bg-surface text-text rounded-[26px] pt-8 px-[30px] pb-[34px] shadow-[var(--shadow)] z-[1]">
           <LocationCardBody compact={false} />
         </div>
       </div>
@@ -213,21 +120,11 @@ export function LocationScreen() {
   }
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', animation: 'dwfade .3s ease' }}>
-      <div style={{ flex: 1, position: 'relative', background: 'var(--map)', overflow: 'hidden' }}>
+    <div className="flex-1 flex flex-col animate-[dwfade_.3s_ease]">
+      <div className="flex-1 relative bg-[var(--map)] overflow-hidden">
         <MapBackdrop pinTop />
       </div>
-      <div
-        style={{
-          flex: 'none',
-          padding: '22px 28px 44px',
-          background: 'var(--surface)',
-          borderRadius: '26px 26px 0 0',
-          marginTop: -24,
-          position: 'relative',
-          boxShadow: 'var(--shadow)',
-        }}
-      >
+      <div className="flex-none pt-[22px] px-7 pb-11 bg-surface rounded-t-[26px] -mt-6 relative shadow-[var(--shadow)]">
         <LocationCardBody compact />
       </div>
     </div>

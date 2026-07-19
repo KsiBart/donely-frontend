@@ -7,6 +7,7 @@
     "loading": "Loading…",
     "otpDigit": "Code digit {{n}}",
     "primaryNav": "Navigation",
+    "refresh": "Refresh",
     "starLabel": "{{n}} of 5 stars",
     "starRating": "Star rating",
     "timePicker": "Choose a time",
@@ -20,13 +21,15 @@
     "profile": "Profile",
     "provider": "Provider",
     "book": "Booking",
-    "admin": "Admin panel"
+    "admin": "Admin panel",
+    "pro": "Pro mode"
   },
   "common": {
     "skipToContent": "Skip to content",
     "error": "Error",
     "errorWithStatus": "Error {{status}}",
     "noConnection": "No connection to the server",
+    "loading": "Loading…",
     "verifiedFull": "✓ Verified",
     "verifiedShort": "✓",
     "today": "today",
@@ -566,7 +569,10 @@
       },
       "done": {
         "title": "You're in!",
-        "sub": "Welcome to Donely. You're all set — head to the web app to find a pro.",
+        "sub": "Welcome to Donely. You're all set — choose how you'd like to continue.",
+        "chooseTitle": "How do you want to continue?",
+        "standardCta": "Enter as customer",
+        "proCta": "Enter as Pro (provider)",
         "cta": "Go to app",
         "back": "Back to home"
       }
@@ -1103,6 +1109,7 @@
       "language": "Language"
     },
     "notificationsOn": "On",
+    "notificationsOff": "Off",
     "paymentMethodsVal": "BLIK, PayPal",
     "defaultLocation": "Mokotów",
     "logout": "Log out",
@@ -1112,7 +1119,117 @@
     "langNamePl": "Polski",
     "langNameEn": "English",
     "pushPromoTitle": "Push notifications",
-    "pushPromoBody": "In the browser you'll get e-mails. Real-time push — for confirmations and quotes — requires the app."
+    "pushPromoBody": "In the browser you'll get e-mails. Real-time push — for confirmations and quotes — requires the app.",
+    "locationPanel": {
+      "title": "Change location"
+    },
+    "addressesPanel": {
+      "title": "Saved addresses",
+      "empty": "You don't have any saved addresses yet.",
+      "labelPlaceholder": "Label (e.g. Home, Work)",
+      "addrPlaceholder": "Address",
+      "addCta": "Add address",
+      "removeLabel": "Remove address {{label}}",
+      "savedToast": "Address saved",
+      "removedToast": "Address removed",
+      "incomplete": "Enter a label and an address"
+    },
+    "paymentsPanel": {
+      "title": "Payment methods",
+      "note": "You choose the payment method at booking. The platform currently supports:",
+      "empty": "No payment methods configured."
+    },
+    "proSection": {
+      "becomeTitle": "Do you offer services?",
+      "becomeBody": "Earn legally without setting up a company — {{appName}} issues invoices and settles your taxes for you.",
+      "becomeCta": "Become Pro",
+      "activeTitle": "You're a {{appName}} pro",
+      "enterProBody": "Switch views to manage requests, your calendar, and payouts.",
+      "enterProCta": "Enter Pro mode",
+      "inProTitle": "Pro mode active",
+      "inProBody": "You're now viewing the app as a pro.",
+      "switchStandardCta": "Switch to customer mode",
+      "becameProToast": "Pro mode activated!",
+      "enteredProToast": "Switched to Pro mode",
+      "enteredStandardToast": "Switched to customer mode"
+    }
+  },
+  "proTerms": {
+    "back": "Back to choice",
+    "title": "Pro mode terms",
+    "body": "As a pro on DoneLy AI you receive job requests from customers, set your own services and prices, and carry them out at your own responsibility.\n\nDoneLy AI acts as payment intermediary: the customer's money is frozen until the job is done, then paid out to you — minus the platform commission — once approved, with an automatic receipt/invoice.\n\nBy accepting, you confirm you'll settle income from these jobs in line with applicable tax law.",
+    "accept": "Accept and continue",
+    "accepting": "Saving…",
+    "cancel": "Cancel"
+  },
+  "pro": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "requests": "Requests",
+      "calendar": "Calendar",
+      "payouts": "Payouts",
+      "profile": "Profile"
+    },
+    "dashboard": {
+      "title": "Dashboard",
+      "statusPendingBanner": "Your pro profile is awaiting admin verification. Some features may be limited until it's approved.",
+      "statusRejectedBanner": "Your pro profile wasn't approved. Contact support to learn more.",
+      "kpiBookings": "Bookings this month",
+      "kpiRevenue": "Revenue this month",
+      "kpiRating": "Rating",
+      "kpiRatingSub": "{{count}} reviews",
+      "kpiNewRequests": "New requests",
+      "kpiDocs": "Documents this month",
+      "kpiNet": "Net paid out",
+      "kpiNetSub": "Tax: {{tax}}",
+      "agendaTitle": "Today's schedule",
+      "agendaEmpty": "No jobs scheduled for today.",
+      "bufferRow": "🚐 Travel: {{label}}",
+      "viewRequestsCta": "View requests →"
+    },
+    "requests": {
+      "title": "Requests",
+      "empty": "No requests.",
+      "declineCta": "Decline",
+      "completeCta": "Mark as done",
+      "quotePlaceholder": "Amount in zł",
+      "quoteSendCta": "Send quote",
+      "quoteInvalid": "Enter a valid amount greater than zero",
+      "status": {
+        "new": "New",
+        "accepted": "Accepted",
+        "quoted": "Quote sent",
+        "declined": "Declined"
+      },
+      "acceptToast": "Request accepted",
+      "declineToast": "Request declined",
+      "quoteSentToast": "Quote sent",
+      "completeToast": "Job marked as done"
+    },
+    "calendar": {
+      "title": "Calendar",
+      "prevDayLabel": "Previous day",
+      "nextDayLabel": "Next day",
+      "today": "Today",
+      "empty": "Nothing scheduled for this day.",
+      "freeLabel": "Free slot",
+      "blockCta": "Block",
+      "unblockCta": "Unblock",
+      "unblockUnavailable": "This block can't be removed from here",
+      "blockToast": "Slot blocked",
+      "unblockToast": "Block removed"
+    },
+    "payouts": {
+      "title": "Payouts",
+      "billingSummaryTitle": "Monthly summary",
+      "kpiDocs": "Documents",
+      "kpiTax": "Tax withheld",
+      "kpiNet": "Net paid out",
+      "documentsTitle": "Documents",
+      "documentsEmpty": "No documents this month.",
+      "payoutsTitle": "Payout history",
+      "payoutsEmpty": "No payouts."
+    }
   },
   "admin": {
     "common": {

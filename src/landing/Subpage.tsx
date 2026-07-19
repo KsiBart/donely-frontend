@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { BRICO } from '../lib/format';
+import clsx from 'clsx';
 import { clickable } from '../lib/a11y';
 import { CAT_GRADIENTS } from './palette';
 import { SiteFooter, SiteHeader } from './SiteChrome';
@@ -64,25 +64,25 @@ export default function Subpage({ pageKey }: { pageKey: string }) {
   }, [pageKey, i18n.language]);
 
   return (
-    <div className="dt" data-dk={dark ? '1' : '0'} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: 'var(--bgGrad)' }}>
+    <div className="dt min-h-screen flex flex-col bg-[var(--bgGrad)]" data-dk={dark ? '1' : '0'}>
       <SiteHeader />
 
-      <section style={{ background: 'var(--tint)', borderBottom: '1px solid var(--border)' }}>
-        <div style={{ maxWidth: 920, margin: '0 auto', padding: 'clamp(36px,5vw,64px) 22px' }}>
+      <section className="bg-[var(--tint)] border-b border-border">
+        <div className="max-w-[920px] mx-auto p-[clamp(36px,5vw,64px)_22px]">
           <span
             {...clickable(() => navigate('/'))}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 14, fontWeight: 700, color: 'var(--acc)', cursor: 'pointer' }}
+            className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer"
           >
             <span aria-hidden="true">‹</span> {t('landing.backHome')}
           </span>
-          <h1 style={{ fontFamily: BRICO, fontSize: 'clamp(34px,5vw,52px)', fontWeight: 800, color: 'var(--ink)', margin: '14px 0 0', letterSpacing: '-.01em' }}>
+          <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(34px,5vw,52px)] font-extrabold text-[var(--ink)] m-[14px_0_0] tracking-[-0.01em]">
             {page.title}
           </h1>
-          <p style={{ fontSize: 16.5, color: 'var(--muted)', margin: '12px 0 0', maxWidth: 640, lineHeight: 1.55 }}>{page.sub}</p>
+          <p className="text-[16.5px] text-muted m-[12px_0_0] max-w-[640px] leading-[1.55]">{page.sub}</p>
         </div>
       </section>
 
-      <section style={{ maxWidth: 920, margin: '0 auto', width: '100%', boxSizing: 'border-box', padding: 'clamp(30px,4vw,48px) 22px 80px', display: 'flex', flexDirection: 'column', gap: 40, flex: 1 }}>
+      <section className="max-w-[920px] mx-auto w-full box-border p-[clamp(30px,4vw,48px)_22px_80px] flex flex-col gap-10 flex-1">
         {page.blocks.map((block, i) => (
           <BlockRenderer key={i} block={block} />
         ))}
@@ -114,14 +114,14 @@ function BlockRenderer({ block }: { block: Block }) {
 
 function CardsBlock({ items }: { items: CardItem[] }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))', gap: 16 }}>
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
       {items.map((it) => (
-        <div key={it.t} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24 }}>
-          <div aria-hidden="true" style={{ width: 46, height: 46, borderRadius: 13, background: 'var(--tint)', color: 'var(--acc)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22 }}>
+        <div key={it.t} className="bg-surface border border-border rounded-[20px] p-6">
+          <div aria-hidden="true" className="w-[46px] h-[46px] rounded-[13px] bg-[var(--tint)] text-[var(--acc)] flex items-center justify-center text-[22px]">
             {it.icon}
           </div>
-          <div style={{ fontFamily: BRICO, fontSize: 18, fontWeight: 700, color: 'var(--ink)', marginTop: 14 }}>{it.t}</div>
-          <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.55, marginTop: 6 }}>{it.d}</div>
+          <div className="font-['Bricolage_Grotesque',sans-serif] text-lg font-bold text-[var(--ink)] mt-[14px]">{it.t}</div>
+          <div className="text-sm text-muted leading-[1.55] mt-1.5">{it.d}</div>
         </div>
       ))}
     </div>
@@ -131,18 +131,18 @@ function CardsBlock({ items }: { items: CardItem[] }) {
 function ListBlock({ action, items }: { action: string; items: ListItem[] }) {
   const { t } = useTranslation();
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div className="flex flex-col gap-[10px]">
       {items.map((it) => (
         <div
           key={it.t}
-          style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 18, padding: '16px 18px' }}
+          className="flex items-center gap-[14px] flex-wrap bg-surface border border-border rounded-[18px] p-[16px_18px]"
         >
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <div style={{ fontSize: 15.5, fontWeight: 800, color: 'var(--ink)' }}>{it.t}</div>
-            <div style={{ fontSize: 13, color: 'var(--muted2)', marginTop: 3 }}>{it.meta}</div>
+          <div className="flex-1 min-w-[200px]">
+            <div className="text-[15.5px] font-extrabold text-[var(--ink)]">{it.t}</div>
+            <div className="text-[13px] text-muted2 mt-[3px]">{it.meta}</div>
           </div>
-          <span style={{ background: 'var(--tint)', color: 'var(--accInk)', borderRadius: 10, padding: '5px 10px', fontSize: 11.5, fontWeight: 800 }}>{it.tag}</span>
-          <a href={`mailto:${t('landing.applyEmail')}`} style={{ background: 'var(--acc)', color: 'var(--onacc)', borderRadius: 12, padding: '9px 16px', fontSize: 13, fontWeight: 800 }}>
+          <span className="bg-[var(--tint)] text-[var(--accInk)] rounded-[10px] p-[5px_10px] text-[11.5px] font-extrabold">{it.tag}</span>
+          <a href={`mailto:${t('landing.applyEmail')}`} className="bg-[var(--acc)] text-[var(--onacc)] rounded-xl p-[9px_16px] text-[13px] font-extrabold">
             {action}
           </a>
         </div>
@@ -153,18 +153,22 @@ function ListBlock({ action, items }: { action: string; items: ListItem[] }) {
 
 function PostsBlock({ items }: { items: PostItem[] }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(250px,1fr))', gap: 16 }}>
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
       {items.map((it, i) => {
         const [sA, sB] = CAT_GRADIENTS[(it.hue ?? i) % CAT_GRADIENTS.length];
         return (
-          <div key={it.t} className="dt-post-card" style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', transition: 'box-shadow .25s' }}>
-            <div style={{ height: 110, position: 'relative', overflow: 'hidden', background: `linear-gradient(135deg,${sA},${sB})` }}>
-              <div style={{ position: 'absolute', inset: 0, opacity: 0.12, background: 'repeating-linear-gradient(45deg,#fff,#fff 6px,transparent 6px,transparent 14px)' }} />
+          <div key={it.t} className="dt-post-card bg-surface border border-border rounded-[20px] overflow-hidden cursor-pointer transition-shadow duration-[250ms]">
+            <div
+              className="h-[110px] relative overflow-hidden"
+              // eslint-disable-next-line react/no-inline-styles -- dynamic: per-post gradient stops (CAT_GRADIENTS[hue])
+              style={{ background: `linear-gradient(135deg,${sA},${sB})` }}
+            >
+              <div className="absolute inset-0 opacity-[.12] bg-[repeating-linear-gradient(45deg,#fff,#fff_6px,transparent_6px,transparent_14px)]" />
             </div>
-            <div style={{ padding: '14px 18px 18px' }}>
-              <div style={{ fontSize: 12, color: 'var(--soft)', fontWeight: 600 }}>{it.meta}</div>
-              <div style={{ fontFamily: BRICO, fontSize: 17, fontWeight: 700, color: 'var(--ink)', marginTop: 6, lineHeight: 1.25 }}>{it.t}</div>
-              <div style={{ fontSize: 13.5, color: 'var(--muted)', lineHeight: 1.5, marginTop: 7 }}>{it.d}</div>
+            <div className="p-[14px_18px_18px]">
+              <div className="text-xs text-[var(--soft)] font-semibold">{it.meta}</div>
+              <div className="font-['Bricolage_Grotesque',sans-serif] text-[17px] font-bold text-[var(--ink)] mt-1.5 leading-[1.25]">{it.t}</div>
+              <div className="text-[13.5px] text-muted leading-[1.5] mt-[7px]">{it.d}</div>
             </div>
           </div>
         );
@@ -176,22 +180,22 @@ function PostsBlock({ items }: { items: PostItem[] }) {
 function FaqBlock({ items }: { items: FaqItem[] }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div className="flex flex-col gap-[10px]">
       {items.map((it, i) => {
         const isOpen = open === i;
         return (
-          <div key={it.q} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 16, overflow: 'hidden' }}>
+          <div key={it.q} className="bg-surface border border-border rounded-2xl overflow-hidden">
             <div
               {...clickable(() => setOpen(isOpen ? null : i), { expanded: isOpen })}
               id={`faq-q-${i}`}
               aria-controls={`faq-a-${i}`}
-              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '15px 18px', cursor: 'pointer' }}
+              className="flex items-center gap-3 p-[15px_18px] cursor-pointer"
             >
-              <span style={{ flex: 1, fontSize: 15, fontWeight: 700, color: 'var(--ink)' }}>{it.q}</span>
-              <span aria-hidden="true" style={{ color: 'var(--acc)', fontSize: 18, fontWeight: 800, width: 20, textAlign: 'center' }}>{isOpen ? '−' : '+'}</span>
+              <span className="flex-1 text-[15px] font-bold text-[var(--ink)]">{it.q}</span>
+              <span aria-hidden="true" className="text-[var(--acc)] text-[18px] font-extrabold w-5 text-center">{isOpen ? '−' : '+'}</span>
             </div>
             {isOpen && (
-              <div id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} style={{ padding: '0 18px 16px', fontSize: 14, color: 'var(--muted)', lineHeight: 1.6, animation: 'dfade .25s ease' }}>
+              <div id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`} className="p-[0_18px_16px] text-sm text-muted leading-[1.6] animate-[dfade_0.25s_ease]">
                 {it.a}
               </div>
             )}
@@ -204,11 +208,11 @@ function FaqBlock({ items }: { items: FaqItem[] }) {
 
 function DocBlock({ items }: { items: DocItem[] }) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div className="flex flex-col gap-6">
       {items.map((it) => (
         <div key={it.h}>
-          <div style={{ fontFamily: BRICO, fontSize: 19, fontWeight: 700, color: 'var(--ink)' }}>{it.h}</div>
-          <div style={{ fontSize: 14.5, color: 'var(--muted)', lineHeight: 1.65, marginTop: 8, maxWidth: 720 }}>{it.p}</div>
+          <div className="font-['Bricolage_Grotesque',sans-serif] text-[19px] font-bold text-[var(--ink)]">{it.h}</div>
+          <div className="text-[14.5px] text-muted leading-[1.65] mt-2 max-w-[720px]">{it.p}</div>
         </div>
       ))}
     </div>
@@ -229,47 +233,33 @@ function ContactForm() {
 
   if (sent) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--okbg)', color: 'var(--okfg)', borderRadius: 16, padding: '16px 18px', fontSize: 14.5, fontWeight: 700, maxWidth: 560 }}>
+      <div className="flex items-center gap-[10px] bg-[var(--okbg)] text-[var(--okfg)] rounded-2xl p-[16px_18px] text-[14.5px] font-bold max-w-[560px]">
         <span aria-hidden="true">✓</span> {t('landing.form.thanks')}
       </div>
     );
   }
 
-  const inputStyle = {
-    width: '100%',
-    boxSizing: 'border-box' as const,
-    borderRadius: 14,
-    border: '1.5px solid var(--border)',
-    background: 'var(--bg)',
-    color: 'var(--ink)',
-    padding: '13px 14px',
-    font: "600 14px 'Figtree', sans-serif",
-    outline: 'none',
-  };
+  const fieldBase =
+    "w-full box-border rounded-[14px] border-[1.5px] border-border bg-bg text-[var(--ink)] p-[13px_14px] font-['Figtree',sans-serif] text-sm outline-none";
+  const inputClass = clsx(fieldBase, 'font-semibold');
+  const textareaClass = clsx(fieldBase, 'font-medium h-[110px] resize-none');
 
   return (
-    <div style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 20, padding: 24, maxWidth: 560, display: 'flex', flexDirection: 'column', gap: 12 }}>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('landing.form.name')} aria-label={t('landing.form.name')} style={inputStyle} />
-      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder={t('landing.form.email')} aria-label={t('landing.form.email')} style={inputStyle} />
+    <div className="bg-surface border border-border rounded-[20px] p-6 max-w-[560px] flex flex-col gap-3">
+      <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t('landing.form.name')} aria-label={t('landing.form.name')} className={inputClass} />
+      <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder={t('landing.form.email')} aria-label={t('landing.form.email')} className={inputClass} />
       <textarea
         value={msg}
         onChange={(e) => setMsg(e.target.value)}
         placeholder={t('landing.form.msg')}
         aria-label={t('landing.form.msg')}
-        style={{ ...inputStyle, height: 110, resize: 'none', font: "500 14px 'Figtree', sans-serif" }}
+        className={textareaClass}
       />
       <div
         {...clickable(() => setSent(true), { disabled: !ok })}
-        style={{
-          textAlign: 'center',
-          background: ok ? 'var(--acc)' : 'var(--surface2)',
-          color: ok ? 'var(--onacc)' : 'var(--soft)',
-          borderRadius: 14,
-          padding: 13,
-          fontSize: 14.5,
-          fontWeight: 800,
-          cursor: 'pointer',
-        }}
+        className="text-center rounded-[14px] p-[13px] text-[14.5px] font-extrabold cursor-pointer"
+        // eslint-disable-next-line react/no-inline-styles -- dynamic: enabled/disabled visual state depends on form validity
+        style={{ background: ok ? 'var(--acc)' : 'var(--surface2)', color: ok ? 'var(--onacc)' : 'var(--soft)' }}
       >
         {t('landing.form.send')}
       </div>

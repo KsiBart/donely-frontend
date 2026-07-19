@@ -7,7 +7,7 @@ import { useBrand } from '../../brand';
 import { useToast } from '../../state/ToastContext';
 import { usePending } from '../AdminApp';
 import { PendingRow } from '../PendingQueue';
-import { StatusChip, TableHead, cardStyle, rowStyle } from '../ui';
+import { CARD_CLASS, StatusChip, TableHead, rowClass } from '../ui';
 
 const COLS = '1.4fr 1fr 1.4fr .7fr .9fr';
 
@@ -29,22 +29,27 @@ export default function Providers() {
 
   return (
     <>
-      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.providers.queueTitle', { count: pendingCount })}</h2>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
-        {pending.length === 0 && <div style={{ fontSize: 13, color: 'var(--muted)' }}>{t('admin.providers.queueEmpty')}</div>}
+      <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.providers.queueTitle', { count: pendingCount })}</h2>
+      <div className="mb-6 flex flex-col gap-2.5">
+        {pending.length === 0 && <div className="text-[13px] text-muted">{t('admin.providers.queueEmpty')}</div>}
         {pending.map((p) => (
           <PendingRow key={p.id} p={p} variant="page" onApprove={approve} onReject={reject} />
         ))}
       </div>
-      <h2 style={{ fontWeight: 700, fontSize: 14.5, margin: '0 0 12px' }}>{t('admin.providers.verifiedTitle')}</h2>
-      <div style={{ ...cardStyle, overflow: 'hidden' }}>
+      <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.providers.verifiedTitle')}</h2>
+      <div className={`${CARD_CLASS} overflow-hidden`}>
         <TableHead cols={COLS} columns={columns} />
         {verified.map((v) => (
-          <div key={v.id} style={rowStyle(COLS)}>
-            <span style={{ fontWeight: 700 }}>{v.name}</span>
-            <span style={{ color: 'var(--muted2)' }}>{v.categoryName ?? v.category?.name ?? ''}</span>
-            <span style={{ color: 'var(--muted2)', fontSize: 12 }}>{bizLong(v.businessType, t, brand.appName)}</span>
-            <span style={{ fontWeight: 700 }}>
+          <div
+            key={v.id}
+            className={rowClass()}
+            // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns is a runtime string constant, Tailwind JIT can't scan it
+            style={{ gridTemplateColumns: COLS }}
+          >
+            <span className="font-bold">{v.name}</span>
+            <span className="text-muted2">{v.categoryName ?? v.category?.name ?? ''}</span>
+            <span className="text-[12px] text-muted2">{bizLong(v.businessType, t, brand.appName)}</span>
+            <span className="font-bold">
               <span aria-hidden="true">★</span> {formatRating(v.rating, locale)}
             </span>
             <StatusChip bg="var(--ver-bg)" fg="#3e7a48">
