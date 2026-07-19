@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { api } from './api/client';
-import type { BrandConfigResponse, PaymentMethod } from './api/types';
+import { useConfigQuery } from './api/hooks';
+import type { PaymentMethod } from './api/models';
 
 /**
  * Frontend-owns-brand split (the single source of truth for a white-label re-skin — see
@@ -66,30 +66,20 @@ const BrandCtx = createContext<BrandConfig>(DEFAULT_BRAND);
  */
 export function BrandProvider({ children }: { children: React.ReactNode }) {
   const [brand, setBrand] = useState<BrandConfig>(DEFAULT_BRAND);
+  const { data: cfg } = useConfigQuery();
 
   useEffect(() => {
-    let alive = true;
-    api
-      .config()
-      .then((cfg: BrandConfigResponse) => {
-        if (!alive) return;
-        const merged: BrandConfig = {
-          ...DEFAULT_BRAND,
-          currency: cfg.currency,
-          supportedLocales: cfg.supportedLocales,
-          taxRatePrivate: cfg.taxRatePrivate,
-          paymentMethods: cfg.paymentMethods,
-        };
-        setBrand(merged);
-        Object.assign(BRAND, merged);
-      })
-      .catch(() => {
-        /* /api/config not available yet — keep design defaults */
-      });
-    return () => {
-      alive = false;
+    if (!cfg) return; // /api/config not available yet — keep design defaults
+    const merged: BrandConfig = {
+      ...DEFAULT_BRAND,
+      currency: cfg.currency,
+      supportedLocales: cfg.supportedLocales,
+      taxRatePrivate: cfg.taxRatePrivate,
+      paymentMethods: cfg.paymentMethods,
     };
-  }, []);
+    setBrand(merged);
+    Object.assign(BRAND, merged);
+  }, [cfg]);
 
   return React.createElement(BrandCtx.Provider, { value: brand }, children);
 }

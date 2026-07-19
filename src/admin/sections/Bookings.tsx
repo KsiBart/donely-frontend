@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { AdminBookingRow, BookingStatus } from '../../api/types';
+import { useAdminBookingsQuery, useAdminCancelBookingMutation } from '../../api/hooks';
+import type { AdminBookingRow, BookingStatus } from '../../api/models';
 import { bookingStatusLabel, statusChipColors, whenLabel } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
@@ -14,13 +14,19 @@ const FILTER_STATUSES: (BookingStatus | undefined)[] = [undefined, 'CONFIRMED', 
 export default function Bookings() {
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const { data, error } = useAdminBookingsQuery();
   const [rows, setRows] = useState<AdminBookingRow[]>([]);
   const [filter, setFilter] = useState(0);
+  const cancelBookingMutation = useAdminCancelBookingMutation();
 
   useEffect(() => {
-    api.adminBookings().then(setRows).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (data) setRows(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (error) showToast(error instanceof Error ? error.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [error]);
 
   const filterLabels = t('admin.bookings.filters', { returnObjects: true }) as unknown as string[];
   const columns = t('admin.bookings.columns', { returnObjects: true }) as unknown as string[];
@@ -29,7 +35,7 @@ export default function Bookings() {
 
   const cancel = async (b: AdminBookingRow) => {
     try {
-      await api.adminCancelBooking(b.id);
+      await cancelBookingMutation.mutateAsync(b.id);
       setRows((list) => list.map((x) => (x.id === b.id ? { ...x, status: 'CANCELLED' } : x)));
       showToast(t('admin.bookings.cancelToast', { id: b.id }));
     } catch (e) {

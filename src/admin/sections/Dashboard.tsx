@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { AdminStats, EventLogItem } from '../../api/types';
+import { useAdminFeedQuery, useAdminStatsQuery } from '../../api/hooks';
 import { toIntlLocale } from '../../i18n';
 import { monthName, relTime } from '../../lib/format';
 import { useToast } from '../../state/ToastContext';
@@ -14,14 +13,19 @@ export default function Dashboard() {
   const locale = toIntlLocale(i18n.language);
   const { showToast } = useToast();
   const { pending, pendingCount, approve, reject } = usePending();
-  const [stats, setStats] = useState<AdminStats | null>(null);
-  const [feed, setFeed] = useState<EventLogItem[]>([]);
+  const { data: stats, error: statsError } = useAdminStatsQuery();
+  const { data: feedData, error: feedError } = useAdminFeedQuery();
+  const feed = feedData ?? [];
 
   useEffect(() => {
-    api.adminStats().then(setStats).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
-    api.adminFeed().then(setFeed).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (statsError) showToast(statsError instanceof Error ? statsError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [statsError]);
+
+  useEffect(() => {
+    if (feedError) showToast(feedError instanceof Error ? feedError.message : t('common.error'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [feedError]);
 
   return (
     <>

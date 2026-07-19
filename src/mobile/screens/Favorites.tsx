@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { ProviderListItem } from '../../api/types';
+import { useFavoritesQuery } from '../../api/hooks';
 import { toIntlLocale } from '../../i18n';
 import { useIsDesktop } from '../../lib/useIsDesktop';
 import { AvatarTile } from '../../components/ui';
@@ -17,19 +16,14 @@ export default function Favorites() {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const isDesktop = useIsDesktop();
-  const [favs, setFavs] = useState<ProviderListItem[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const { data, isSuccess, error } = useFavoritesQuery();
+  const favs = data ?? [];
+  const loaded = isSuccess;
 
   useEffect(() => {
-    api
-      .favorites()
-      .then((list) => {
-        setFavs(list);
-        setLoaded(true);
-      })
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (error) showToast(error instanceof Error ? error.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [error]);
 
   return (
     <div

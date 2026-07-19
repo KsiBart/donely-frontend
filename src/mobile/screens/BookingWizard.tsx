@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { CreateBookingPayload, PaymentMethod, ProviderDetail, Service } from '../../api/types';
+import { useCheckoutMutation, useCreateBookingMutation, useMockCompletePaymentMutation, useProviderQuery, useSlotsQuery } from '../../api/hooks';
+import type { CreateBookingPayload, PaymentMethod, ProviderDetail, Service } from '../../api/models';
 import { useBrand } from '../../brand';
 import { stripes } from '../../components/ui';
 import { toIntlLocale } from '../../i18n';
@@ -59,7 +59,6 @@ export default function BookingWizard() {
   const [step, setStep] = useState(1);
   const [slotDay, setSlotDay] = useState(0);
   const [slotTime, setSlotTime] = useState<string | null>(null);
-  const [times, setTimes] = useState<{ label: string; available: boolean }[]>([]);
   const [windowSel, setWindowSel] = useState<string | null>(null);
   const [notes, setNotes] = useState('');
   const [address, setAddress] = useState(
@@ -68,30 +67,40 @@ export default function BookingWizard() {
   const [method, setMethod] = useState<PaymentMethod | null>(null);
   const [busy, setBusy] = useState(false);
 
+  const createBookingMutation = useCreateBookingMutation();
+  const checkoutMutation = useCheckoutMutation();
+  const mockCompletePaymentMutation = useMockCompletePaymentMutation();
+
+  const { data: fetchedProvider, error: providerError } = useProviderQuery(!pv ? providerId : undefined);
+
   useEffect(() => {
-    if (pv || !providerId) return;
-    api
-      .provider(providerId)
-      .then((d) => {
-        setPv(d);
-        setService(d.services.find((s) => String(s.id) === serviceId) ?? null);
-      })
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (!fetchedProvider) return;
+    setPv(fetchedProvider);
+    setService(fetchedProvider.services.find((s) => String(s.id) === serviceId) ?? null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [providerId]);
+  }, [fetchedProvider]);
+
+  useEffect(() => {
+    if (providerError) showToast(providerError instanceof Error ? providerError.message : t('common.error'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [providerError]);
 
   const isQuote = service?.priceType === 'QUOTE';
   const atSpot = service?.location === 'SPOT';
 
+  const slotDayIso = days[slotDay] ? isoDay(days[slotDay].date) : '';
+  const { data: slotsData, error: slotsError } = useSlotsQuery(providerId, slotDayIso, !isQuote && !!service);
+  const times = slotsData?.times ?? [];
+
   useEffect(() => {
-    if (!providerId || isQuote || !service) return;
     setSlotTime(null);
-    api
-      .slots(providerId, isoDay(days[slotDay].date))
-      .then((r) => setTimes(r.times))
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [providerId, slotDay, isQuote, !!service]);
+
+  useEffect(() => {
+    if (slotsError) showToast(slotsError instanceof Error ? slotsError.message : t('common.error'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slotsError]);
 
   if (!pv || !service) {
     return <div style={{ flex: 1 }} />;
@@ -144,7 +153,7 @@ export default function BookingWizard() {
         dt.setHours(h, m, 0, 0);
         payload.startAt = dt.toISOString();
       }
-      const booking = await api.createBooking(payload);
+      const booking = await createBookingMutation.mutateAsync(payload);
 
       if (isQuote) {
         navigate('/success', {
@@ -164,13 +173,13 @@ export default function BookingWizard() {
       // Phase 2 — escrow checkout: instant/accepted-quote bookings need a HELD payment
       // before they become CONFIRMED.
       try {
-        const chk = await api.checkout(booking.id, method!);
+        const chk = await checkoutMutation.mutateAsync({ bookingId: booking.id, method: method! });
         if (chk.redirectUrl) {
           window.location.href = chk.redirectUrl;
           return;
         }
         // mock mode — simulate the customer finishing payment on the gateway's hosted page
-        await api.mockCompletePayment(chk.paymentId);
+        await mockCompletePaymentMutation.mutateAsync(chk.paymentId);
         navigate('/success', {
           replace: true,
           state: {

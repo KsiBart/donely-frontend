@@ -1,32 +1,8 @@
+import createFetchClient from 'openapi-fetch';
+import type { Middleware } from 'openapi-fetch';
+import createQueryClient from 'openapi-react-query';
 import i18n from '../i18n';
-import type {
-  AdminBilling,
-  AdminBookingRow,
-  AdminCalendarResponse,
-  AdminPaymentRow,
-  AdminPayoutRow,
-  AdminProvider,
-  AdminStats,
-  AdminUser,
-  AiSearchResponse,
-  Booking,
-  BookingsSplit,
-  BrandConfigResponse,
-  Category,
-  CheckoutResponse,
-  CreateBookingPayload,
-  EventLogItem,
-  Me,
-  Payment,
-  PaymentMethod,
-  Payout,
-  ProviderDetail,
-  ProviderListItem,
-  RequestCodeResponse,
-  RunPayoutBatchResponse,
-  SlotsResponse,
-  VerifyResponse,
-} from './types';
+import type { paths } from './schema';
 
 const TOKEN_KEY = 'donely_token';
 
@@ -75,40 +51,21 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
-  const headers: Record<string, string> = {};
-  const token = getToken();
-  if (token) headers.Authorization = `Bearer ${token}`;
-  if (body !== undefined) headers['Content-Type'] = 'application/json';
+// ---------------------------------------------------------------------------
+// Typed layer (Phase 3) — call sites use `apiClient` (raw openapi-fetch, for one-off calls) or
+// the `src/api/hooks/*` react-query hooks, which wrap `apiClient` + `unwrap`.
+// ---------------------------------------------------------------------------
 
-  let res: Response;
-  try {
-    res = await fetch(`${API_BASE}${path}`, {
-      method,
-      headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
-    });
-  } catch {
-    throw new ApiError(i18n.t('common.noConnection'), 0);
-  }
-
-  const text = await res.text();
-  let data: unknown = null;
-  if (text) {
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = null;
-    }
-  }
-  if (!res.ok) {
-    let message = res.statusText || i18n.t('common.errorWithStatus', { status: res.status });
-    if (data && typeof data === 'object' && 'message' in data) {
-      const m = (data as { message: unknown }).message;
-      if (typeof m === 'string' && m) message = m;
-      else if (Array.isArray(m)) message = m.join(', ');
-    }
-    if (res.status === 401) {
+/** Injects the Bearer token on every request; on 401 clears the session (dispatches
+ * `UNAUTHORIZED_EVENT`, calls `clearToken()`). */
+const authMiddleware: Middleware = {
+  onRequest({ request: req }) {
+    const token = getToken();
+    if (token) req.headers.set('Authorization', `Bearer ${token}`);
+    return req;
+  },
+  onResponse({ response }) {
+    if (response.status === 401) {
       clearToken();
       try {
         window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
@@ -116,88 +73,42 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
         /* no window (SSR/tests) */
       }
     }
-    throw new ApiError(message, res.status);
+    return response;
+  },
+};
+
+/** Typed openapi-fetch client — `paths` comes from the generated `schema.d.ts`. */
+export const apiClient = createFetchClient<paths>({ baseUrl: API_BASE });
+apiClient.use(authMiddleware);
+
+/** openapi-react-query bindings over `apiClient` — typed `useQuery`/`useMutation`/`queryOptions`
+ * keyed by `[method, path, init]`. Hooks in `src/api/hooks/*` use their own `qk` keys instead
+ * (so query invalidation stays centralized in `src/api/keys.ts`), but `$api` is exported for
+ * call sites that want the openapi-react-query key scheme directly. */
+export const $api = createQueryClient<paths>(apiClient);
+
+type UnwrapResult<T> = { data?: T; error?: unknown; response: Response };
+
+/** Turns an openapi-fetch `{data,error,response}` result (or the rejected promise a network
+ * failure produces) into data-or-throw `ApiError` — same error shape/messages as the legacy
+ * `request()` helper: `i18n.t('common.noConnection')` on network fail; `{statusCode,message}`
+ * or array `message` mapped from the error body; 401 already handled by `authMiddleware` above. */
+export async function unwrap<T>(resultPromise: Promise<UnwrapResult<T>>): Promise<T> {
+  let result: UnwrapResult<T>;
+  try {
+    result = await resultPromise;
+  } catch {
+    throw new ApiError(i18n.t('common.noConnection'), 0);
+  }
+  const { data, error, response } = result;
+  if (error !== undefined) {
+    let message = response.statusText || i18n.t('common.errorWithStatus', { status: response.status });
+    if (error && typeof error === 'object' && 'message' in error) {
+      const m = (error as { message: unknown }).message;
+      if (typeof m === 'string' && m) message = m;
+      else if (Array.isArray(m)) message = m.join(', ');
+    }
+    throw new ApiError(message, response.status);
   }
   return data as T;
 }
-
-function qs(params: Record<string, string | undefined>): string {
-  const sp = new URLSearchParams();
-  for (const [k, v] of Object.entries(params)) {
-    if (v !== undefined && v !== '') sp.set(k, v);
-  }
-  const s = sp.toString();
-  return s ? `?${s}` : '';
-}
-
-export const api = {
-  // ---- auth ----
-  requestCode: (email: string) => request<RequestCodeResponse>('POST', '/auth/request-code', { email }),
-  verify: (email: string, code: string) => request<VerifyResponse>('POST', '/auth/verify', { email, code }),
-  me: () => request<Me>('GET', '/me'),
-  updateMe: (patch: Partial<Pick<Me, 'name' | 'locationLabel' | 'lat' | 'lng'>>) =>
-    request<Me>('PATCH', '/me', patch),
-
-  // ---- public ----
-  categories: (all = false) => request<Category[]>('GET', `/categories${all ? '?all=true' : ''}`),
-  providers: (params: { category?: string; q?: string } = {}) =>
-    request<ProviderListItem[]>('GET', `/providers${qs(params)}`),
-  provider: (id: number | string) => request<ProviderDetail>('GET', `/providers/${id}`),
-  aiSearch: (query: string) => request<AiSearchResponse>('POST', '/search/ai', { query }),
-  slots: (id: number | string, day: string) =>
-    request<SlotsResponse>('GET', `/providers/${id}/slots${qs({ day })}`),
-
-  // ---- customer ----
-  createBooking: (payload: CreateBookingPayload) => request<Booking>('POST', '/bookings', payload),
-  /** Backend splits into buckets server-side (CANCELLED lands in `completed`, never `upcoming`). */
-  bookings: () => request<BookingsSplit>('GET', '/bookings'),
-  cancelBooking: (id: number) => request<Booking>('POST', `/bookings/${id}/cancel`),
-  acceptQuote: (id: number) => request<Booking>('POST', `/bookings/${id}/accept-quote`),
-  declineQuote: (id: number) => request<Booking>('POST', `/bookings/${id}/decline-quote`),
-  postReview: (id: number, rating: number, text: string) =>
-    request<unknown>('POST', `/bookings/${id}/review`, { rating, text }),
-  favorites: () => request<ProviderListItem[]>('GET', '/favorites'),
-  addFavorite: (providerProfileId: number | string) =>
-    request<unknown>('POST', `/favorites/${providerProfileId}`),
-  removeFavorite: (providerProfileId: number | string) =>
-    request<unknown>('DELETE', `/favorites/${providerProfileId}`),
-
-  // ---- customer — payments & escrow (Phase 2) ----
-  checkout: (bookingId: number, method: PaymentMethod) =>
-    request<CheckoutResponse>('POST', '/payments/checkout', { bookingId, method }),
-  mockCompletePayment: (paymentId: number) =>
-    request<Payment>('POST', '/payments/mock/complete', { paymentId }),
-  payment: (id: number) => request<Payment>('GET', `/payments/${id}`),
-  approveCompletion: (id: number) => request<Booking>('POST', `/bookings/${id}/approve-completion`),
-  providerPayouts: () => request<Payout[]>('GET', '/provider/payouts'),
-
-  // ---- white-label config ----
-  config: () => request<BrandConfigResponse>('GET', '/config'),
-
-  // ---- admin ----
-  adminStats: () => request<AdminStats>('GET', '/admin/stats'),
-  adminFeed: () => request<EventLogItem[]>('GET', '/admin/feed'),
-  adminUsers: (q = '') => request<AdminUser[]>('GET', `/admin/users${qs({ q })}`),
-  adminBlockUser: (id: number) => request<unknown>('POST', `/admin/users/${id}/block`),
-  adminUnblockUser: (id: number) => request<unknown>('POST', `/admin/users/${id}/unblock`),
-  adminProviders: (status?: string) => request<AdminProvider[]>('GET', `/admin/providers${qs({ status })}`),
-  adminVerifyProvider: (id: number) => request<unknown>('POST', `/admin/providers/${id}/verify`),
-  adminRejectProvider: (id: number) => request<unknown>('POST', `/admin/providers/${id}/reject`),
-  adminBookings: (status?: string) => request<AdminBookingRow[]>('GET', `/admin/bookings${qs({ status })}`),
-  adminCancelBooking: (id: number) => request<unknown>('POST', `/admin/bookings/${id}/cancel`),
-  adminCalendar: (providerProfileId: number, weekStart: string) =>
-    request<AdminCalendarResponse>('GET', `/admin/calendar/${providerProfileId}${qs({ weekStart })}`),
-  adminCreateBlock: (providerProfileId: number, startAt: string, endAt: string) =>
-    request<{ id: number }>('POST', '/admin/blocks', { providerProfileId, startAt, endAt }),
-  adminDeleteBlock: (id: number) => request<unknown>('DELETE', `/admin/blocks/${id}`),
-  adminCategories: () => request<Category[]>('GET', '/admin/categories'),
-  adminAddCategory: (name: string) => request<Category>('POST', '/admin/categories', { name }),
-  adminPatchCategory: (id: number, active: boolean) =>
-    request<Category>('PATCH', `/admin/categories/${id}`, { active }),
-  adminBilling: () => request<AdminBilling>('GET', '/admin/billing'),
-
-  // ---- admin — Phase 2 payments & payouts ----
-  adminPayments: () => request<AdminPaymentRow[]>('GET', '/admin/payments'),
-  adminPayouts: () => request<AdminPayoutRow[]>('GET', '/admin/payouts'),
-  adminRunPayoutBatch: () => request<RunPayoutBatchResponse>('POST', '/admin/payouts/run-batch'),
-};

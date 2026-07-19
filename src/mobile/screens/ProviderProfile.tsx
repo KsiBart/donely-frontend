@@ -1,8 +1,8 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { ProviderDetail, Service } from '../../api/types';
+import { useAddFavoriteMutation, useFavoritesQuery, useProviderQuery, useRemoveFavoriteMutation } from '../../api/hooks';
+import type { Service } from '../../api/models';
 import { toIntlLocale } from '../../i18n';
 import { useIsDesktop } from '../../lib/useIsDesktop';
 import { stripes } from '../../components/ui';
@@ -19,35 +19,38 @@ export default function ProviderProfile() {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const isDesktop = useIsDesktop();
-  const [pv, setPv] = useState<ProviderDetail | null>(null);
-  const [fav, setFav] = useState(false);
+  const { data: pv, error: pvError } = useProviderQuery(id);
+  const { data: favList } = useFavoritesQuery();
+  const [favOverride, setFavOverride] = useState<boolean | null>(null);
+  const fav = favOverride ?? !!favList?.some((p) => String(p.id) === id);
+  const addFavoriteMutation = useAddFavoriteMutation();
+  const removeFavoriteMutation = useRemoveFavoriteMutation();
 
   useEffect(() => {
-    if (!id) return;
-    api
-      .provider(id)
-      .then(setPv)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
-    api
-      .favorites()
-      .then((list) => setFav(list.some((p) => String(p.id) === id)))
-      .catch(() => {});
+    if (pvError) showToast(pvError instanceof Error ? pvError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [pvError]);
+
+  // Once the invalidated favorites list refetches (post add/remove), it's the source of truth again.
+  useEffect(() => {
+    setFavOverride(null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [favList]);
 
   const toggleFav = async () => {
     if (!pv) return;
+    const wasFav = fav;
+    setFavOverride(!wasFav);
     try {
-      if (fav) {
-        await api.removeFavorite(pv.id);
-        setFav(false);
+      if (wasFav) {
+        await removeFavoriteMutation.mutateAsync(pv.id);
         showToast(t('providerProfile.removedFavToast'));
       } else {
-        await api.addFavorite(pv.id);
-        setFav(true);
+        await addFavoriteMutation.mutateAsync(pv.id);
         showToast(t('providerProfile.addedFavToast'));
       }
     } catch (e) {
+      setFavOverride(wasFav);
       showToast(e instanceof Error ? e.message : t('common.error'));
     }
   };

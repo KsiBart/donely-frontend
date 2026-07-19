@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
+import { apiClient, unwrap } from '../../api/client';
+import type { Payment } from '../../api/models';
 import { Logo } from '../../components/ui';
 import { useToast } from '../../state/ToastContext';
 
@@ -39,8 +40,7 @@ export default function PaymentReturn() {
       return;
     }
 
-    api
-      .payment(paymentId)
+    unwrap<Payment>(apiClient.GET('/payments/{id}', { params: { path: { id: paymentId } } }))
       .then((p) => {
         if (p.status === 'HELD' || p.status === 'CAPTURED' || p.status === 'RELEASED') {
           showToast(t('payments.returnHeld'));

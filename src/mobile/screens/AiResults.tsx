@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { AiSearchResponse } from '../../api/types';
+import { useAiSearchMutation } from '../../api/hooks';
 import { useBrand } from '../../brand';
 import { toIntlLocale } from '../../i18n';
 import { useIsDesktop } from '../../lib/useIsDesktop';
@@ -20,15 +19,14 @@ export default function AiResults() {
   const isDesktop = useIsDesktop();
   const [params] = useSearchParams();
   const q = params.get('q') ?? '';
-  const [res, setRes] = useState<AiSearchResponse | null>(null);
+  const { mutate: runSearch, data: res, reset } = useAiSearchMutation();
 
   useEffect(() => {
     if (!q) return;
-    setRes(null);
-    api
-      .aiSearch(q)
-      .then(setRes)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('aiResults.searchError')));
+    reset();
+    runSearch(q, {
+      onError: (e) => showToast(e instanceof Error ? e.message : t('aiResults.searchError')),
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
 

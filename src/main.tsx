@@ -21,8 +21,8 @@ applyTheme();
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <BrandProvider>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <BrandProvider>
           <AuthProvider>
             <ToastProvider>
               <SiteThemeProvider>
@@ -30,9 +30,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
               </SiteThemeProvider>
             </ToastProvider>
           </AuthProvider>
-          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
-        </QueryClientProvider>
-      </BrandProvider>
+        </BrandProvider>
+        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
+      </QueryClientProvider>
     </BrowserRouter>
   </React.StrictMode>,
 );

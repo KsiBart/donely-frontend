@@ -1,8 +1,8 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../api/client';
-import type { AdminProvider } from '../api/types';
+import { useAdminProvidersQuery, useAdminRejectProviderMutation, useAdminVerifyProviderMutation } from '../api/hooks';
+import type { AdminProvider } from '../api/models';
 import { useBrand } from '../brand';
 import { SUPPORTED_LANGS, toIntlLocale, type Lang } from '../i18n';
 import { Logo, stripes } from '../components/ui';
@@ -64,38 +64,44 @@ export default function AdminApp() {
     void i18n.changeLanguage(next);
   };
 
+  const { data: pendingData, error: pendingError } = useAdminProvidersQuery('PENDING', isAdmin);
+  const verifyProviderMutation = useAdminVerifyProviderMutation();
+  const rejectProviderMutation = useAdminRejectProviderMutation();
+
   useEffect(() => {
     if (!isAdmin) return;
-    api
-      .adminProviders('PENDING')
-      .then((list) => setPending(list))
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (pendingData) setPending(pendingData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdmin]);
+  }, [isAdmin, pendingData]);
+
+  useEffect(() => {
+    if (isAdmin && pendingError) showToast(pendingError instanceof Error ? pendingError.message : t('common.error'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdmin, pendingError]);
 
   const approve = useCallback(
     async (p: PendingItem) => {
       try {
-        await api.adminVerifyProvider(p.id);
+        await verifyProviderMutation.mutateAsync(p.id);
         setPending((list) => list.map((x) => (x.id === p.id ? { ...x, decided: 'ok' } : x)));
         showToast(t('admin.providers.verifiedToast', { name: p.name }));
       } catch (e) {
         showToast(e instanceof Error ? e.message : t('common.error'));
       }
     },
-    [showToast, t],
+    [showToast, t, verifyProviderMutation],
   );
 
   const reject = useCallback(
     async (p: PendingItem) => {
       try {
-        await api.adminRejectProvider(p.id);
+        await rejectProviderMutation.mutateAsync(p.id);
         setPending((list) => list.map((x) => (x.id === p.id ? { ...x, decided: 'rej' } : x)));
       } catch (e) {
         showToast(e instanceof Error ? e.message : t('common.error'));
       }
     },
-    [showToast, t],
+    [showToast, t, rejectProviderMutation],
   );
 
   const pendingCount = pending.filter((p) => !p.decided).length;

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { Category, ProviderListItem } from '../../api/types';
+import { useCategoriesQuery, useProvidersQuery } from '../../api/hooks';
+import type { Category, ProviderListItem } from '../../api/models';
 import { toIntlLocale } from '../../i18n';
 import { useIsDesktop } from '../../lib/useIsDesktop';
 import { useLocate } from '../../lib/useLocate';
@@ -30,37 +30,54 @@ export default function Home() {
   const suggestions = t('home.suggestions', { returnObjects: true }) as unknown as string[];
 
   const [mapOn, setMapOn] = useState(false);
-  const [cats, setCats] = useState<Category[]>([]);
   const [catSel, setCatSel] = useState(0); // 0 = Wszystkie
-  const [allProviders, setAllProviders] = useState<ProviderListItem[]>([]);
-  const [catProviders, setCatProviders] = useState<ProviderListItem[]>([]);
   const [query, setQuery] = useState('');
 
+  const { data: catsData, error: catsError } = useCategoriesQuery();
+  const cats = useMemo<Category[]>(() => catsData ?? [], [catsData]);
+
+  const {
+    data: allProvidersData,
+    error: allProvidersError,
+    refetch: refetchAllProviders,
+  } = useProvidersQuery({});
+  const allProviders = useMemo<ProviderListItem[]>(() => allProvidersData ?? [], [allProvidersData]);
+
+  const catSlug = catSel === 0 ? undefined : cats[catSel - 1]?.slug;
+  const {
+    data: catProvidersData,
+    error: catProvidersError,
+    refetch: refetchCatProviders,
+  } = useProvidersQuery({ category: catSlug }, catSel !== 0 && !!catSlug);
+  const catProviders = useMemo<ProviderListItem[]>(() => catProvidersData ?? [], [catProvidersData]);
+
   useEffect(() => {
-    api.categories().then(setCats).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (catsError) showToast(catsError instanceof Error ? catsError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [catsError]);
 
   // Refetch when the user's stored location changes — the backend sorts/measures distance from the
   // profile's lat/lng (JWT), so a relocate must re-order the list from the new origin.
   useEffect(() => {
-    api
-      .providers()
-      .then(setAllProviders)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    void refetchAllProviders();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [me?.lat, me?.lng]);
 
   useEffect(() => {
-    if (catSel === 0) return;
-    const slug = cats[catSel - 1]?.slug;
-    if (!slug) return;
-    api
-      .providers({ category: slug })
-      .then(setCatProviders)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (allProvidersError) showToast(allProvidersError instanceof Error ? allProvidersError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [catSel, me?.lat, me?.lng]);
+  }, [allProvidersError]);
+
+  useEffect(() => {
+    if (catSel === 0 || !catSlug) return;
+    void refetchCatProviders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catSel, catSlug, me?.lat, me?.lng]);
+
+  useEffect(() => {
+    if (catProvidersError) showToast(catProvidersError instanceof Error ? catProvidersError.message : t('common.error'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [catProvidersError]);
 
   const providers = catSel === 0 ? allProviders : catProviders;
   const featured = useMemo(() => allProviders.filter((p) => p.featured), [allProviders]);

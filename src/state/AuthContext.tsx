@@ -1,6 +1,9 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { UNAUTHORIZED_EVENT, api, clearToken, getToken, setToken } from '../api/client';
-import type { Me, RequestCodeResponse } from '../api/types';
+import { UNAUTHORIZED_EVENT, clearToken, getToken, setToken } from '../api/client';
+import { useMeQuery, useRequestCodeMutation, useUpdateMeMutation, useVerifyMutation } from '../api/hooks';
+import { qk } from '../api/keys';
+import { queryClient } from '../api/queryClient';
+import type { Me, RequestCodeResponse, UpdateMePayload } from '../api/models';
 
 interface AuthValue {
   me: Me | null;
@@ -16,25 +19,21 @@ const AuthCtx = createContext<AuthValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [me, setMe] = useState<Me | null>(null);
   const [loading, setLoading] = useState<boolean>(() => !!getToken());
+  const meQuery = useMeQuery({ retry: false });
+  const requestCodeMutation = useRequestCodeMutation();
+  const verifyMutation = useVerifyMutation();
+  const updateMeMutation = useUpdateMeMutation();
 
   useEffect(() => {
     if (!getToken()) return;
-    let alive = true;
-    api
-      .me()
-      .then((m) => {
-        if (alive) setMe(m);
-      })
-      .catch(() => {
-        clearToken();
-      })
-      .finally(() => {
-        if (alive) setLoading(false);
-      });
-    return () => {
-      alive = false;
-    };
-  }, []);
+    if (meQuery.isSuccess) {
+      setMe(meQuery.data);
+      setLoading(false);
+    } else if (meQuery.isError) {
+      clearToken();
+      setLoading(false);
+    }
+  }, [meQuery.isSuccess, meQuery.isError, meQuery.data]);
 
   // Phase 2 cleanup: any 401 from the API client clears the session and drops
   // the user back to the login screen (AuthFlow / AdminLogin render when me===null).
@@ -44,18 +43,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener(UNAUTHORIZED_EVENT, onUnauthorized);
   }, []);
 
-  const requestCode = useCallback((email: string) => api.requestCode(email), []);
+  const requestCode = useCallback(
+    (email: string) => requestCodeMutation.mutateAsync(email),
+    [requestCodeMutation],
+  );
 
-  const verify = useCallback(async (email: string, code: string) => {
-    const res = await api.verify(email, code);
-    setToken(res.accessToken);
-    setMe(res.user);
-    return res.user;
-  }, []);
+  const verify = useCallback(
+    async (email: string, code: string) => {
+      const res = await verifyMutation.mutateAsync({ email, code });
+      setToken(res.accessToken);
+      setMe(res.user);
+      void queryClient.invalidateQueries({ queryKey: qk.me() });
+      return res.user;
+    },
+    [verifyMutation],
+  );
 
   const updateMe = useCallback(
     async (patch: Partial<Pick<Me, 'name' | 'locationLabel' | 'lat' | 'lng'>>) => {
-      const res = await api.updateMe(patch);
+      const res = await updateMeMutation.mutateAsync(patch as UpdateMePayload);
       setMe((prev) => {
         if (!prev) return prev;
         const merged: Me = { ...prev, ...patch } as Me;
@@ -63,12 +69,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return merged;
       });
     },
-    [],
+    [updateMeMutation],
   );
 
   const logout = useCallback(() => {
     clearToken();
     setMe(null);
+    queryClient.clear();
   }, []);
 
   const value = useMemo(

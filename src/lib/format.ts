@@ -7,7 +7,7 @@ import type {
   PaymentMethod,
   PaymentStatus,
   PayoutStatus,
-} from '../api/types';
+} from '../api/models';
 import { toIntlLocale } from '../i18n';
 
 export const BRICO = "'Bricolage Grotesque', sans-serif";

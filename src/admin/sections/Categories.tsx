@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { Category } from '../../api/types';
+import { useAdminAddCategoryMutation, useAdminCategoriesQuery, useAdminPatchCategoryMutation } from '../../api/hooks';
+import type { Category } from '../../api/models';
 import { BRICO } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
@@ -14,13 +14,20 @@ function providerCount(c: Category): number {
 export default function Categories() {
   const { t } = useTranslation();
   const { showToast } = useToast();
+  const { data, error } = useAdminCategoriesQuery();
   const [cats, setCats] = useState<Category[]>([]);
   const [newCat, setNewCat] = useState('');
+  const addCategoryMutation = useAdminAddCategoryMutation();
+  const patchCategoryMutation = useAdminPatchCategoryMutation();
 
   useEffect(() => {
-    api.adminCategories().then(setCats).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (data) setCats(data);
+  }, [data]);
+
+  useEffect(() => {
+    if (error) showToast(error instanceof Error ? error.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [error]);
 
   const addCat = async () => {
     if (!newCat.trim()) {
@@ -28,7 +35,7 @@ export default function Categories() {
       return;
     }
     try {
-      const created = await api.adminAddCategory(newCat.trim());
+      const created = await addCategoryMutation.mutateAsync(newCat.trim());
       setCats((list) => [...list, created]);
       setNewCat('');
       showToast(t('admin.categories.addedToast'));
@@ -39,7 +46,7 @@ export default function Categories() {
 
   const toggle = async (c: Category) => {
     try {
-      await api.adminPatchCategory(c.id, !c.active);
+      await patchCategoryMutation.mutateAsync({ id: c.id, active: !c.active });
       setCats((list) => list.map((x) => (x.id === c.id ? { ...x, active: !x.active } : x)));
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('common.error'));

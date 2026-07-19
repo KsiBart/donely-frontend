@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { AdminProvider } from '../../api/types';
+import { useAdminProvidersQuery } from '../../api/hooks';
 import { toIntlLocale } from '../../i18n';
 import { bizLong, formatRating } from '../../lib/format';
 import { useBrand } from '../../brand';
@@ -18,15 +17,13 @@ export default function Providers() {
   const brand = useBrand();
   const { showToast } = useToast();
   const { pending, pendingCount, approve, reject } = usePending();
-  const [verified, setVerified] = useState<AdminProvider[]>([]);
+  const { data: verifiedData, error: verifiedError } = useAdminProvidersQuery('VERIFIED');
+  const verified = verifiedData ?? [];
 
   useEffect(() => {
-    api
-      .adminProviders('VERIFIED')
-      .then(setVerified)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (verifiedError) showToast(verifiedError instanceof Error ? verifiedError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [verifiedError]);
 
   const columns = t('admin.providers.columns', { returnObjects: true }) as unknown as string[];
 

@@ -1,4 +1,4 @@
-import type { ProviderListItem } from '../api/types';
+import type { ProviderListItem } from '../api/models';
 import { formatKm, formatRating } from '../lib/format';
 
 /** 'Hydraulik · 1,2 km · ★ 4,9 (128)' */

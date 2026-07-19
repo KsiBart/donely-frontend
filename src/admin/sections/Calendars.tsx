@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { AdminCalendarCell, AdminCalendarResponse, AdminProvider } from '../../api/types';
+import { useAdminCalendarQuery, useAdminCreateBlockMutation, useAdminDeleteBlockMutation, useAdminProvidersQuery } from '../../api/hooks';
+import type { AdminCalendarCell, AdminCalendarResponse, AdminProvider } from '../../api/models';
 import { isoDay } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
 import { useToast } from '../../state/ToastContext';
@@ -40,16 +40,18 @@ function normalize(res: AdminCalendarResponse): NormRow[] {
 export default function Calendars() {
   const { t } = useTranslation();
   const { showToast } = useToast();
-  const [providers, setProviders] = useState<AdminProvider[]>([]);
+  const { data: providersData, error: providersError } = useAdminProvidersQuery('VERIFIED');
+  const providers = providersData ?? [];
   const [sel, setSel] = useState(0);
-  const [cal, setCal] = useState<AdminCalendarResponse | null>(null);
+  const createBlockMutation = useAdminCreateBlockMutation();
+  const deleteBlockMutation = useAdminDeleteBlockMutation();
 
   const monday = useMemo(nextMonday, []);
   const weekStart = isoDay(monday);
   const provider = providers[sel];
   const dowAdmin = t('common.dowShortAdmin', { returnObjects: true }) as unknown as string[];
 
-  function dayHeaders(res: AdminCalendarResponse | null): string[] {
+  function dayHeaders(res: AdminCalendarResponse | null | undefined): string[] {
     if (res?.days && res.days.length > 0) {
       return res.days.map((d) => {
         // Backend sends `{ label }` objects; older/other shapes may send a plain date string.
@@ -69,26 +71,16 @@ export default function Calendars() {
   }
 
   useEffect(() => {
-    api
-      .adminProviders('VERIFIED')
-      .then(setProviders)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+    if (providersError) showToast(providersError instanceof Error ? providersError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [providersError]);
 
-  const loadCal = useCallback(() => {
-    if (!provider) return;
-    api
-      .adminCalendar(provider.id, weekStart)
-      .then(setCal)
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [provider?.id, weekStart]);
+  const { data: cal, error: calError, refetch: loadCal } = useAdminCalendarQuery(provider?.id, weekStart);
 
   useEffect(() => {
-    setCal(null);
-    loadCal();
-  }, [loadCal]);
+    if (calError) showToast(calError instanceof Error ? calError.message : t('common.error'));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calError]);
 
   const rows = cal ? normalize(cal) : [];
   const heads = dayHeaders(cal);
@@ -113,17 +105,17 @@ export default function Calendars() {
     try {
       if (cell.status === 'blocked') {
         if (cell.blockId != null) {
-          await api.adminDeleteBlock(cell.blockId);
+          await deleteBlockMutation.mutateAsync(cell.blockId);
           showToast(t('admin.calendars.slotFreedToast'));
-          loadCal();
+          void loadCal();
         }
         return;
       }
       const start = cellDate(dayIdx, hour);
       const end = cellDate(dayIdx, hour + 1);
-      await api.adminCreateBlock(provider.id, start.toISOString(), end.toISOString());
+      await createBlockMutation.mutateAsync({ providerProfileId: provider.id, startAt: start.toISOString(), endAt: end.toISOString() });
       showToast(t('admin.calendars.slotBlockedToast', { name: provider.name }));
-      loadCal();
+      void loadCal();
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('common.error'));
     }

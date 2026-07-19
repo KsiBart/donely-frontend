@@ -1,7 +1,16 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { Booking, PaymentMethod } from '../../api/types';
+import {
+  useAcceptQuoteMutation,
+  useApproveCompletionMutation,
+  useBookingsQuery,
+  useCancelBookingMutation,
+  useCheckoutMutation,
+  useDeclineQuoteMutation,
+  useMockCompletePaymentMutation,
+  usePostReviewMutation,
+} from '../../api/hooks';
+import type { Booking, PaymentMethod } from '../../api/models';
 import { useBrand } from '../../brand';
 import { useIsDesktop } from '../../lib/useIsDesktop';
 import { AvatarTile } from '../../components/ui';
@@ -31,8 +40,9 @@ export default function BookingsTab() {
   const brand = useBrand();
   const { showToast } = useToast();
   const isDesktop = useIsDesktop();
-  const [upcoming, setUpcoming] = useState<Booking[]>([]);
-  const [completed, setCompleted] = useState<Booking[]>([]);
+  const { data: bookingsData, error: bookingsError, refetch: refetchBookings } = useBookingsQuery();
+  const upcoming = bookingsData?.upcoming ?? [];
+  const completed = bookingsData?.completed ?? [];
   const [expanded, setExpanded] = useState<number | null>(null);
   const [reviewFor, setReviewFor] = useState<number | null>(null);
   const [reviewRating, setReviewRating] = useState(5);
@@ -45,19 +55,20 @@ export default function BookingsTab() {
   const [payMethod, setPayMethod] = useState<PaymentMethod | null>(null);
   const [payBusy, setPayBusy] = useState(false);
 
-  const load = () =>
-    api
-      .bookings()
-      .then((r) => {
-        setUpcoming(r.upcoming);
-        setCompleted(r.completed);
-      })
-      .catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+  const cancelBookingMutation = useCancelBookingMutation();
+  const acceptQuoteMutation = useAcceptQuoteMutation();
+  const declineQuoteMutation = useDeclineQuoteMutation();
+  const checkoutMutation = useCheckoutMutation();
+  const mockCompletePaymentMutation = useMockCompletePaymentMutation();
+  const approveCompletionMutation = useApproveCompletionMutation();
+  const postReviewMutation = usePostReviewMutation();
+
+  const load = () => refetchBookings();
 
   useEffect(() => {
-    void load();
+    if (bookingsError) showToast(bookingsError instanceof Error ? bookingsError.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [bookingsError]);
 
   function locLine(b: Booking): string {
     return b.atSpot ? t('bookings.locLineAtSpot', { address: b.address }) : t('bookings.locLineAtClient', { address: b.address });
@@ -65,9 +76,8 @@ export default function BookingsTab() {
 
   const cancel = async (b: Booking) => {
     try {
-      await api.cancelBooking(b.id);
+      await cancelBookingMutation.mutateAsync(b.id);
       showToast(t('bookings.cancelToast', { id: b.id }));
-      void load();
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('common.error'));
     }
@@ -75,13 +85,12 @@ export default function BookingsTab() {
 
   const acceptQuote = async (b: Booking) => {
     try {
-      await api.acceptQuote(b.id);
+      await acceptQuoteMutation.mutateAsync(b.id);
       // Accepting a quote does NOT confirm the booking — it only makes payment required
       // (backend keeps status PENDING until a HELD payment lands). Open the method picker
       // right away so the customer can finish the escrow checkout.
       showToast(t('bookings.quoteAcceptedToast'));
       setPayFor(b.id);
-      void load();
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('common.error'));
     }
@@ -91,13 +100,13 @@ export default function BookingsTab() {
     if (!payMethod || payBusy) return;
     setPayBusy(true);
     try {
-      const chk = await api.checkout(b.id, payMethod);
+      const chk = await checkoutMutation.mutateAsync({ bookingId: b.id, method: payMethod });
       if (chk.redirectUrl) {
         window.location.href = chk.redirectUrl;
         return;
       }
       // mock mode — simulate the customer finishing payment on the gateway's hosted page
-      await api.mockCompletePayment(chk.paymentId);
+      await mockCompletePaymentMutation.mutateAsync(chk.paymentId);
       showToast(t('bookings.paymentHeldToast'));
       setPayFor(null);
       setPayMethod(null);
@@ -111,8 +120,7 @@ export default function BookingsTab() {
 
   const declineQuote = async (b: Booking) => {
     try {
-      await api.declineQuote(b.id);
-      void load();
+      await declineQuoteMutation.mutateAsync(b.id);
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('common.error'));
     }
@@ -122,9 +130,8 @@ export default function BookingsTab() {
     if (approving) return;
     setApproving(b.id);
     try {
-      await api.approveCompletion(b.id);
+      await approveCompletionMutation.mutateAsync(b.id);
       showToast(t('bookings.approveSuccessToast'));
-      void load();
     } catch (e) {
       showToast(e instanceof Error ? e.message : t('common.error'));
     } finally {
@@ -138,7 +145,7 @@ export default function BookingsTab() {
       return;
     }
     try {
-      await api.postReview(b.id, reviewRating, reviewText.trim());
+      await postReviewMutation.mutateAsync({ id: b.id, rating: reviewRating as 1 | 2 | 3 | 4 | 5, text: reviewText.trim() });
       setReviewed((s) => new Set(s).add(b.id));
       setReviewFor(null);
       setReviewText('');

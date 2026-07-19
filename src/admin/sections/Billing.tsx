@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { api } from '../../api/client';
-import type { AdminBilling, AdminDocument, AdminPaymentRow, AdminPayoutRow } from '../../api/types';
+import {
+  useAdminBillingQuery,
+  useAdminPaymentsQuery,
+  useAdminPayoutsQuery,
+  useAdminRunPayoutBatchMutation,
+} from '../../api/hooks';
+import type { AdminBilling, AdminDocument, AdminPaymentRow, AdminPayoutRow } from '../../api/models';
 import { toIntlLocale } from '../../i18n';
 import { formatZl, monthName, paymentMethodLabel, paymentStatusLabel, payoutStatusLabel } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
@@ -40,30 +45,32 @@ export default function Billing() {
   const { t, i18n } = useTranslation();
   const locale = toIntlLocale(i18n.language);
   const { showToast } = useToast();
-  const [billing, setBilling] = useState<AdminBilling | null>(null);
-  const [payments, setPayments] = useState<AdminPaymentRow[]>([]);
-  const [payouts, setPayouts] = useState<AdminPayoutRow[]>([]);
+  const { data: billingData, error: billingError, refetch: refetchBilling } = useAdminBillingQuery();
+  const { data: paymentsData, error: paymentsError } = useAdminPaymentsQuery();
+  const { data: payoutsData, error: payoutsError, refetch: refetchPayouts } = useAdminPayoutsQuery();
+  const runPayoutBatchMutation = useAdminRunPayoutBatchMutation();
   const [running, setRunning] = useState(false);
 
-  const loadPayouts = () => api.adminPayouts().then(setPayouts).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
+  const billing: AdminBilling | null = billingData ?? null;
+  const payments = paymentsData ?? [];
+  const payouts = payoutsData ?? [];
 
   useEffect(() => {
-    api.adminBilling().then(setBilling).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
-    api.adminPayments().then(setPayments).catch((e) => showToast(e instanceof Error ? e.message : t('common.error')));
-    void loadPayouts();
+    const e = billingError ?? paymentsError ?? payoutsError;
+    if (e) showToast(e instanceof Error ? e.message : t('common.error'));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [billingError, paymentsError, payoutsError]);
 
   const runBatch = async () => {
     if (running) return;
     setRunning(true);
     try {
-      const res = await api.adminRunPayoutBatch();
+      const res = await runPayoutBatchMutation.mutateAsync();
       const count = res.batched ?? res.count ?? 0;
       if (count > 0) {
         showToast(t('admin.billing.runBatchToast', { count }));
-        void loadPayouts();
-        api.adminBilling().then(setBilling).catch(() => {});
+        void refetchPayouts();
+        void refetchBilling();
       } else {
         showToast(t('admin.billing.runBatchEmptyToast'));
       }

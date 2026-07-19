@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/api/config": {
+    "/config": {
         parameters: {
             query?: never;
             header?: never;
@@ -20,7 +20,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/auth/request-code": {
+    "/auth/request-code": {
         parameters: {
             query?: never;
             header?: never;
@@ -36,7 +36,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/auth/verify": {
+    "/auth/verify": {
         parameters: {
             query?: never;
             header?: never;
@@ -52,7 +52,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/me": {
+    "/me": {
         parameters: {
             query?: never;
             header?: never;
@@ -68,7 +68,7 @@ export interface paths {
         patch: operations["UsersController_updateMe"];
         trace?: never;
     };
-    "/api/categories": {
+    "/categories": {
         parameters: {
             query?: never;
             header?: never;
@@ -84,7 +84,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/providers": {
+    "/providers": {
         parameters: {
             query?: never;
             header?: never;
@@ -100,7 +100,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/providers/{id}": {
+    "/providers/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -116,7 +116,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/providers/{id}/slots": {
+    "/providers/{id}/slots": {
         parameters: {
             query?: never;
             header?: never;
@@ -132,7 +132,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/search/ai": {
+    "/search/ai": {
         parameters: {
             query?: never;
             header?: never;
@@ -148,7 +148,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payments/checkout": {
+    "/payments/checkout": {
         parameters: {
             query?: never;
             header?: never;
@@ -164,7 +164,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payments/mock/complete": {
+    "/payments/mock/complete": {
         parameters: {
             query?: never;
             header?: never;
@@ -180,7 +180,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payments/p24/webhook": {
+    "/payments/p24/webhook": {
         parameters: {
             query?: never;
             header?: never;
@@ -196,7 +196,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payments/paypal/webhook": {
+    "/payments/paypal/webhook": {
         parameters: {
             query?: never;
             header?: never;
@@ -212,7 +212,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/payments/{id}": {
+    "/payments/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -228,7 +228,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings": {
+    "/bookings": {
         parameters: {
             query?: never;
             header?: never;
@@ -244,7 +244,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings/{id}/cancel": {
+    "/bookings/{id}/cancel": {
         parameters: {
             query?: never;
             header?: never;
@@ -260,7 +260,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings/{id}/accept-quote": {
+    "/bookings/{id}/accept-quote": {
         parameters: {
             query?: never;
             header?: never;
@@ -276,7 +276,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings/{id}/decline-quote": {
+    "/bookings/{id}/decline-quote": {
         parameters: {
             query?: never;
             header?: never;
@@ -292,7 +292,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings/{id}/review": {
+    "/bookings/{id}/review": {
         parameters: {
             query?: never;
             header?: never;
@@ -308,7 +308,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings/{id}/complete": {
+    "/bookings/{id}/complete": {
         parameters: {
             query?: never;
             header?: never;
@@ -324,7 +324,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/bookings/{id}/approve-completion": {
+    "/bookings/{id}/approve-completion": {
         parameters: {
             query?: never;
             header?: never;
@@ -340,7 +340,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/favorites": {
+    "/favorites": {
         parameters: {
             query?: never;
             header?: never;
@@ -356,7 +356,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/favorites/{providerProfileId}": {
+    "/favorites/{providerProfileId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -372,7 +372,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/apply": {
+    "/provider/apply": {
         parameters: {
             query?: never;
             header?: never;
@@ -388,7 +388,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/dashboard": {
+    "/provider/dashboard": {
         parameters: {
             query?: never;
             header?: never;
@@ -404,7 +404,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/requests": {
+    "/provider/requests": {
         parameters: {
             query?: never;
             header?: never;
@@ -420,7 +420,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/requests/{id}/accept": {
+    "/provider/requests/{id}/accept": {
         parameters: {
             query?: never;
             header?: never;
@@ -436,7 +436,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/requests/{id}/decline": {
+    "/provider/requests/{id}/decline": {
         parameters: {
             query?: never;
             header?: never;
@@ -452,7 +452,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/requests/{id}/quote": {
+    "/provider/requests/{id}/quote": {
         parameters: {
             query?: never;
             header?: never;
@@ -468,7 +468,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/requests/{id}/complete": {
+    "/provider/requests/{id}/complete": {
         parameters: {
             query?: never;
             header?: never;
@@ -484,7 +484,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/calendar": {
+    "/provider/calendar": {
         parameters: {
             query?: never;
             header?: never;
@@ -500,7 +500,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/blocks": {
+    "/provider/blocks": {
         parameters: {
             query?: never;
             header?: never;
@@ -516,7 +516,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/blocks/{id}": {
+    "/provider/blocks/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -532,7 +532,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/billing": {
+    "/provider/billing": {
         parameters: {
             query?: never;
             header?: never;
@@ -548,7 +548,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/provider/payouts": {
+    "/provider/payouts": {
         parameters: {
             query?: never;
             header?: never;
@@ -564,7 +564,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/stats": {
+    "/admin/stats": {
         parameters: {
             query?: never;
             header?: never;
@@ -580,7 +580,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/feed": {
+    "/admin/feed": {
         parameters: {
             query?: never;
             header?: never;
@@ -596,7 +596,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/users": {
+    "/admin/users": {
         parameters: {
             query?: never;
             header?: never;
@@ -612,7 +612,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/users/{id}/block": {
+    "/admin/users/{id}/block": {
         parameters: {
             query?: never;
             header?: never;
@@ -628,7 +628,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/users/{id}/unblock": {
+    "/admin/users/{id}/unblock": {
         parameters: {
             query?: never;
             header?: never;
@@ -644,7 +644,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/providers": {
+    "/admin/providers": {
         parameters: {
             query?: never;
             header?: never;
@@ -660,7 +660,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/providers/{id}/verify": {
+    "/admin/providers/{id}/verify": {
         parameters: {
             query?: never;
             header?: never;
@@ -676,7 +676,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/providers/{id}/reject": {
+    "/admin/providers/{id}/reject": {
         parameters: {
             query?: never;
             header?: never;
@@ -692,7 +692,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/bookings": {
+    "/admin/bookings": {
         parameters: {
             query?: never;
             header?: never;
@@ -708,7 +708,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/bookings/{id}/cancel": {
+    "/admin/bookings/{id}/cancel": {
         parameters: {
             query?: never;
             header?: never;
@@ -724,7 +724,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/bookings/{id}/complete": {
+    "/admin/bookings/{id}/complete": {
         parameters: {
             query?: never;
             header?: never;
@@ -740,7 +740,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/calendar/{providerProfileId}": {
+    "/admin/calendar/{providerProfileId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -756,7 +756,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/blocks": {
+    "/admin/blocks": {
         parameters: {
             query?: never;
             header?: never;
@@ -772,7 +772,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/blocks/{id}": {
+    "/admin/blocks/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -788,7 +788,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/categories": {
+    "/admin/categories": {
         parameters: {
             query?: never;
             header?: never;
@@ -804,7 +804,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/categories/{id}": {
+    "/admin/categories/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -820,7 +820,7 @@ export interface paths {
         patch: operations["AdminController_updateCategory"];
         trace?: never;
     };
-    "/api/admin/billing": {
+    "/admin/billing": {
         parameters: {
             query?: never;
             header?: never;
@@ -836,7 +836,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/payments": {
+    "/admin/payments": {
         parameters: {
             query?: never;
             header?: never;
@@ -852,7 +852,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/payouts": {
+    "/admin/payouts": {
         parameters: {
             query?: never;
             header?: never;
@@ -868,7 +868,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/payouts/run-batch": {
+    "/admin/payouts/run-batch": {
         parameters: {
             query?: never;
             header?: never;
@@ -884,7 +884,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/admin/payments/auto-approve": {
+    "/admin/payments/auto-approve": {
         parameters: {
             query?: never;
             header?: never;
@@ -900,7 +900,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/cron/auto-approve": {
+    "/cron/auto-approve": {
         parameters: {
             query?: never;
             header?: never;
@@ -916,7 +916,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/cron/payouts/run-batch": {
+    "/cron/payouts/run-batch": {
         parameters: {
             query?: never;
             header?: never;
@@ -942,13 +942,24 @@ export interface components {
             taxRatePrivate: number;
             paymentMethods: ("P24_BLIK" | "PAYPAL")[];
         };
-        RequestCodeDto: Record<string, never>;
+        RequestCodeDto: {
+            /** Format: email */
+            email: string;
+        };
         RequestCodeResponseEntity: {
             ok: boolean;
             /** @description Only present outside MAIL_ALLOWLIST / in dev (demo login) */
             devCode?: string;
         };
-        VerifyDto: Record<string, never>;
+        VerifyDto: {
+            /** Format: email */
+            email: string;
+            /**
+             * @description 8-digit OTP code
+             * @example 12345678
+             */
+            code: string;
+        };
         SavedAddressEntity: {
             label: string;
             addr: string;
@@ -970,7 +981,12 @@ export interface components {
             accessToken: string;
             user: components["schemas"]["MeEntity"];
         };
-        UpdateMeDto: Record<string, never>;
+        UpdateMeDto: {
+            name?: string;
+            locationLabel?: string;
+            lat?: number;
+            lng?: number;
+        };
         CategoryEntity: {
             id: number;
             name: string;
@@ -1047,7 +1063,10 @@ export interface components {
             travelRadiusKm?: number;
             responseMinutes?: number;
             docsNote?: string;
-            workHours?: Record<string, never> | null;
+            /** @description weekday -> [openHour, closeHour] tuple */
+            workHours?: {
+                [key: string]: number[];
+            } | null;
             services: components["schemas"]["ServiceEntity"][];
             reviews: components["schemas"]["ProviderReviewEntity"][];
         };
@@ -1058,7 +1077,9 @@ export interface components {
         SlotsResponseEntity: {
             times: components["schemas"]["SlotEntity"][];
         };
-        SearchAiDto: Record<string, never>;
+        SearchAiDto: {
+            query: string;
+        };
         AiSearchMatchEntity: {
             id: number;
             userId: number;
@@ -1085,12 +1106,18 @@ export interface components {
             response: string;
             matches: components["schemas"]["AiSearchMatchEntity"][];
         };
-        CheckoutDto: Record<string, never>;
+        CheckoutDto: {
+            bookingId: number;
+            /** @enum {string} */
+            method: "P24_BLIK" | "PAYPAL";
+        };
         CheckoutResponseEntity: {
             paymentId: number;
             redirectUrl?: string | null;
         };
-        MockCompleteDto: Record<string, never>;
+        MockCompleteDto: {
+            paymentId: number;
+        };
         PaymentEntity: {
             id: number;
             bookingId: number;
@@ -1109,7 +1136,16 @@ export interface components {
             refundedAt?: string | null;
             createdAt: string;
         };
-        CreateBookingDto: Record<string, never>;
+        CreateBookingDto: {
+            providerProfileId: number;
+            serviceId: number;
+            /** Format: date-time */
+            startAt?: string;
+            preferredWindow?: string;
+            notes?: string;
+            address?: string;
+            atSpot: boolean;
+        };
         BookingProviderSummary: {
             id: number;
             name: string;
@@ -1168,10 +1204,32 @@ export interface components {
             upcoming: components["schemas"]["BookingEntity"][];
             completed: components["schemas"]["BookingEntity"][];
         };
-        ReviewDto: Record<string, never>;
-        ApplyProviderDto: Record<string, never>;
-        QuoteDto: Record<string, never>;
-        CreateBlockDto: Record<string, never>;
+        ReviewDto: {
+            /** @enum {number} */
+            rating: 1 | 2 | 3 | 4 | 5;
+            text: string;
+        };
+        ApplyProviderDto: {
+            categoryId: number;
+            bio: string;
+            /** @enum {string} */
+            businessType: "PRIVATE" | "JDG";
+            travelRadiusKm?: number;
+            spotAddress?: string;
+        };
+        QuoteDto: {
+            /**
+             * @description Amount in grosze (e.g. 35000 = 350 zł)
+             * @example 35000
+             */
+            amount: number;
+        };
+        CreateBlockDto: {
+            /** Format: date-time */
+            startAt: string;
+            /** Format: date-time */
+            endAt: string;
+        };
         PayoutEntity: {
             id: number;
             providerProfileId?: number;
@@ -1277,15 +1335,26 @@ export interface components {
             rows?: components["schemas"]["AdminCalendarRowEntity"][];
             grid?: components["schemas"]["AdminCalendarRowEntity"][];
         };
-        AdminCreateBlockDto: Record<string, never>;
+        AdminCreateBlockDto: {
+            providerProfileId: number;
+            /** Format: date-time */
+            startAt: string;
+            /** Format: date-time */
+            endAt: string;
+        };
         TimeBlockEntity: {
             id: number;
             providerProfileId: number;
             startAt: string;
             endAt: string;
         };
-        CreateCategoryDto: Record<string, never>;
-        UpdateCategoryDto: Record<string, never>;
+        CreateCategoryDto: {
+            /** @example Elektryk */
+            name: string;
+        };
+        UpdateCategoryDto: {
+            active: boolean;
+        };
         AdminDocumentProviderSummary: {
             name: string;
         };
