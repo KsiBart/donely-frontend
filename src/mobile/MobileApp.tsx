@@ -9,7 +9,7 @@ import Landing from '../landing/Landing';
 import TopNav from '../desktop/TopNav';
 import { LocationScreen } from './AuthFlow';
 import BottomNav from './BottomNav';
-import { DesktopPromoBanner, InstallBanner } from './AppPromo';
+import { DesktopPromoBanner, InstallBanner } from '../components/AppPromo';
 import Home from './screens/Home';
 import AiResults from './screens/AiResults';
 import ProviderProfile from './screens/ProviderProfile';
@@ -42,11 +42,14 @@ export default function MobileApp() {
   // land here no matter what `mode` says (see modeState.ts + AuthContext.becomePro).
   const proMode = !!me && isPro && mode === 'pro';
   const showNav = !proMode && !!me && !!me.locationLabel && NAV_PATHS.includes(location.pathname);
-  const showProNav = proMode && !!me?.locationLabel && PRO_NAV_PATHS.includes(location.pathname);
+  const showProNav = proMode && PRO_NAV_PATHS.includes(location.pathname);
   // Phase 2.5 — Web Desktop: only the authenticated + located customer flow gets desktop
   // chrome (top nav). Loading / auth / location-ask screens have no desktop design and stay
   // in the mobile card at any width.
-  const authed = !!me && !!me.locationLabel;
+  // Pro (wykonawca) mode is "authed" without a customer delivery location — the provider area
+  // (dashboard/requests/calendar/payouts) does not need `locationLabel`, so it must not be blocked
+  // by the customer "Gdzie jesteś?" location gate. Standard/customer mode still requires it.
+  const authed = !!me && (proMode || !!me.locationLabel);
 
   const customerRoutes = (
     <Routes>

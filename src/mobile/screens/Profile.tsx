@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { AvatarTile } from '../../components/ui';
 import { BRICO, initials } from '../../lib/format';
-import { useInstallAction } from '../AppPromo';
+import { useInstallAction } from '../../components/AppPromo';
 import { clickable } from '../../lib/a11y';
 import { useProfileData } from './profile/useProfileData';
 import { ctaCls } from './profile/constants';

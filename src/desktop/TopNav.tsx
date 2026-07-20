@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { Logo, stripes, Wordmark } from '../components/ui';
 import { useAuth } from '../state/AuthContext';
-import { useInstallAction } from '../mobile/AppPromo';
+import { useInstallAction } from '../components/AppPromo';
 import { initials } from '../lib/format';
 import { clickable } from '../lib/a11y';
 

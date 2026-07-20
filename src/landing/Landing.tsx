@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '../state/ToastContext';
 import { useSiteTheme } from '../state/SiteThemeContext';
-import { useInstallAction } from '../mobile/AppPromo';
+import { useInstallAction } from '../components/AppPromo';
 import { SiteFooter, SiteHeader } from './chrome';
 import { useParallax, useScrollReveal } from './effects';
 import { ToastBubble } from './shared';

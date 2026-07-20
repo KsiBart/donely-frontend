@@ -1,4 +1,4 @@
-import { StoreCard } from '../AppPromo';
+import { StoreCard } from '../../components/AppPromo';
 import { useHomeData } from './home/useHomeData';
 import DesktopHeader from './home/DesktopHeader';
 import DesktopMapPanel from './home/DesktopMapPanel';

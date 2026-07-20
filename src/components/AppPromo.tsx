@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Logo } from '../components/ui';
+import { Logo } from './ui';
 import { useToast } from '../state/ToastContext';
 import { clickable } from '../lib/a11y';
 

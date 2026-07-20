@@ -2,7 +2,7 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Trans, useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 import { useIsDesktop } from '../../lib/useIsDesktop';
-import { useInstallAction } from '../AppPromo';
+import { useInstallAction } from '../../components/AppPromo';
 import { Logo } from '../../components/ui';
 import { BRICO } from '../../lib/format';
 import { clickable } from '../../lib/a11y';
