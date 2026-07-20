@@ -35,7 +35,7 @@ export function EmailStep({ email, setEmail, emailOk, busy, sendCode }: EmailSte
       />
       <div
         {...clickable(() => void sendCode(), { disabled: !emailOk || busy })}
-        className="mt-[14px] text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer"
+        className="mt-3.5 text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer"
         // eslint-disable-next-line react/no-inline-styles -- dynamic: enabled/disabled visual state depends on emailOk
         style={{
           background: emailOk ? 'var(--accGrad)' : 'var(--surface2)',

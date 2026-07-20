@@ -28,7 +28,7 @@ export default function Step1Describe({ t, notes, setNotes, windows, windowSel, 
         onChange={(e) => setNotes(e.target.value)}
         placeholder={t('booking.notesPlaceholderQuote') ?? ''}
         aria-label={t('booking.notesPlaceholderQuote') ?? ''}
-        className="w-full box-border h-[110px] rounded-2xl border-[1.5px] border-border bg-surface text-text py-3 px-3.5 font-medium text-sm font-['Figtree',sans-serif] resize-none outline-none"
+        className="w-full box-border h-27.5 rounded-2xl border-[1.5px] border-border bg-surface text-text py-3 px-3.5 font-medium text-sm font-['Figtree',sans-serif] resize-none outline-none"
       />
       <div className="flex gap-2 mt-3">
         <div className="w-16 h-16 rounded-[14px] border-[1.5px] border-dashed border-[var(--muted)] flex items-center justify-center text-[var(--muted)] text-[22px]">
@@ -39,7 +39,7 @@ export default function Step1Describe({ t, notes, setNotes, windows, windowSel, 
           style={{ background: stripes() }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()
         />
       </div>
-      <div className={clsx(uppercaseLabelCls, 'mx-0 mt-[18px] mb-2')}>{t('booking.preferredWindowLabel')}</div>
+      <div className={clsx(uppercaseLabelCls, 'mx-0 mt-4.5 mb-2')}>{t('booking.preferredWindowLabel')}</div>
       <div className="flex gap-2 flex-wrap">
         {windows.map((w) => {
           const sel = w === windowSel;
@@ -48,7 +48,7 @@ export default function Step1Describe({ t, notes, setNotes, windows, windowSel, 
               key={w}
               {...clickable(() => setWindowSel(w), { pressed: sel })}
               className={clsx(
-                'rounded-[14px] py-[9px] px-[13px] text-[12.5px] font-bold cursor-pointer border-[1.5px]',
+                'rounded-[14px] py-2.25 px-3.25 text-[12.5px] font-bold cursor-pointer border-[1.5px]',
                 sel ? 'bg-accent text-onaccent border-transparent' : 'bg-surface text-muted2 border-border',
               )}
             >

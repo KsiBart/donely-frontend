@@ -14,7 +14,7 @@ const segCls = (on: boolean) =>
 /** List/Map segmented toggle — shared between the desktop and mobile Home layouts. */
 export default function SegToggle({ t, mapOn, setMapOn }: SegToggleProps) {
   return (
-    <div className={clsx('flex-none flex rounded-[14px] p-[3px]', mapOn ? 'bg-surface shadow-[var(--shadow)]' : 'bg-surface2 shadow-none')}>
+    <div className={clsx('flex-none flex rounded-[14px] p-0.75', mapOn ? 'bg-surface shadow-[var(--shadow)]' : 'bg-surface2 shadow-none')}>
       <span {...clickable(() => setMapOn(false), { pressed: !mapOn })} className={segCls(!mapOn)}>
         {t('home.listToggle')}
       </span>

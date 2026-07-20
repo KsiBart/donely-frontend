@@ -46,13 +46,13 @@ export default function CompletedBookingRow({
           </div>
         </div>
         {b.status !== 'COMPLETED' && (
-          <span className="flex-none text-[11px] font-bold rounded-[10px] py-1 px-[9px] bg-danger-bg text-danger">{bookingStatusLabel(b.status, t)}</span>
+          <span className="flex-none text-[11px] font-bold rounded-[10px] py-1 px-2.25 bg-danger-bg text-danger">{bookingStatusLabel(b.status, t)}</span>
         )}
       </div>
       {canReview && !isReviewing && (
         <div
           {...clickable(() => setReviewFor(b.id))}
-          className="mt-[11px] text-center border-[1.5px] border-accent text-accent rounded-[14px] p-2 text-[13px] font-bold cursor-pointer"
+          className="mt-2.75 text-center border-[1.5px] border-accent text-accent rounded-[14px] p-2 text-[13px] font-bold cursor-pointer"
         >
           {t('bookings.reviewCta')}
         </div>

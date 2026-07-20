@@ -10,7 +10,7 @@ interface DesktopPhotoStripProps {
  * real photo assets in this mock data set). */
 export default function DesktopPhotoStrip({ t }: DesktopPhotoStripProps) {
   return (
-    <div className="h-[230px] flex gap-2">
+    <div className="h-57.5 flex gap-2">
       <div
         className="flex-[2] rounded-[18px] flex items-end p-3"
         style={{ background: stripes(45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()

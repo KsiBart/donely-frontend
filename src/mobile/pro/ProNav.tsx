@@ -69,21 +69,21 @@ export default function ProNav() {
   const newCount = (requestsData ?? []).filter((r) => r.status === 'new').length;
 
   return (
-    <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} className="flex-none flex bg-surface border-t border-border px-2 pt-[10px] pb-[18px]">
+    <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} className="flex-none flex bg-surface border-t border-border px-2 pt-2.5 pb-4.5">
       {ITEMS.map((item) => {
         const active = pathname === item.path;
         return (
           <div
             key={item.path}
             {...clickable(() => navigate(item.path))}
-            className={clsx('relative flex-1 flex flex-col items-center gap-[3px] cursor-pointer', active ? 'text-accent' : 'text-[var(--navmuted)]')}
+            className={clsx('relative flex-1 flex flex-col items-center gap-0.75 cursor-pointer', active ? 'text-accent' : 'text-[var(--navmuted)]')}
           >
             <span className="relative">
               <Icon type={item.icon} />
               {item.icon === 'inbox' && newCount > 0 && (
                 <span
                   aria-hidden="true"
-                  className="absolute -top-1 -right-1.5 min-w-[15px] h-[15px] px-[3px] rounded-full bg-danger text-white text-[9.5px] font-bold flex items-center justify-center leading-none"
+                  className="absolute -top-1 -right-1.5 min-w-3.75 h-3.75 px-0.75 rounded-full bg-danger text-white text-[9.5px] font-bold flex items-center justify-center leading-none"
                 >
                   {newCount > 9 ? '9+' : newCount}
                 </span>

@@ -43,7 +43,7 @@ export default function PaymentMethodPicker({ t, b, paymentMethods, payFor, setP
           <div
             {...clickable(() => onPayNow(b))}
             className={clsx(
-              'text-center rounded-[14px] p-[11px] text-[13px] font-bold cursor-pointer',
+              'text-center rounded-[14px] p-2.75 text-[13px] font-bold cursor-pointer',
               payMethod ? 'bg-accent text-onaccent shadow-[var(--glow)]' : 'bg-surface2 text-[var(--navmuted)] shadow-none',
               payBusy && 'opacity-70',
             )}

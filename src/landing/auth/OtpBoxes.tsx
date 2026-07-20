@@ -20,7 +20,7 @@ export function OtpBoxes({ digits, setDigits }: { digits: string[]; setDigits: (
   };
 
   return (
-    <div className="flex gap-[clamp(5px,1.4vw,10px)] mt-[26px] justify-between">
+    <div className="flex gap-[clamp(5px,1.4vw,10px)] mt-6.5 justify-between">
       {digits.map((d, i) => (
         <input
           key={i}

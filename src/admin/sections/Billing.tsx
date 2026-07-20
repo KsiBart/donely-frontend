@@ -88,7 +88,7 @@ export default function Billing() {
 
   return (
     <>
-      <div className="mb-[22px] grid grid-cols-3 gap-3.5">
+      <div className="mb-5.5 grid grid-cols-3 gap-3.5">
         <KpiCard
           label={t('admin.billing.kpiDocs', { month: monthName(locale) })}
           value={billing ? String(billing.docsCount) : '—'}
@@ -139,7 +139,7 @@ export default function Billing() {
       <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.billing.paymentsTitle')}</h2>
       <div className={`${CARD_CLASS} mb-6 overflow-hidden`}>
         <TableHead cols={PAYMENT_COLS} columns={paymentColumns} />
-        {payments.length === 0 && <div className="px-[18px] py-3.5 text-[12.5px] text-muted">{t('admin.billing.noPayments')}</div>}
+        {payments.length === 0 && <div className="px-4.5 py-3.5 text-[12.5px] text-muted">{t('admin.billing.noPayments')}</div>}
         {payments.map((p) => {
           const [bg, fg] = paymentStatusColors(p.status);
           return (
@@ -166,14 +166,14 @@ export default function Billing() {
         <h2 className="text-[14.5px] font-bold">{t('admin.billing.payoutsTitle')}</h2>
         <span
           {...clickable(() => void runBatch())}
-          className={clsx('cursor-pointer rounded-xl bg-accent px-4 py-[9px] text-[12.5px] font-bold text-white', running && 'opacity-70')}
+          className={clsx('cursor-pointer rounded-xl bg-accent px-4 py-2.25 text-[12.5px] font-bold text-white', running && 'opacity-70')}
         >
           {t('admin.billing.runBatchCta')}
         </span>
       </div>
       <div className={`${CARD_CLASS} overflow-hidden`}>
         <TableHead cols={PAYOUT_COLS} columns={payoutColumns} />
-        {payouts.length === 0 && <div className="px-[18px] py-3.5 text-[12.5px] text-muted">{t('admin.billing.noPayouts')}</div>}
+        {payouts.length === 0 && <div className="px-4.5 py-3.5 text-[12.5px] text-muted">{t('admin.billing.noPayouts')}</div>}
         {payouts.map((p) => {
           const [bg, fg] = payoutStatusColors(p.status);
           return (

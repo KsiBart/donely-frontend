@@ -17,7 +17,7 @@ export default function DesktopGrid({ t, locale, providers, openProvider }: Desk
   return (
     <div className="grid grid-cols-3 gap-3.5">
       {providers.map((p) => (
-        <div key={p.id} {...clickable(() => openProvider(p.id))} className="dw-card-hover flex flex-col gap-[11px] bg-surface rounded-[20px] p-3.5 shadow-[var(--shadow)] cursor-pointer">
+        <div key={p.id} {...clickable(() => openProvider(p.id))} className="dw-card-hover flex flex-col gap-2.75 bg-surface rounded-[20px] p-3.5 shadow-[var(--shadow)] cursor-pointer">
           <div className="flex gap-3 items-center">
             <AvatarTile init={p.init} size={52} radius={15} fontSize={15} />
             <div className="flex-1 min-w-0">

@@ -25,13 +25,13 @@ export function Categories({ goLogin }: { goLogin: () => void }) {
   }));
 
   return (
-    <section id="cats" className="max-w-[1200px] mx-auto w-full box-border p-[clamp(48px,6vw,80px)_22px]">
-      <div className="text-center max-w-[640px] mx-auto">
+    <section id="cats" className="max-w-300 mx-auto w-full box-border p-[clamp(48px,6vw,80px)_22px]">
+      <div className="text-center max-w-160 mx-auto">
         <div className={kicker}>{t('landing.cats.kicker')}</div>
         <h2 className={sectionTitle}>{t('landing.cats.title')}</h2>
         <p className="text-[17px] text-muted leading-[1.5] m-[14px_0_0]">{t('landing.cats.sub')}</p>
       </div>
-      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-[38px]">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4 mt-9.5">
         {cats.map((c) => (
           <div
             key={c.name}
@@ -47,12 +47,12 @@ export function Categories({ goLogin }: { goLogin: () => void }) {
             }}
           >
             <div
-              className="h-[120px] relative overflow-hidden flex items-center justify-center"
+              className="h-30 relative overflow-hidden flex items-center justify-center"
               // eslint-disable-next-line react/no-inline-styles -- dynamic: per-category gradient stops (CAT_GRADIENTS[i])
               style={{ background: `linear-gradient(135deg,${c.sA},${c.sB})` }}
             >
-              <div className="absolute -right-[30px] -top-[30px] w-[110px] h-[110px] rounded-full bg-white/[0.16]" />
-              <div className="absolute -left-[24px] -bottom-[24px] w-20 h-20 rounded-full bg-white/[0.12]" />
+              <div className="absolute -right-7.5 -top-7.5 w-27.5 h-27.5 rounded-full bg-white/16" />
+              <div className="absolute -left-6 -bottom-6 w-20 h-20 rounded-full bg-white/12" />
               <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,#fff,#fff_6px,transparent_6px,transparent_14px)]" />
               <span aria-hidden="true" className="relative text-[46px] drop-shadow-[0_4px_8px_rgba(0,0,0,.18)]">{c.icon}</span>
             </div>

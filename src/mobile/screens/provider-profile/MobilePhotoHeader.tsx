@@ -14,7 +14,7 @@ interface MobilePhotoHeaderProps {
 /** Mobile ProviderProfile: the photo strip with the back + favorite round buttons overlaid on top. */
 export default function MobilePhotoHeader({ t, fav, onBack, onToggleFav }: MobilePhotoHeaderProps) {
   return (
-    <div className="relative h-[200px] flex gap-1.5 pt-5 px-1.5 pb-1.5 bg-[var(--map)]">
+    <div className="relative h-50 flex gap-1.5 pt-5 px-1.5 pb-1.5 bg-[var(--map)]">
       <div
         className="flex-[2] rounded-2xl flex items-end p-2.5"
         style={{ background: stripes(45, 8) }} // eslint-disable-line react/no-inline-styles -- dynamic: computed stripe pattern from stripes()

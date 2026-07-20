@@ -26,9 +26,9 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-[var(--band2)] border-t border-[var(--bandBd)] mt-auto">
-      <div className="max-w-[1200px] mx-auto w-full box-border p-[44px_22px_30px] flex flex-wrap items-start gap-10">
+      <div className="max-w-300 mx-auto w-full box-border p-[44px_22px_30px] flex flex-wrap items-start gap-10">
         <div className="flex-[1_1_230px] min-w-0">
-          <div className="flex items-center gap-[9px]">
+          <div className="flex items-center gap-2.25">
             <svg aria-hidden="true" width="26" height="26" viewBox="0 0 48 48" className="text-[var(--bandKicker)] flex-none">
               <circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" strokeWidth="4.5" />
               <path d="M15 24.5l6.5 6.5L34 18" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
@@ -36,13 +36,13 @@ export function SiteFooter() {
             </svg>
             <Wordmark size={19} variant="onDark" />
           </div>
-          <p className="text-sm text-[var(--bandSoft)] leading-[1.55] m-[12px_0_0] max-w-[280px]">{t('landing.footer.tag')}</p>
+          <p className="text-sm text-[var(--bandSoft)] leading-[1.55] m-[12px_0_0] max-w-70">{t('landing.footer.tag')}</p>
         </div>
         <div className="flex-[2_1_460px] grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-[26px_28px]">
           {footCols.map((col, ci) => (
             <div key={col.h} className="min-w-0">
               <div className="text-[13px] font-extrabold text-[var(--bandInk)] mb-3">{col.h}</div>
-            <div className="flex flex-col gap-[9px]">
+            <div className="flex flex-col gap-2.25">
               {col.links.map((label, li) => {
                 const target = FOOT_LINK_TARGETS[ci]?.[li] ?? {};
                 const href = target.path ?? (target.anchor ? `/#${target.anchor}` : '/');
@@ -70,7 +70,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-[var(--bandBd)]">
-        <div className="max-w-[1200px] mx-auto p-[18px_22px] text-[13px] text-[var(--bandSoft)]">{t('landing.footer.copyright')}</div>
+        <div className="max-w-300 mx-auto p-[18px_22px] text-[13px] text-[var(--bandSoft)]">{t('landing.footer.copyright')}</div>
       </div>
     </footer>
   );

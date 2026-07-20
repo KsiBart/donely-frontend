@@ -32,11 +32,11 @@ export default function AiResults() {
   }, [q]);
 
   return (
-    <div className={clsx('animate-[dwfade_.3s_ease]', isDesktop ? 'max-w-[720px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto p-5')}>
+    <div className={clsx('animate-[dwfade_.3s_ease]', isDesktop ? 'max-w-180 mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto p-5')}>
       <div className="flex items-center gap-2.5 mb-4">
         <span
           {...clickable(() => navigate('/'), { label: t('a11y.back', 'Wstecz') })}
-          className="w-[34px] h-[34px] rounded-full bg-surface2 flex items-center justify-center text-base font-bold cursor-pointer"
+          className="w-8.5 h-8.5 rounded-full bg-surface2 flex items-center justify-center text-base font-bold cursor-pointer"
         >
           ‹
         </span>
@@ -44,14 +44,14 @@ export default function AiResults() {
       </div>
 
       <div className="flex justify-end mb-3">
-        <span className="max-w-[78%] bg-accent text-onaccent rounded-[18px_18px_4px_18px] py-[11px] px-3.5 text-[13.5px] font-semibold">{q}</span>
+        <span className="max-w-[78%] bg-accent text-onaccent rounded-[18px_18px_4px_18px] py-2.75 px-3.5 text-[13.5px] font-semibold">{q}</span>
       </div>
 
-      <div className="flex gap-[9px] mb-4">
+      <div className="flex gap-2.25 mb-4">
         <span className={clsx(!res && 'animate-[ptpulse_1.6s_infinite]')}>
           <Logo size={30} />
         </span>
-        <span className="max-w-[82%] bg-surface rounded-[4px_18px_18px_18px] py-[11px] px-3.5 text-[13.5px] text-muted2 leading-[1.5] shadow-[var(--shadow)]">
+        <span className="max-w-[82%] bg-surface rounded-[4px_18px_18px_18px] py-2.75 px-3.5 text-[13.5px] text-muted2 leading-[1.5] shadow-[var(--shadow)]">
           {res ? res.response : '…'}
         </span>
       </div>
@@ -65,7 +65,7 @@ export default function AiResults() {
                 <div className="flex items-center gap-1.5">
                   <span className="font-bold text-[14.5px]">{p.name}</span>
                   {p.verified && (
-                    <span aria-hidden="true" className="bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-[7px] text-[10px] font-bold">
+                    <span aria-hidden="true" className="bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-1.75 text-[10px] font-bold">
                       {t('common.verifiedShort')}
                     </span>
                   )}
@@ -75,7 +75,7 @@ export default function AiResults() {
               </div>
             </div>
             <div className="flex justify-between items-center mt-2.5 pt-2.5 border-t border-border">
-              <span className="text-[11.5px] font-bold text-accent bg-surface2 rounded-[10px] py-1 px-[9px]">
+              <span className="text-[11.5px] font-bold text-accent bg-surface2 rounded-[10px] py-1 px-2.25">
                 <span aria-hidden="true">✦</span> {p.why}
               </span>
               <span className="bg-accent text-onaccent rounded-[14px] py-1.5 px-3 text-xs font-bold">

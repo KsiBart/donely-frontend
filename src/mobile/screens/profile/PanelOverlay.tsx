@@ -15,7 +15,7 @@ export default function PanelOverlay({ title, onClose, children }: { title: stri
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="w-full sm:max-w-[440px] max-h-[85vh] overflow-auto bg-surface rounded-t-[24px] sm:rounded-[24px] p-5 shadow-[var(--shadow)]">
+      <div className="w-full sm:max-w-110 max-h-[85vh] overflow-auto bg-surface rounded-t-[24px] sm:rounded-[24px] p-5 shadow-[var(--shadow)]">
         <div className="flex items-center justify-between mb-3.5">
           <h2 className="text-base font-bold m-0">{title}</h2>
           <span {...clickable(onClose, { label: t('a11y.dismiss') })} className="text-muted2 text-2xl leading-none cursor-pointer px-1">

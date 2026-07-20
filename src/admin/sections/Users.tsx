@@ -61,7 +61,7 @@ export default function Users() {
           onChange={(e) => setQ(e.target.value)}
           placeholder={t('admin.users.searchPlaceholder') ?? ''}
           aria-label={t('admin.users.searchPlaceholder') ?? ''}
-          className="max-w-[340px] flex-1 rounded-2xl border-[1.5px] border-border bg-surface px-3.5 py-[11px] font-[Figtree,sans-serif] text-[13px] font-semibold text-text outline-none"
+          className="max-w-85 flex-1 rounded-2xl border-[1.5px] border-border bg-surface px-3.5 py-2.75 font-[Figtree,sans-serif] text-[13px] font-semibold text-text outline-none"
         />
         <span className="self-center text-[12.5px] text-muted">{t('admin.users.accountsCount', { count: users.length })}</span>
       </div>

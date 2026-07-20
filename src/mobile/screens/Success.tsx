@@ -37,10 +37,10 @@ export default function Success() {
     <div
       className={clsx(
         'flex flex-col items-center text-center animate-[dwfade_.4s_ease]',
-        isDesktop ? 'max-w-[460px] mx-auto pt-[70px] px-7 pb-12' : 'flex-1 justify-center px-9',
+        isDesktop ? 'max-w-115 mx-auto pt-17.5 px-7 pb-12' : 'flex-1 justify-center px-9',
       )}
     >
-      <div aria-hidden="true" className="w-[84px] h-[84px] rounded-full bg-ver-bg text-ver-fg flex items-center justify-center text-[38px] font-bold mb-[22px]">
+      <div aria-hidden="true" className="w-21 h-21 rounded-full bg-ver-bg text-ver-fg flex items-center justify-center text-[38px] font-bold mb-5.5">
         ✓
       </div>
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
@@ -49,12 +49,12 @@ export default function Success() {
       </h1>
       <div className={clsx('text-sm text-muted leading-[1.55]', state.isQuote ? 'mb-7' : 'mb-2.5')}>{sub}</div>
       {!state.isQuote && (
-        <div className="inline-flex items-center gap-[7px] bg-surface2 text-accent rounded-[13px] py-[7px] px-[13px] text-[12.5px] font-bold mb-[22px]">
+        <div className="inline-flex items-center gap-1.75 bg-surface2 text-accent rounded-[13px] py-1.75 px-3.25 text-[12.5px] font-bold mb-5.5">
           <span aria-hidden="true">🔒</span> {t('success.frozenNote')}
         </div>
       )}
       {isDesktop && (
-        <div className="flex gap-[9px] items-center text-left bg-[var(--app-tint)] rounded-2xl py-[11px] px-3.5 mb-6">
+        <div className="flex gap-2.25 items-center text-left bg-[var(--app-tint)] rounded-2xl py-2.75 px-3.5 mb-6">
           <Logo size={24} />
           <span className="text-[11.5px] text-muted2 leading-[1.4]">
             <Trans i18nKey="success.desktopPromoText">

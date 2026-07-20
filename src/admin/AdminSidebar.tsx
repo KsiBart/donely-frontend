@@ -43,9 +43,9 @@ export default function AdminSidebar({
   return (
     <nav
       aria-label={t('a11y.adminNav', 'Menu administratora')}
-      className="flex flex-none w-[224px] flex-col border-r border-border bg-surface px-3 py-5"
+      className="flex flex-none w-56 flex-col border-r border-border bg-surface px-3 py-5"
     >
-      <div className="flex items-center gap-[9px] px-2.5 pb-5">
+      <div className="flex items-center gap-2.25 px-2.5 pb-5">
         <Logo size={34} />
         <div>
           {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping */}
@@ -70,7 +70,7 @@ export default function AdminSidebar({
             >
               <span className={clsx('flex-1 text-[13.5px]', active ? 'font-bold' : 'font-semibold')}>{s.label}</span>
               {badge && (
-                <span className="flex h-[18px] min-w-[18px] items-center justify-center rounded-[9px] bg-[#d64550] px-[5px] text-[10.5px] font-bold text-white">
+                <span className="flex h-4.5 min-w-4.5 items-center justify-center rounded-[9px] bg-[#d64550] px-1.25 text-[10.5px] font-bold text-white">
                   {pendingCount}
                 </span>
               )}
@@ -82,14 +82,14 @@ export default function AdminSidebar({
         <div
           {...clickable(onToggleLang)}
           title={t('admin.common.language') ?? ''}
-          className="flex cursor-pointer items-center justify-between gap-[9px] rounded-xl px-3 py-[9px]"
+          className="flex cursor-pointer items-center justify-between gap-2.25 rounded-xl px-3 py-2.25"
         >
           <span className="text-[12.5px] font-semibold text-muted2">{t('admin.common.language')}</span>
-          <span className="rounded-[9px] bg-surface2 px-2 py-[3px] text-[11.5px] font-bold text-accent">{lang.toUpperCase()}</span>
+          <span className="rounded-[9px] bg-surface2 px-2 py-0.75 text-[11.5px] font-bold text-accent">{lang.toUpperCase()}</span>
         </div>
-        <div className="flex items-center gap-[9px] border-t border-border px-3 py-2.5">
+        <div className="flex items-center gap-2.25 border-t border-border px-3 py-2.5">
           <span
-            className="flex h-[30px] w-[30px] flex-none items-center justify-center rounded-full text-[11px] font-bold text-white"
+            className="flex h-7.5 w-7.5 flex-none items-center justify-center rounded-full text-[11px] font-bold text-white"
             // eslint-disable-next-line react/no-inline-styles -- dynamic: stripes() generates a per-avatar gradient string at runtime
             style={{ background: stripes(45, 5) }}
           >

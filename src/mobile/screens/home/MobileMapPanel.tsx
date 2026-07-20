@@ -34,7 +34,7 @@ export default function MobileMapPanel({ t, locale, providers, userPoint, openPr
         <div className="absolute left-[8%] top-[4%] right-[8%] flex items-center gap-2.5 z-[1000]">
           <div
             {...clickable(() => setMapOn(false))}
-            className="flex-1 flex items-center gap-[9px] bg-surface rounded-[20px] py-[11px] px-3.5 shadow-[var(--shadow)] cursor-pointer"
+            className="flex-1 flex items-center gap-2.25 bg-surface rounded-[20px] py-2.75 px-3.5 shadow-[var(--shadow)] cursor-pointer"
           >
             <SparkleIcon size={15} />
             <span className="text-[13.5px] font-semibold text-muted2">{query || t('home.mapSearchPlaceholder')}</span>
@@ -53,7 +53,7 @@ export default function MobileMapPanel({ t, locale, providers, userPoint, openPr
                 <div className="text-xs text-muted mt-0.5">{providerMeta(p, locale)}</div>
                 <div className="text-[11.5px] text-muted2 mt-0.5">{p.locLine}</div>
               </div>
-              <span className="self-center flex-none bg-accent text-onaccent rounded-[14px] py-1.5 px-[11px] text-[11.5px] font-bold">{p.nextSlotLabel}</span>
+              <span className="self-center flex-none bg-accent text-onaccent rounded-[14px] py-1.5 px-2.75 text-[11.5px] font-bold">{p.nextSlotLabel}</span>
             </div>
           ))}
         </div>

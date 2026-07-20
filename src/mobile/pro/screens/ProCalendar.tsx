@@ -86,9 +86,9 @@ export default function ProCalendar() {
   };
 
   return (
-    <div className="flex-1 overflow-auto pt-5 px-5 pb-[18px]">
+    <div className="flex-1 overflow-auto pt-5 px-5 pb-4.5">
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
-      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-[18px]">
+      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-4.5">
         {t('pro.calendar.title')}
       </h1>
 

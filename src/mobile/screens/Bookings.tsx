@@ -38,14 +38,14 @@ export default function BookingsTab() {
   } = useBookingsData();
 
   return (
-    <div className={clsx(isDesktop ? 'max-w-[760px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-[18px]')}>
+    <div className={clsx(isDesktop ? 'max-w-190 mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-4.5')}>
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
-      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-[18px]">
+      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-4.5">
         {t('bookings.title')}
       </h1>
 
       <div className={sectionLabelCls}>{t('bookings.upcomingLabel')}</div>
-      <div className="flex flex-col gap-2.5 mb-[22px]">
+      <div className="flex flex-col gap-2.5 mb-5.5">
         {upcoming.length === 0 && <div className="text-[13px] text-muted">{t('bookings.noneUpcoming')}</div>}
         {upcoming.map((b) => (
           <UpcomingBookingRow

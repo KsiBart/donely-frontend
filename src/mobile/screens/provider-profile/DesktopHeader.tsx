@@ -17,15 +17,15 @@ interface DesktopHeaderProps {
 export default function DesktopHeader({ t, locale, appName, pv, fav, onToggleFav }: DesktopHeaderProps) {
   return (
     <>
-      <div className="flex items-center gap-2.5 mt-[18px]">
+      <div className="flex items-center gap-2.5 mt-4.5">
         {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
         <h1 style={{ fontFamily: BRICO }} className="text-[26px] font-bold m-0">
           {pv.name}
         </h1>
-        {pv.verified && <span className="bg-ver-bg text-ver-fg rounded-[10px] py-[3px] px-[9px] text-[11px] font-bold">{t('common.verifiedFull')}</span>}
+        {pv.verified && <span className="bg-ver-bg text-ver-fg rounded-[10px] py-0.75 px-2.25 text-[11px] font-bold">{t('common.verifiedFull')}</span>}
         <span
           {...clickable(onToggleFav, { pressed: fav, label: t('a11y.favorite', 'Ulubione') })}
-          className="w-[30px] h-[30px] rounded-full bg-surface shadow-[var(--shadow)] flex items-center justify-center text-accent text-[15px] cursor-pointer"
+          className="w-7.5 h-7.5 rounded-full bg-surface shadow-[var(--shadow)] flex items-center justify-center text-accent text-[15px] cursor-pointer"
         >
           {fav ? '♥' : '♡'}
         </span>
@@ -34,7 +34,7 @@ export default function DesktopHeader({ t, locale, appName, pv, fav, onToggleFav
         {pv.categoryName} · {formatKm(pv.distanceKm, locale)} · <span aria-hidden="true">★</span> {formatRating(pv.rating, locale)} ({pv.reviewCount}) ·{' '}
         {t('providerProfile.respondsIn', { minutes: pv.responseMinutes ?? 15 })}
       </div>
-      <div className="text-sm text-muted2 leading-[1.55] mt-3 max-w-[620px]">{pv.bio}</div>
+      <div className="text-sm text-muted2 leading-[1.55] mt-3 max-w-155">{pv.bio}</div>
       <TagsRow t={t} appName={appName} businessType={pv.businessType} travelRadiusKm={pv.travelRadiusKm} spotAddress={pv.spotAddress} />
     </>
   );

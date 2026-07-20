@@ -12,7 +12,7 @@ export function TrustStrip() {
 
   return (
     <section className="bg-[var(--band)]">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-[2px_24px] p-[26px_22px]">
+      <div className="max-w-300 mx-auto grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-[2px_24px] p-[26px_22px]">
         {stats.map((s) => (
           <div key={s.k} className="text-center p-[8px_6px]">
             <div className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(24px,3vw,32px)] font-extrabold text-[var(--bandAcc)]">{s.v}</div>

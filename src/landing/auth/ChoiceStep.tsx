@@ -14,7 +14,7 @@ export function ChoiceStep({ enterAsStandard, enterAsPro, onBack }: ChoiceStepPr
     <div className="text-center animate-[dfade_0.4s_ease]">
       <div
         aria-hidden="true"
-        className="w-[88px] h-[88px] mx-auto rounded-full bg-[var(--okbg)] text-[var(--okfg)] flex items-center justify-center text-[42px] font-extrabold"
+        className="w-22 h-22 mx-auto rounded-full bg-[var(--okbg)] text-[var(--okfg)] flex items-center justify-center text-[42px] font-extrabold"
       >
         ✓
       </div>
@@ -37,7 +37,7 @@ export function ChoiceStep({ enterAsStandard, enterAsPro, onBack }: ChoiceStepPr
       >
         {t('landing.auth.done.proCta')}
       </div>
-      <div {...clickable(onBack)} className="mt-[14px] text-sm font-bold text-[var(--acc)] cursor-pointer">
+      <div {...clickable(onBack)} className="mt-3.5 text-sm font-bold text-[var(--acc)] cursor-pointer">
         {t('landing.auth.done.back')}
       </div>
     </div>

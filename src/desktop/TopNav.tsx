@@ -23,8 +23,8 @@ export default function TopNav() {
 
   return (
     <div className="flex-none bg-surface border-b border-border">
-      <div className="max-w-[1120px] mx-auto flex items-center gap-[26px] px-[28px] py-[14px]">
-        <div {...clickable(() => navigate('/'))} className="flex items-center gap-[9px] flex-none cursor-pointer">
+      <div className="max-w-280 mx-auto flex items-center gap-6.5 px-7 py-3.5">
+        <div {...clickable(() => navigate('/'))} className="flex items-center gap-2.25 flex-none cursor-pointer">
           <Logo size={30} />
           <Wordmark size={19} />
         </div>
@@ -51,7 +51,7 @@ export default function TopNav() {
           </span>
           <span
             {...clickable(install)}
-            className="dw-install-btn border-[1.5px] border-accent text-accent rounded-[13px] py-[7px] px-3.5 text-[12.5px] font-bold cursor-pointer"
+            className="dw-install-btn border-[1.5px] border-accent text-accent rounded-[13px] py-1.75 px-3.5 text-[12.5px] font-bold cursor-pointer"
           >
             {t('promo.installAppCta')}
           </span>

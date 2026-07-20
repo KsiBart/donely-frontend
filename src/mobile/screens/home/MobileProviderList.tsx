@@ -28,12 +28,12 @@ export default function MobileProviderList({ t, locale, providers, openProvider 
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-[15px]">{p.name}</span>
                 {p.verified && (
-                  <span className="inline-flex bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-[7px] text-[10.5px] font-bold">{t('common.verifiedFull')}</span>
+                  <span className="inline-flex bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-1.75 text-[10.5px] font-bold">{t('common.verifiedFull')}</span>
                 )}
               </div>
               <div className="text-[12.5px] text-muted mt-0.5">{providerMeta(p, locale)}</div>
-              <div className="text-[11.5px] text-muted2 mt-[3px]">{p.locLine}</div>
-              <div className="flex justify-between items-center mt-[7px]">
+              <div className="text-[11.5px] text-muted2 mt-0.75">{p.locLine}</div>
+              <div className="flex justify-between items-center mt-1.75">
                 <span className="text-[13px] text-muted2">
                   {t('home.priceFromPrefix')} <b className="text-text">{p.priceFromLabel}</b>
                 </span>

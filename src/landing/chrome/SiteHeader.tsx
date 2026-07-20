@@ -58,8 +58,8 @@ export function SiteHeader() {
         // eslint-disable-next-line react/no-inline-styles -- vendor-prefix: keeps explicit -webkit-backdrop-filter for older Safari; not guaranteed emitted by the Tailwind backdrop-blur utility under this build's target
         style={{ backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
       >
-        <div className="max-w-[1200px] mx-auto flex items-center gap-[18px] p-[14px_22px]">
-        <a href="/#top" onClick={goAnchor('top')} className="flex items-center gap-[10px] flex-none">
+        <div className="max-w-300 mx-auto flex items-center gap-4.5 p-[14px_22px]">
+        <a href="/#top" onClick={goAnchor('top')} className="flex items-center gap-2.5 flex-none">
           <Logo size={32} />
           <Wordmark size={23} />
         </a>
@@ -71,7 +71,7 @@ export function SiteHeader() {
             </a>
           ))}
         </nav>
-        <div className="dt-nav-desktop ml-auto flex items-center gap-[10px]">
+        <div className="dt-nav-desktop ml-auto flex items-center gap-2.5">
           <DarkModeToggle />
           <LangToggle />
           <span {...clickable(() => navigate('/login'))} className={clsx('dt-btn-accent', signinBtn)}>

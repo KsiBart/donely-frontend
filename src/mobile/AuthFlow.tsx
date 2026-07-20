@@ -17,14 +17,14 @@ function MapBackdrop({ pinTop }: { pinTop?: boolean }) {
   const { t } = useTranslation();
   return (
     <div className="absolute inset-0 bg-[var(--map)]">
-      <div className="absolute -left-[20%] top-[26%] w-[140%] h-[26px] bg-[var(--road)] rotate-[-8deg]" />
-      <div className="absolute left-[55%] -top-[10%] w-[22px] h-[120%] bg-[var(--road)] rotate-[12deg]" />
+      <div className="absolute -left-[20%] top-[26%] w-[140%] h-6.5 bg-[var(--road)] rotate-[-8deg]" />
+      <div className="absolute left-[55%] -top-[10%] w-5.5 h-[120%] bg-[var(--road)] rotate-[12deg]" />
       {pinTop && (
         <div className="absolute left-1/2 top-[48%] -translate-x-1/2 -translate-y-full flex flex-col items-center">
           <span className="bg-accent text-onaccent rounded-[14px] px-3 py-1.5 text-[12.5px] font-bold shadow-[var(--glow)]">
             {t('auth.location.pin')}
           </span>
-          <span className="w-[3px] h-[14px] bg-accent" />
+          <span className="w-0.75 h-3.5 bg-accent" />
           <span className="w-3 h-3 rounded-full bg-accent animate-[ptpulse_1.6s_infinite]" />
         </div>
       )}
@@ -53,14 +53,14 @@ function LocationCardBody({ compact }: { compact: boolean }) {
       >
         {t('auth.location.title')}
       </h1>
-      <div className={clsx('text-[var(--muted)] leading-[1.55]', compact ? 'text-[13.5px] mb-[18px]' : 'text-[14.5px] mb-6')}>
+      <div className={clsx('text-[var(--muted)] leading-[1.55]', compact ? 'text-[13.5px] mb-4.5' : 'text-[14.5px] mb-6')}>
         {t('auth.location.subtitle')}
       </div>
       <div
         {...clickable(() => void useCurrent())}
         className={clsx(
           'text-center bg-accent text-onaccent rounded-[18px] font-bold shadow-[var(--glow)]',
-          compact ? 'p-3.5 text-[15px]' : 'p-[15px] text-[15.5px]',
+          compact ? 'p-3.5 text-[15px]' : 'p-3.75 text-[15.5px]',
           busy ? 'cursor-default opacity-70' : 'cursor-pointer',
         )}
       >
@@ -78,7 +78,7 @@ function LocationCardBody({ compact }: { compact: boolean }) {
             }}
             placeholder={t('auth.location.manualPlaceholder')}
             aria-label={t('auth.location.manualPlaceholder')}
-            className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-[13px] px-3.5 text-[14.5px] outline-none"
+            className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-3.25 px-3.5 text-[14.5px] outline-none"
           />
           <div
             {...clickable(submitManual)}
@@ -112,7 +112,7 @@ export function LocationScreen() {
     return (
       <div className="fixed inset-0 overflow-hidden animate-[dwfade_.3s_ease]">
         <MapBackdrop pinTop />
-        <div className="absolute left-[8%] top-1/2 -translate-y-1/2 w-full max-w-[440px] bg-surface text-text rounded-[26px] pt-8 px-[30px] pb-[34px] shadow-[var(--shadow)] z-[1]">
+        <div className="absolute left-[8%] top-1/2 -translate-y-1/2 w-full max-w-110 bg-surface text-text rounded-[26px] pt-8 px-7.5 pb-8.5 shadow-[var(--shadow)] z-[1]">
           <LocationCardBody compact={false} />
         </div>
       </div>
@@ -124,7 +124,7 @@ export function LocationScreen() {
       <div className="flex-1 relative bg-[var(--map)] overflow-hidden">
         <MapBackdrop pinTop />
       </div>
-      <div className="flex-none pt-[22px] px-7 pb-11 bg-surface rounded-t-[26px] -mt-6 relative shadow-[var(--shadow)]">
+      <div className="flex-none pt-5.5 px-7 pb-11 bg-surface rounded-t-[26px] -mt-6 relative shadow-[var(--shadow)]">
         <LocationCardBody compact />
       </div>
     </div>

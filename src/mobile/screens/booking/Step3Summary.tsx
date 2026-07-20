@@ -25,7 +25,7 @@ export default function Step3Summary({ t, isQuote, summary, paymentMethods, meth
       </h1>
       <div className="bg-surface rounded-[20px] shadow-[var(--shadow)] overflow-hidden">
         {summary.map((r) => (
-          <div key={r.k} className="flex justify-between gap-3 py-[13px] px-4 border-b border-border">
+          <div key={r.k} className="flex justify-between gap-3 py-3.25 px-4 border-b border-border">
             <span className="text-[13px] text-muted flex-none">{r.k}</span>
             <span className="text-[13.5px] font-bold text-right">{r.v}</span>
           </div>
@@ -34,8 +34,8 @@ export default function Step3Summary({ t, isQuote, summary, paymentMethods, meth
 
       {!isQuote && (
         <>
-          <div className={clsx(uppercaseLabelCls, 'mx-0 mt-[18px] mb-2')}>{t('booking.paymentMethodLabel')}</div>
-          <div role="radiogroup" aria-label={t('booking.paymentMethodLabel')} className="flex flex-col gap-[9px]">
+          <div className={clsx(uppercaseLabelCls, 'mx-0 mt-4.5 mb-2')}>{t('booking.paymentMethodLabel')}</div>
+          <div role="radiogroup" aria-label={t('booking.paymentMethodLabel')} className="flex flex-col gap-2.25">
             {paymentMethods.map((m) => {
               const sel = m === method;
               const key = METHOD_KEY[m];
@@ -44,7 +44,7 @@ export default function Step3Summary({ t, isQuote, summary, paymentMethods, meth
                   key={m}
                   {...clickable(() => setMethod(m), { pressed: sel })}
                   className={clsx(
-                    'flex items-center gap-3 rounded-2xl py-[13px] px-3.5 cursor-pointer bg-surface border-2',
+                    'flex items-center gap-3 rounded-2xl py-3.25 px-3.5 cursor-pointer bg-surface border-2',
                     sel ? 'border-accent shadow-[var(--shadow)]' : 'border-border shadow-none',
                   )}
                 >
@@ -61,7 +61,7 @@ export default function Step3Summary({ t, isQuote, summary, paymentMethods, meth
       )}
 
       <div className="flex gap-2.5 bg-surface2 rounded-2xl py-3 px-3.5 mt-3.5 items-center">
-        <span aria-hidden="true" className="w-[30px] h-[30px] rounded-full bg-ver-bg text-ver-fg flex items-center justify-center font-bold flex-none">
+        <span aria-hidden="true" className="w-7.5 h-7.5 rounded-full bg-ver-bg text-ver-fg flex items-center justify-center font-bold flex-none">
           ✓
         </span>
         <span className="text-[12.5px] text-muted2 leading-[1.45]">{isQuote ? t('booking.infoQuote') : t('booking.infoInstant', { appName })}</span>

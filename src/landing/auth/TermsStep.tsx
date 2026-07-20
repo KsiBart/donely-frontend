@@ -15,7 +15,7 @@ export function TermsStep({ setDoneView, acceptProTerms, busy }: TermsStepProps)
     <div className="text-left animate-[dfade_0.3s_ease]">
       <span
         {...clickable(() => setDoneView('choice'))}
-        className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer mb-[18px]"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer mb-4.5"
       >
         <span aria-hidden="true">‹</span> {t('proTerms.back')}
       </span>
@@ -27,7 +27,7 @@ export function TermsStep({ setDoneView, acceptProTerms, busy }: TermsStepProps)
       </p>
       <div
         {...clickable(() => void acceptProTerms(), { disabled: busy })}
-        className="mt-[22px] text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer bg-[var(--accGrad)] text-[var(--onacc)] shadow-[0_8px_22px_rgba(122,79,192,.32)]"
+        className="mt-5.5 text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer bg-[var(--accGrad)] text-[var(--onacc)] shadow-[0_8px_22px_rgba(122,79,192,.32)]"
       >
         {busy ? t('proTerms.accepting') : t('proTerms.accept')}
       </div>

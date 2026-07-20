@@ -16,7 +16,7 @@ interface ReviewFormProps {
 /** Completed-booking card: star rating + free-text review form, shown once "Add review" is tapped. */
 export default function ReviewForm({ t, b, reviewRating, setReviewRating, reviewText, setReviewText, onSend }: ReviewFormProps) {
   return (
-    <div className="mt-[11px] pt-[11px] border-t border-border">
+    <div className="mt-2.75 pt-2.75 border-t border-border">
       <div role="radiogroup" aria-label={t('a11y.starRating', 'Ocena w gwiazdkach')} className="flex justify-center gap-1.5 mb-2.5">
         {[1, 2, 3, 4, 5].map((n) => (
           <span
@@ -38,7 +38,7 @@ export default function ReviewForm({ t, b, reviewRating, setReviewRating, review
         aria-label={t('bookings.reviewPlaceholder') ?? ''}
         className="w-full box-border h-20 rounded-2xl border-[1.5px] border-border bg-surface text-text py-3 px-3.5 font-medium text-sm font-['Figtree',sans-serif] resize-none outline-none"
       />
-      <div {...clickable(() => onSend(b))} className="mt-2.5 text-center bg-accent text-onaccent rounded-[14px] p-[9px] text-[13px] font-bold cursor-pointer">
+      <div {...clickable(() => onSend(b))} className="mt-2.5 text-center bg-accent text-onaccent rounded-[14px] p-2.25 text-[13px] font-bold cursor-pointer">
         {t('bookings.reviewSend')}
       </div>
     </div>

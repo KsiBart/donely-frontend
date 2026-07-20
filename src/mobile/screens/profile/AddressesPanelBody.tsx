@@ -68,7 +68,7 @@ export default function AddressesPanelBody() {
         onChange={(e) => setLabel(e.target.value)}
         placeholder={t('profile.addressesPanel.labelPlaceholder')}
         aria-label={t('profile.addressesPanel.labelPlaceholder')}
-        className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-[11px] px-3.5 text-[13.5px] outline-none mb-2"
+        className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-2.75 px-3.5 text-[13.5px] outline-none mb-2"
       />
       <input
         value={addr}
@@ -78,7 +78,7 @@ export default function AddressesPanelBody() {
         }}
         placeholder={t('profile.addressesPanel.addrPlaceholder')}
         aria-label={t('profile.addressesPanel.addrPlaceholder')}
-        className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-[11px] px-3.5 text-[13.5px] outline-none"
+        className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-2.75 px-3.5 text-[13.5px] outline-none"
       />
       <div
         {...clickable(() => void add(), { disabled: saving })}

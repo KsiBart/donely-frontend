@@ -18,11 +18,11 @@ export default function ProviderProfile() {
 
   if (isDesktop) {
     return (
-      <div className="max-w-[1120px] mx-auto pt-[22px] px-7 pb-12 animate-[dwfade_.3s_ease]">
-        <span {...clickable(goBack)} className="inline-flex items-center gap-[7px] text-[13px] font-bold text-accent cursor-pointer">
+      <div className="max-w-280 mx-auto pt-5.5 px-7 pb-12 animate-[dwfade_.3s_ease]">
+        <span {...clickable(goBack)} className="inline-flex items-center gap-1.75 text-[13px] font-bold text-accent cursor-pointer">
           <span aria-hidden="true">‹</span> {t('providerProfile.backToResults')}
         </span>
-        <div className="grid grid-cols-[1fr_380px] gap-[26px] items-start mt-4">
+        <div className="grid grid-cols-[1fr_380px] gap-6.5 items-start mt-4">
           <div>
             <DesktopPhotoStrip t={t} />
             <DesktopHeader t={t} locale={locale} appName={brand.appName} pv={pv} fav={fav} onToggleFav={() => void toggleFav()} />

@@ -9,7 +9,7 @@ export function PostsBlock({ items }: { items: PostItem[] }) {
         return (
           <div key={it.t} className="dt-post-card bg-surface border border-border rounded-[20px] overflow-hidden cursor-pointer transition-shadow duration-[250ms]">
             <div
-              className="h-[110px] relative overflow-hidden"
+              className="h-27.5 relative overflow-hidden"
               // eslint-disable-next-line react/no-inline-styles -- dynamic: per-post gradient stops (CAT_GRADIENTS[hue])
               style={{ background: `linear-gradient(135deg,${sA},${sB})` }}
             >
@@ -18,7 +18,7 @@ export function PostsBlock({ items }: { items: PostItem[] }) {
             <div className="p-[14px_18px_18px]">
               <div className="text-xs text-[var(--soft)] font-semibold">{it.meta}</div>
               <div className="font-['Bricolage_Grotesque',sans-serif] text-[17px] font-bold text-[var(--ink)] mt-1.5 leading-[1.25]">{it.t}</div>
-              <div className="text-[13.5px] text-muted leading-[1.5] mt-[7px]">{it.d}</div>
+              <div className="text-[13.5px] text-muted leading-[1.5] mt-1.75">{it.d}</div>
             </div>
           </div>
         );

@@ -21,7 +21,7 @@ export function CodeStep({ email, digits, setDigits, codeFilled, busy, devCode, 
     <div className="animate-[dfade_0.3s_ease]">
       <span
         {...clickable(onChangeEmail)}
-        className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer mb-[18px]"
+        className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer mb-4.5"
       >
         <span aria-hidden="true">‹</span> {t('landing.auth.code.changeEmail')}
       </span>
@@ -34,7 +34,7 @@ export function CodeStep({ email, digits, setDigits, codeFilled, busy, devCode, 
       <OtpBoxes digits={digits} setDigits={setDigits} />
       <div
         {...clickable(() => void verifyCode(), { disabled: !codeFilled || busy })}
-        className="mt-[22px] text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer"
+        className="mt-5.5 text-center rounded-2xl p-4 text-base font-extrabold cursor-pointer"
         // eslint-disable-next-line react/no-inline-styles -- dynamic: enabled/disabled visual state depends on codeFilled
         style={{
           background: codeFilled ? 'var(--accGrad)' : 'var(--surface2)',

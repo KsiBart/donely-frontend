@@ -22,4 +22,4 @@ export const sectionLabelCls = 'text-xs font-bold text-muted tracking-[0.06em] u
 
 // Full-width accent CTA rows (payNow / approveCompletion / reviewSend) share this padding=11 shape
 // — 1px off buttonVariants('md') (which pairs 16/10, not a uniform 11), so built by hand here.
-export const ctaGlowCls = 'text-center bg-accent text-onaccent rounded-[14px] p-[11px] text-[13px] font-bold cursor-pointer shadow-[var(--glow)]';
+export const ctaGlowCls = 'text-center bg-accent text-onaccent rounded-[14px] p-2.75 text-[13px] font-bold cursor-pointer shadow-[var(--glow)]';

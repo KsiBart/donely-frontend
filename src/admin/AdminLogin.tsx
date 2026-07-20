@@ -11,7 +11,7 @@ import { useToast } from '../state/ToastContext';
 const INPUT_CLASS =
   'w-full box-border rounded-[14px] border-[1.5px] border-accent bg-surface p-3.5 text-text outline-none';
 
-const CTA_CLASS = 'mt-3.5 cursor-pointer rounded-[14px] p-[13px] text-center text-[14px] font-bold';
+const CTA_CLASS = 'mt-3.5 cursor-pointer rounded-[14px] p-3.25 text-center text-[14px] font-bold';
 
 const BRICO_STYLE = { fontFamily: BRICO };
 
@@ -67,8 +67,8 @@ export default function AdminLogin() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg">
-      <div className="w-[400px] rounded-[20px] bg-surface px-9 py-8 shadow-[var(--shadow)]">
-        <div className="mb-[22px] flex items-center gap-[9px]">
+      <div className="w-100 rounded-[20px] bg-surface px-9 py-8 shadow-[var(--shadow)]">
+        <div className="mb-5.5 flex items-center gap-2.25">
           <Logo size={34} />
           <div>
             {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping */}

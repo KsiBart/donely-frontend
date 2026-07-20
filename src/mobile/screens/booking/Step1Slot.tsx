@@ -37,7 +37,7 @@ export default function Step1Slot({ t, days, slotDay, setSlotDay, times, slotTim
               key={d.sub}
               {...clickable(() => setSlotDay(i), { pressed: sel })}
               className={clsx(
-                'flex-1 text-center rounded-2xl py-[11px] px-1.5 text-[13px] font-bold cursor-pointer border-2',
+                'flex-1 text-center rounded-2xl py-2.75 px-1.5 text-[13px] font-bold cursor-pointer border-2',
                 sel ? 'bg-accent text-onaccent border-transparent' : 'bg-surface text-text border-border',
               )}
             >
@@ -48,7 +48,7 @@ export default function Step1Slot({ t, days, slotDay, setSlotDay, times, slotTim
           );
         })}
       </div>
-      <div role="radiogroup" aria-label={t('a11y.timePicker', 'Wybierz godzinę')} className="grid grid-cols-3 gap-[9px]">
+      <div role="radiogroup" aria-label={t('a11y.timePicker', 'Wybierz godzinę')} className="grid grid-cols-3 gap-2.25">
         {times.map((tm) => {
           const disabled = !tm.available;
           const sel = tm.label === slotTime;

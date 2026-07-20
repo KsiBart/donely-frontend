@@ -50,7 +50,7 @@ export default function BookingWizard() {
         <div className="flex items-center gap-2.5">
           <span
             {...clickable(bookBack, { label: t('a11y.back', 'Wstecz') })}
-            className="w-[34px] h-[34px] rounded-full bg-surface2 flex items-center justify-center text-base font-bold cursor-pointer"
+            className="w-8.5 h-8.5 rounded-full bg-surface2 flex items-center justify-center text-base font-bold cursor-pointer"
           >
             ‹
           </span>
@@ -61,7 +61,7 @@ export default function BookingWizard() {
             </div>
           </div>
         </div>
-        <div className="h-[5px] rounded-[3px] bg-surface2 mt-3.5 mb-1 overflow-hidden">
+        <div className="h-1.25 rounded-[3px] bg-surface2 mt-3.5 mb-1 overflow-hidden">
           <div
             className="h-full rounded-[3px] bg-accent transition-[width] duration-[0.25s]"
             style={{ width: `${step * 33.4}%` }} // eslint-disable-line react/no-inline-styles -- dynamic: wizard progress derived from `step`
@@ -69,7 +69,7 @@ export default function BookingWizard() {
         </div>
       </div>
 
-      <div className={clsx(isDesktop ? 'pt-4 px-6 pb-[22px]' : 'flex-1 overflow-auto pt-3.5 px-5 pb-5')}>
+      <div className={clsx(isDesktop ? 'pt-4 px-6 pb-5.5' : 'flex-1 overflow-auto pt-3.5 px-5 pb-5')}>
         {step === 1 && !isQuote && (
           <Step1Slot t={t} days={days} slotDay={slotDay} setSlotDay={setSlotDay} times={times} slotTime={slotTime} setSlotTime={setSlotTime} atSpot={atSpot} spotAddress={pv.spotAddress ?? undefined} />
         )}
@@ -98,7 +98,7 @@ export default function BookingWizard() {
         )}
       </div>
 
-      <div className={clsx('flex-none bg-surface border-t border-border', isDesktop ? 'pt-3.5 px-6 pb-[22px]' : 'pt-3 px-5 pb-5')}>
+      <div className={clsx('flex-none bg-surface border-t border-border', isDesktop ? 'pt-3.5 px-6 pb-5.5' : 'pt-3 px-5 pb-5')}>
         <div
           {...clickable(nextStep)}
           className={clsx(
@@ -115,7 +115,7 @@ export default function BookingWizard() {
 
   if (isDesktop) {
     return (
-      <div className="max-w-[640px] mt-[26px] mx-auto mb-12">
+      <div className="max-w-160 mt-6.5 mx-auto mb-12">
         <div className="bg-surface rounded-3xl shadow-[var(--shadow)] overflow-hidden">{content}</div>
       </div>
     );

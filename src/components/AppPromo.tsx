@@ -37,7 +37,7 @@ export function InstallBanner() {
   };
 
   return (
-    <div className="flex-none flex items-center gap-2.5 bg-[var(--app-tint)] border-b border-[var(--app-tint-border)] py-[9px] px-3.5 animate-[dwfade_.3s_ease]">
+    <div className="flex-none flex items-center gap-2.5 bg-[var(--app-tint)] border-b border-[var(--app-tint-border)] py-2.25 px-3.5 animate-[dwfade_.3s_ease]">
       <Logo size={26} />
       <span className="flex-1 min-w-0 text-[11.5px] leading-[1.35] text-muted2">
         <Trans i18nKey="promo.bannerText">
@@ -100,7 +100,7 @@ export function StoreCard() {
   const { t } = useTranslation();
   const install = useInstallAction();
   return (
-    <div className="mt-[18px] bg-surface border border-border rounded-[20px] p-4">
+    <div className="mt-4.5 bg-surface border border-border rounded-[20px] p-4">
       <div className="flex items-center gap-2.5">
         <Logo size={34} />
         <div className="flex-1 min-w-0">
@@ -114,11 +114,11 @@ export function StoreCard() {
         </div>
       </div>
       <div className="flex gap-2 mt-3">
-        <div {...clickable(install)} className="flex-1 bg-[#17141c] text-white rounded-xl py-[7px] px-[11px] cursor-pointer">
+        <div {...clickable(install)} className="flex-1 bg-[#17141c] text-white rounded-xl py-1.75 px-2.75 cursor-pointer">
           <div className="text-[9px] text-[#a89fb8]">{t('promo.appStoreLine1')}</div>
           <div className="text-[13px] font-bold">{t('promo.appStoreLine2')}</div>
         </div>
-        <div {...clickable(install)} className="flex-1 bg-[#17141c] text-white rounded-xl py-[7px] px-[11px] cursor-pointer">
+        <div {...clickable(install)} className="flex-1 bg-[#17141c] text-white rounded-xl py-1.75 px-2.75 cursor-pointer">
           <div className="text-[9px] text-[#a89fb8]">{t('promo.googlePlayLine1')}</div>
           <div className="text-[13px] font-bold">{t('promo.googlePlayLine2')}</div>
         </div>

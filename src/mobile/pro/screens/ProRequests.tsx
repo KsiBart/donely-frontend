@@ -113,8 +113,8 @@ export default function ProRequests() {
   };
 
   return (
-    <div className="flex-1 overflow-auto pt-5 px-5 pb-[18px]">
-      <div className="flex items-center justify-between mx-0 mt-2 mb-[18px]">
+    <div className="flex-1 overflow-auto pt-5 px-5 pb-4.5">
+      <div className="flex items-center justify-between mx-0 mt-2 mb-4.5">
         {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
         <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold m-0">
           {t('pro.requests.title')}
@@ -150,7 +150,7 @@ export default function ProRequests() {
               <div className="text-[11px] text-muted2 mt-1">{item.ago}</div>
 
               {item.status === 'new' && !isQuoting && (
-                <div className="flex gap-[9px] mt-3">
+                <div className="flex gap-2.25 mt-3">
                   <span {...clickable(() => void decline(item), { disabled: busy })} className={clsx('flex-1 text-center border-[1.5px] border-border text-muted2 rounded-[14px] p-2.5 text-[13px] font-bold cursor-pointer', busy && 'opacity-70')}>
                     {t('pro.requests.declineCta')}
                   </span>
@@ -175,9 +175,9 @@ export default function ProRequests() {
                     autoFocus
                     placeholder={t('pro.requests.quotePlaceholder')}
                     aria-label={t('pro.requests.quotePlaceholder')}
-                    className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-[11px] px-3.5 text-[13.5px] outline-none mb-2"
+                    className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-2.75 px-3.5 text-[13.5px] outline-none mb-2"
                   />
-                  <div className="flex gap-[9px]">
+                  <div className="flex gap-2.25">
                     <span {...clickable(() => setQuoteFor(null), { disabled: busy })} className="flex-1 text-center border-[1.5px] border-border text-muted2 rounded-[14px] p-2.5 text-[13px] font-bold cursor-pointer">
                       {t('proTerms.cancel')}
                     </span>

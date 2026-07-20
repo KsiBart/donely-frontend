@@ -16,17 +16,17 @@ export function Hero({ goLogin }: { goLogin: () => void }) {
   return (
     <section
       id="top"
-      className="relative max-w-[1200px] mx-auto w-full box-border p-[clamp(36px,6vw,80px)_22px_clamp(30px,5vw,56px)] flex flex-wrap gap-[44px] items-center"
+      className="relative max-w-300 mx-auto w-full box-border p-[clamp(36px,6vw,80px)_22px_clamp(30px,5vw,56px)] flex flex-wrap gap-11 items-center"
     >
       <div
         data-plx="0.12"
-        className="absolute -top-[120px] -left-[90px] w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle_at_40%_40%,var(--blob1),transparent_70%)] opacity-75 pointer-events-none z-0"
+        className="absolute -top-30 -left-22.5 w-90 h-90 rounded-full bg-[radial-gradient(circle_at_40%_40%,var(--blob1),transparent_70%)] opacity-75 pointer-events-none z-0"
         // eslint-disable-next-line react/no-inline-styles -- dynamic: --plx is written at runtime by useParallax()
         style={{ transform: 'translate3d(0,var(--plx,0px),0)' }}
       />
       <div
         data-plx="-0.08"
-        className="absolute -bottom-[140px] -right-[70px] w-[320px] h-[320px] rounded-full bg-[radial-gradient(circle_at_60%_60%,var(--blob2),transparent_70%)] opacity-75 pointer-events-none z-0"
+        className="absolute -bottom-35 -right-17.5 w-80 h-80 rounded-full bg-[radial-gradient(circle_at_60%_60%,var(--blob2),transparent_70%)] opacity-75 pointer-events-none z-0"
         // eslint-disable-next-line react/no-inline-styles -- dynamic: --plx is written at runtime by useParallax()
         style={{ transform: 'translate3d(0,var(--plx,0px),0)' }}
       />
@@ -39,13 +39,13 @@ export function Hero({ goLogin }: { goLogin: () => void }) {
         <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(40px,6.2vw,74px)] font-extrabold leading-[1.02] tracking-[-0.02em] text-[var(--ink)] m-[20px_0_0]">
           {t('landing.hero.title')}
         </h1>
-        <p className="text-[clamp(16px,1.7vw,20px)] text-muted leading-[1.5] m-[20px_0_0] max-w-[560px]">{t('landing.hero.sub')}</p>
+        <p className="text-[clamp(16px,1.7vw,20px)] text-muted leading-[1.5] m-[20px_0_0] max-w-140">{t('landing.hero.sub')}</p>
 
-        <div className="mt-[26px] max-w-[560px]">
-          <div className="inline-flex items-center gap-1.5 bg-[var(--band)] text-[var(--bandInk)] rounded-[99px] p-[5px_12px] text-[11.5px] font-extrabold tracking-[.02em] mb-[10px]">
+        <div className="mt-6.5 max-w-140">
+          <div className="inline-flex items-center gap-1.5 bg-[var(--band)] text-[var(--bandInk)] rounded-[99px] p-[5px_12px] text-[11.5px] font-extrabold tracking-[.02em] mb-2.5">
             <span aria-hidden="true">✨</span> {t('landing.hero.aiBadge')}
           </div>
-          <div className="bg-surface border-[1.5px] border-[var(--acc)] rounded-[20px] p-[7px_7px_7px_16px] flex items-center gap-[10px] shadow-[0_12px_30px_rgba(74,52,102,.15)]">
+          <div className="bg-surface border-[1.5px] border-[var(--acc)] rounded-[20px] p-[7px_7px_7px_16px] flex items-center gap-2.5 shadow-[0_12px_30px_rgba(74,52,102,.15)]">
             <SparkleIcon size={18} />
             <input
               value={query}
@@ -54,13 +54,13 @@ export function Hero({ goLogin }: { goLogin: () => void }) {
                 if (e.key === 'Enter') goLogin();
               }}
               placeholder={t('landing.hero.searchPlaceholder')}
-              className="flex-1 min-w-0 border-none bg-transparent text-[var(--ink)] font-semibold text-[15px] font-['Figtree',sans-serif] outline-none py-[9px]"
+              className="flex-1 min-w-0 border-none bg-transparent text-[var(--ink)] font-semibold text-[15px] font-['Figtree',sans-serif] outline-none py-2.25"
             />
             <span {...clickable(goLogin)} className="dt-btn-accent flex-none bg-[var(--accGrad)] text-[var(--onacc)] rounded-[14px] p-[12px_20px] text-[15px] font-extrabold cursor-pointer">
               {t('landing.hero.searchBtn')} <span aria-hidden="true">→</span>
             </span>
           </div>
-          <div className="text-[13.5px] text-[var(--soft)] leading-[1.5] mt-[10px]">{t('landing.hero.aiHint')}</div>
+          <div className="text-[13.5px] text-[var(--soft)] leading-[1.5] mt-2.5">{t('landing.hero.aiHint')}</div>
           <div className="flex flex-wrap gap-2 mt-3">
             {searchChips.map((c) => (
               <span
@@ -80,31 +80,31 @@ export function Hero({ goLogin }: { goLogin: () => void }) {
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-[18px] mt-[26px] text-sm text-[var(--soft)]">
-          <span className="inline-flex items-center gap-[7px]">
+        <div className="flex flex-wrap items-center gap-4.5 mt-6.5 text-sm text-[var(--soft)]">
+          <span className="inline-flex items-center gap-1.75">
             <span aria-hidden="true" className="text-[#e8a13c] tracking-[1px]">★★★★★</span> {t('landing.hero.rating')}
           </span>
-          <span className="inline-flex items-center gap-[7px]">
+          <span className="inline-flex items-center gap-1.75">
             <span aria-hidden="true" className="text-[var(--okfg)]">✓</span> {t('landing.hero.trust2')}
           </span>
         </div>
       </div>
 
       <div className="flex-[1_1_380px] min-w-0 relative z-[1] flex justify-center">
-        <div className="relative w-full max-w-[460px]">
-          <div className="absolute -inset-[26px] rounded-[44px] bg-[linear-gradient(135deg,var(--acc),var(--accHover))] opacity-[.38] blur-[46px]" />
+        <div className="relative w-full max-w-115">
+          <div className="absolute -inset-6.5 rounded-[44px] bg-[linear-gradient(135deg,var(--acc),var(--accHover))] opacity-[.38] blur-[46px]" />
           <div className="relative bg-surface rounded-[28px] p-5 shadow-[0_30px_70px_rgba(74,52,102,.26)] animate-[dfloat_6s_ease-in-out_infinite]">
-            <div className="flex items-center gap-[9px] flex-wrap">
+            <div className="flex items-center gap-2.25 flex-wrap">
               <span className="inline-flex items-center gap-1.5 bg-[var(--tint)] text-[var(--accInk)] rounded-[99px] p-[6px_12px] text-[12.5px] font-extrabold">
                 <span aria-hidden="true">✨</span> {t('landing.hero.matchedTitle')}
               </span>
               <span className="text-xs text-[var(--soft)]">{t('landing.hero.matchedNote')}</span>
             </div>
-            <div className="flex items-center gap-2 bg-bg border border-border rounded-[14px] p-[11px_13px] mt-[14px]">
+            <div className="flex items-center gap-2 bg-bg border border-border rounded-[14px] p-[11px_13px] mt-3.5">
               <SparkleIcon size={15} />
               <span className="text-[13.5px] text-muted font-semibold whitespace-nowrap overflow-hidden text-ellipsis">„{heroQueryShown}"</span>
             </div>
-            <div key={sceneKey} className="flex flex-col gap-[9px] mt-[14px]">
+            <div key={sceneKey} className="flex flex-col gap-2.25 mt-3.5">
               {heroMatched.map((p, i) => (
                 <div
                   key={p.init + p.slot}

@@ -51,14 +51,14 @@ export default function BottomNav() {
   const { pathname } = useLocation();
 
   return (
-    <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} className="flex-none flex bg-surface border-t border-border px-2 pt-[10px] pb-[18px]">
+    <nav aria-label={t('a11y.primaryNav', 'Nawigacja')} className="flex-none flex bg-surface border-t border-border px-2 pt-2.5 pb-4.5">
       {ITEMS.map((item) => {
         const active = pathname === item.path;
         return (
           <div
             key={item.path}
             {...clickable(() => navigate(item.path))}
-            className={clsx('flex-1 flex flex-col items-center gap-[3px] cursor-pointer', active ? 'text-accent' : 'text-[var(--navmuted)]')}
+            className={clsx('flex-1 flex flex-col items-center gap-0.75 cursor-pointer', active ? 'text-accent' : 'text-[var(--navmuted)]')}
           >
             <Icon type={item.icon} />
             <span className={clsx('text-[10.5px]', active ? 'font-bold' : 'font-semibold')}>{t(item.key)}</span>

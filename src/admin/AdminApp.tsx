@@ -56,18 +56,18 @@ export default function AdminApp() {
   if (!isAdmin) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-bg">
-        <div className="max-w-[420px] rounded-[20px] bg-surface px-9 py-8 text-center shadow-[var(--shadow)]">
+        <div className="max-w-105 rounded-[20px] bg-surface px-9 py-8 text-center shadow-[var(--shadow)]">
           <Logo size={40} />
           {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping */}
           <h1 className="mt-3.5 mb-2 text-[20px] font-bold" style={BRICO_STYLE}>
             {t('admin.common.noAccessTitle')}
           </h1>
-          <div className="mb-[18px] text-[13.5px] leading-[1.5] text-muted2">
+          <div className="mb-4.5 text-[13.5px] leading-[1.5] text-muted2">
             {t('admin.common.noAccessBody', { email: me.email })}
           </div>
           <div
             {...clickable(logout)}
-            className="inline-block cursor-pointer rounded-[14px] bg-accent px-[22px] py-2.5 text-[13px] font-bold text-white"
+            className="inline-block cursor-pointer rounded-[14px] bg-accent px-5.5 py-2.5 text-[13px] font-bold text-white"
           >
             {t('admin.common.logout')}
           </div>

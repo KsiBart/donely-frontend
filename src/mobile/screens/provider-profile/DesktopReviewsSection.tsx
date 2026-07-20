@@ -16,7 +16,7 @@ export default function DesktopReviewsSection({ t, locale, rating, reviewCount, 
   return (
     <>
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
-      <h2 style={{ fontFamily: BRICO }} className="text-lg font-bold mx-0 mt-[26px] mb-2.5">
+      <h2 style={{ fontFamily: BRICO }} className="text-lg font-bold mx-0 mt-6.5 mb-2.5">
         {t('providerProfile.reviewsTitle')}{' '}
         <span className="text-[13px] text-muted font-semibold">
           <span aria-hidden="true">★</span> {formatRating(rating, locale)} ({reviewCount})
@@ -31,7 +31,7 @@ export default function DesktopReviewsSection({ t, locale, rating, reviewCount, 
                 {'★★★★★'.slice(0, Math.max(1, Math.min(5, r.rating)))}
               </span>
             </div>
-            <div className="text-[13.5px] text-muted2 leading-[1.5] mt-[5px]">{r.text}</div>
+            <div className="text-[13.5px] text-muted2 leading-[1.5] mt-1.25">{r.text}</div>
           </div>
         ))}
       </div>

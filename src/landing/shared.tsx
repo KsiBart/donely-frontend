@@ -16,7 +16,7 @@ export function LangToggle() {
   const { i18n } = useTranslation();
   const lang = (i18n.language as Lang) ?? 'pl';
 
-  const wrap = 'flex bg-surface2 rounded-xl p-[3px]';
+  const wrap = 'flex bg-surface2 rounded-xl p-0.75';
   const pill = (active: boolean) =>
     clsx(
       'p-[6px_11px] rounded-[9px] text-[12.5px] font-extrabold cursor-pointer',
@@ -44,7 +44,7 @@ export function DarkModeToggle() {
   return (
     <span
       {...clickable(toggle, { label: t('landing.darkModeToggle') })}
-      className="w-[34px] h-[34px] rounded-[11px] bg-surface2 text-[var(--ink)] flex items-center justify-center cursor-pointer text-base leading-none flex-none"
+      className="w-8.5 h-8.5 rounded-[11px] bg-surface2 text-[var(--ink)] flex items-center justify-center cursor-pointer text-base leading-none flex-none"
     >
       {dark ? '☀' : '☾'}
     </span>

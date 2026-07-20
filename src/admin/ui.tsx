@@ -9,7 +9,7 @@ export const CRM_SHADOW = '0 4px 14px rgba(74,52,102,.08)';
 const CRM_SHADOW_CLASS = 'shadow-[0_4px_14px_rgba(74,52,102,.08)]';
 
 /** Base admin card look: surface bg + rounded-2xl + the CRM shadow. Compose with padding/overflow
- * utilities per call site, e.g. `className={clsx(CARD_CLASS, 'p-[18px]')}`. */
+ * utilities per call site, e.g. `className={clsx(CARD_CLASS, 'p-4.5')}`. */
 export const CARD_CLASS = clsx('bg-surface rounded-2xl', CRM_SHADOW_CLASS);
 
 /** KPI card: label / big value / colored sub line. */
@@ -38,7 +38,7 @@ export function KpiCard({ label, value, sub, subColor }: { label: string; value:
 export function TableHead({ columns, cols }: { columns: string[]; cols: string }) {
   return (
     <div
-      className="grid gap-[10px] px-[18px] py-3 bg-surface2 text-[11px] font-bold uppercase tracking-[.05em] text-muted"
+      className="grid gap-2.5 px-4.5 py-3 bg-surface2 text-[11px] font-bold uppercase tracking-[.05em] text-muted"
       // eslint-disable-next-line react/no-inline-styles -- dynamic: gridTemplateColumns varies per table (cols prop), Tailwind JIT can't scan a runtime string
       style={{ gridTemplateColumns: cols }}
     >
@@ -49,7 +49,7 @@ export function TableHead({ columns, cols }: { columns: string[]; cols: string }
   );
 }
 
-const ROW_BASE_CLASS = 'grid gap-[10px] items-center px-[18px] py-3 border-t border-border';
+const ROW_BASE_CLASS = 'grid gap-2.5 items-center px-4.5 py-3 border-t border-border';
 
 /** Static Tailwind part of a table row. `fontSize` picks the row text size (13px default; Bookings
  * + Billing rows use 12.5px) as a single literal class — avoids stacking two same-specificity
@@ -64,7 +64,7 @@ export function rowClass(fontSize: 13 | 12.5 = 13): string {
 export function StatusChip({ bg, fg, children }: { bg: string; fg: string; children: React.ReactNode }) {
   return (
     <span
-      className="justify-self-start rounded-[9px] px-[9px] py-[3px] text-[11px] font-bold"
+      className="justify-self-start rounded-[9px] px-2.25 py-0.75 text-[11px] font-bold"
       // eslint-disable-next-line react/no-inline-styles -- dynamic: bg/fg are caller-supplied per status/tone, arbitrary strings (var(--x) or hex) not a fixed literal set
       style={{ background: bg, color: fg }}
     >

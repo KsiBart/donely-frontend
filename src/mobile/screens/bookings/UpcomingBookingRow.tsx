@@ -99,7 +99,7 @@ export default function UpcomingBookingRow({
         </div>
         <span
           className={clsx(
-            'flex-none text-[11px] font-bold rounded-[10px] py-1 px-[9px]',
+            'flex-none text-[11px] font-bold rounded-[10px] py-1 px-2.25',
             stOk ? 'bg-ver-bg text-ver-fg' : 'bg-surface2',
             !stOk && (needsPayment ? 'text-warn' : 'text-muted2'),
           )}
@@ -109,19 +109,19 @@ export default function UpcomingBookingRow({
       </div>
       {frozen && (
         <div className="mt-2">
-          <span className="inline-flex items-center gap-[5px] text-[10.5px] font-bold rounded-[9px] py-[3px] px-2 bg-surface2 text-accent">
+          <span className="inline-flex items-center gap-1.25 text-[10.5px] font-bold rounded-[9px] py-0.75 px-2 bg-surface2 text-accent">
             <span aria-hidden="true">🔒</span> {t('bookings.frozenBadge')}
           </span>
         </div>
       )}
-      <div className="flex justify-between items-center mt-[11px] pt-[11px] border-t border-border">
+      <div className="flex justify-between items-center mt-2.75 pt-2.75 border-t border-border">
         <span className="text-[13px] text-muted2">{price}</span>
         <span {...clickable(() => setExpanded(isExpanded ? null : b.id), { expanded: isExpanded })} className="text-[12.5px] font-bold text-accent cursor-pointer">
           {t('bookings.detailsCta')}
         </span>
       </div>
       {quoted && (
-        <div className="flex gap-[9px] mt-3">
+        <div className="flex gap-2.25 mt-3">
           <span
             {...clickable(() => onDeclineQuote(b))}
             className="flex-1 text-center border-[1.5px] border-border text-muted2 rounded-[14px] p-2.5 text-[13px] font-bold cursor-pointer"
@@ -163,7 +163,7 @@ export default function UpcomingBookingRow({
           {(b.status === 'CONFIRMED' || b.status === 'PENDING') && (
             <div
               {...clickable(() => onCancel(b))}
-              className="text-center border-[1.5px] border-danger text-danger rounded-[14px] p-[9px] text-[13px] font-bold cursor-pointer"
+              className="text-center border-[1.5px] border-danger text-danger rounded-[14px] p-2.25 text-[13px] font-bold cursor-pointer"
             >
               {t('bookings.cancel')}
             </div>

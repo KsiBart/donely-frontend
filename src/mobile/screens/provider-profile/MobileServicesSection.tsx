@@ -17,15 +17,15 @@ export default function MobileServicesSection({ t, services, spotAddress, onBook
   return (
     <>
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
-      <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold mx-0 mt-[22px] mb-2.5">
+      <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold mx-0 mt-5.5 mb-2.5">
         {t('providerProfile.servicesTitle')}
       </h2>
-      <div className="flex flex-col gap-[9px]">
+      <div className="flex flex-col gap-2.25">
         {services.map((s) => {
           const instant = s.priceType !== 'QUOTE';
           const atClient = s.location === 'CLIENT';
           return (
-            <div key={s.id} className="flex items-center gap-2.5 bg-surface rounded-[18px] py-[13px] px-3.5 shadow-[var(--shadow)]">
+            <div key={s.id} className="flex items-center gap-2.5 bg-surface rounded-[18px] py-3.25 px-3.5 shadow-[var(--shadow)]">
               <div className="flex-1 min-w-0">
                 <div className="font-bold text-sm">{s.title}</div>
                 <div className="text-[12.5px] text-muted mt-0.5">
@@ -36,7 +36,7 @@ export default function MobileServicesSection({ t, services, spotAddress, onBook
               <span
                 {...clickable(() => onBook(s))}
                 className={clsx(
-                  'flex-none rounded-[14px] py-[7px] px-[13px] text-xs font-bold cursor-pointer',
+                  'flex-none rounded-[14px] py-1.75 px-3.25 text-xs font-bold cursor-pointer',
                   instant ? 'bg-accent text-onaccent border-none' : 'bg-transparent text-accent border-[1.5px] border-accent',
                 )}
               >

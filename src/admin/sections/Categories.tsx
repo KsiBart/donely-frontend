@@ -58,7 +58,7 @@ export default function Categories() {
 
   return (
     <>
-      <div className="mb-[18px] flex gap-2.5">
+      <div className="mb-4.5 flex gap-2.5">
         <input
           value={newCat}
           onChange={(e) => setNewCat(e.target.value)}
@@ -67,11 +67,11 @@ export default function Categories() {
           }}
           placeholder={t('admin.categories.newPlaceholder') ?? ''}
           aria-label={t('admin.categories.newPlaceholder') ?? ''}
-          className="max-w-[320px] flex-1 rounded-2xl border-[1.5px] border-border bg-surface px-3.5 py-[11px] font-[Figtree,sans-serif] text-[13px] font-semibold text-text outline-none"
+          className="max-w-80 flex-1 rounded-2xl border-[1.5px] border-border bg-surface px-3.5 py-2.75 font-[Figtree,sans-serif] text-[13px] font-semibold text-text outline-none"
         />
         <span
           {...clickable(() => void addCat())}
-          className="cursor-pointer rounded-2xl bg-accent px-[18px] py-[11px] text-[13px] font-bold text-white"
+          className="cursor-pointer rounded-2xl bg-accent px-4.5 py-2.75 text-[13px] font-bold text-white"
         >
           {t('admin.categories.addCta')}
         </span>
@@ -83,7 +83,7 @@ export default function Categories() {
             className={clsx('flex items-center gap-3 px-4 py-3.5 animate-[crmfade_.25s_ease]', CARD_CLASS, !c.active && 'opacity-[.55]')}
           >
             <span
-              className="flex h-[38px] w-[38px] flex-none items-center justify-center rounded-[11px] bg-[var(--app-tint)] text-[16px] font-bold text-accent"
+              className="flex h-9.5 w-9.5 flex-none items-center justify-center rounded-[11px] bg-[var(--app-tint)] text-[16px] font-bold text-accent"
               // eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO_STYLE is a shared font-family constant with no Tailwind token mapping
               style={BRICO_STYLE}
             >
@@ -99,8 +99,8 @@ export default function Categories() {
             >
               <span
                 className={clsx(
-                  'absolute top-[3px] h-[17px] w-[17px] rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.25)] transition-[left] duration-200',
-                  c.active ? 'left-5' : 'left-[3px]',
+                  'absolute top-0.75 h-4.25 w-4.25 rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,.25)] transition-[left] duration-200',
+                  c.active ? 'left-5' : 'left-0.75',
                 )}
               />
             </span>

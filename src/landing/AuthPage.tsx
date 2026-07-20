@@ -34,11 +34,11 @@ export default function AuthPage() {
       {/* BRAND PANEL — second (right on desktop) via order; dark orange↔purple gradient. */}
       <div className="order-2 flex-[1_1_440px] min-h-[clamp(200px,32vh,100vh)] relative overflow-hidden bg-[linear-gradient(140deg,#14101a_0%,#2f1c30_38%,#6b3348_70%,var(--acc)_118%)] flex flex-col justify-between p-[clamp(28px,4vw,56px)]">
         <div className="absolute inset-0 opacity-[.08] bg-[repeating-linear-gradient(45deg,#c3a7e6,#c3a7e6_7px,#b599dc_7px,#b599dc_14px)]" />
-        <div className="absolute -right-[120px] -bottom-[140px] w-[360px] h-[360px] rounded-full bg-[radial-gradient(circle,rgba(255,140,77,.28),transparent_68%)]" />
-        <div className="absolute -right-[90px] -top-[90px] w-[340px] h-[340px] rounded-full bg-white/[0.12]" />
+        <div className="absolute -right-30 -bottom-35 w-90 h-90 rounded-full bg-[radial-gradient(circle,rgba(255,140,77,.28),transparent_68%)]" />
+        <div className="absolute -right-22.5 -top-22.5 w-85 h-85 rounded-full bg-white/12" />
         <span
           {...clickable(flow.backToSite, { label: t('landing.backHome') })}
-          className="relative flex items-center gap-[11px] cursor-pointer w-fit"
+          className="relative flex items-center gap-2.75 cursor-pointer w-fit"
         >
           <Logo size={36} />
           <Wordmark size={24} variant="onDark" />
@@ -47,13 +47,13 @@ export default function AuthPage() {
           <h2 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(26px,3.4vw,40px)] font-extrabold text-white leading-[1.1] tracking-[-0.01em] m-0">
             {t('landing.auth.brandTitle')}
           </h2>
-          <div className="text-[clamp(15px,1.6vw,18px)] text-white/90 leading-[1.5] mt-[14px] max-w-[420px]">
+          <div className="text-[clamp(15px,1.6vw,18px)] text-white/90 leading-[1.5] mt-3.5 max-w-105">
             {t('landing.auth.brandSub')}
           </div>
         </div>
         <div className="relative flex flex-wrap gap-2">
           {authChips.map((c) => (
-            <span key={c} className="bg-white/[0.18] text-white rounded-[11px] p-[8px_12px] text-[13px] font-bold">
+            <span key={c} className="bg-white/18 text-white rounded-[11px] p-[8px_12px] text-[13px] font-bold">
               {c}
             </span>
           ))}
@@ -62,17 +62,17 @@ export default function AuthPage() {
 
       {/* FORM PANEL — first (left on desktop) via order. */}
       <div className="order-1 flex-[1_1_440px] flex flex-col p-[clamp(24px,4vw,48px)]">
-        <div className="flex items-center justify-between gap-[10px] flex-wrap">
-          <span {...clickable(flow.backToSite)} className="inline-flex items-center gap-[7px] text-sm font-bold text-[var(--acc)] cursor-pointer">
+        <div className="flex items-center justify-between gap-2.5 flex-wrap">
+          <span {...clickable(flow.backToSite)} className="inline-flex items-center gap-1.75 text-sm font-bold text-[var(--acc)] cursor-pointer">
             <span aria-hidden="true">‹</span> {t('landing.backHome')}
           </span>
-          <div className="flex items-center gap-[10px]">
+          <div className="flex items-center gap-2.5">
             <DarkModeToggle />
             <LangToggle />
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col justify-center max-w-[460px] w-full mx-auto p-[24px_0]">
+        <div className="flex-1 flex flex-col justify-center max-w-115 w-full mx-auto p-[24px_0]">
           {flow.step === 'email' && (
             <EmailStep email={flow.email} setEmail={flow.setEmail} emailOk={flow.emailOk} busy={flow.busy} sendCode={flow.sendCode} />
           )}

@@ -85,7 +85,7 @@ export default function MobileApp() {
           <main id="main" className="desktop-content">
             {routes}
           </main>
-          {toast && <div className={clsx(TOAST_BASE, 'absolute left-1/2 -translate-x-1/2 bottom-7 px-[22px] py-3')}>{toast}</div>}
+          {toast && <div className={clsx(TOAST_BASE, 'absolute left-1/2 -translate-x-1/2 bottom-7 px-5.5 py-3')}>{toast}</div>}
         </div>
       </div>
     );
@@ -131,7 +131,7 @@ export default function MobileApp() {
             <div className="auth-desktop-card">{authContent}</div>
           </div>
         )}
-        {toast && <div className={clsx(TOAST_BASE, 'fixed left-1/2 -translate-x-1/2 bottom-7 px-[22px] py-3')}>{toast}</div>}
+        {toast && <div className={clsx(TOAST_BASE, 'fixed left-1/2 -translate-x-1/2 bottom-7 px-5.5 py-3')}>{toast}</div>}
       </>
     );
   }
@@ -154,7 +154,7 @@ export default function MobileApp() {
         ) : (
           authContent
         )}
-        {toast && <div className={clsx(TOAST_BASE, 'absolute left-5 right-5 bottom-[110px] px-4 py-3')}>{toast}</div>}
+        {toast && <div className={clsx(TOAST_BASE, 'absolute left-5 right-5 bottom-27.5 px-4 py-3')}>{toast}</div>}
       </div>
     </div>
   );

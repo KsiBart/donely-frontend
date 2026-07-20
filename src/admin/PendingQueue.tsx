@@ -58,13 +58,13 @@ export function PendingRow({
         <>
           <span
             {...clickable(() => onReject(p))}
-            className="cursor-pointer rounded-[11px] border-[1.5px] border-border px-3 py-[7px] text-[12px] font-bold text-muted2"
+            className="cursor-pointer rounded-[11px] border-[1.5px] border-border px-3 py-1.75 text-[12px] font-bold text-muted2"
           >
             {t('admin.providers.reject')}
           </span>
           <span
             {...clickable(() => onApprove(p))}
-            className="cursor-pointer rounded-[11px] bg-accent px-3 py-[7px] text-[12px] font-bold text-white"
+            className="cursor-pointer rounded-[11px] bg-accent px-3 py-1.75 text-[12px] font-bold text-white"
           >
             {t('admin.providers.approve')}
           </span>

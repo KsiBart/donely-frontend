@@ -27,9 +27,9 @@ export default function Favorites() {
   }, [error]);
 
   return (
-    <div className={clsx(isDesktop ? 'max-w-[900px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-[18px]')}>
+    <div className={clsx(isDesktop ? 'max-w-225 mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-4.5')}>
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
-      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-[18px]">
+      <h1 style={{ fontFamily: BRICO }} className="text-2xl font-bold mx-0 mt-2 mb-4.5">
         {t('favorites.title')}
       </h1>
       <div className={clsx(isDesktop ? 'grid grid-cols-2 gap-3.5' : 'flex flex-col gap-2.5')}>
@@ -43,7 +43,7 @@ export default function Favorites() {
             </div>
             <span
               {...clickable(() => navigate(`/provider/${p.id}`))}
-              className="flex-none bg-accent text-onaccent rounded-[14px] py-[7px] px-3 text-xs font-bold cursor-pointer"
+              className="flex-none bg-accent text-onaccent rounded-[14px] py-1.75 px-3 text-xs font-bold cursor-pointer"
             >
               {t('favorites.bookCta')}
             </span>

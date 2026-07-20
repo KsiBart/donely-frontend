@@ -152,7 +152,7 @@ export default function Calendars() {
         key={`${hour}-${dayIdx}`}
         {...clickable(() => void onCell(cell, dayIdx, hour), { label: `${dayLabel} ${hour}:00 — ${tip}` })}
         title={tip}
-        className={clsx('flex h-[34px] items-center justify-center overflow-hidden rounded-lg cursor-pointer', tone.bg)}
+        className={clsx('flex h-8.5 items-center justify-center overflow-hidden rounded-lg cursor-pointer', tone.bg)}
       >
         <span className={clsx('overflow-hidden text-ellipsis whitespace-nowrap px-1 text-[10px] font-bold', tone.fg)}>{label}</span>
       </div>
@@ -167,8 +167,8 @@ export default function Calendars() {
           <FilterChip key={p.id} label={p.name} active={i === sel} onClick={() => setSel(i)} />
         ))}
       </div>
-      <div className={`${CARD_CLASS} overflow-auto p-[18px]`}>
-        <div className="grid min-w-[760px] grid-cols-[52px_repeat(6,1fr)] gap-[5px]">
+      <div className={`${CARD_CLASS} overflow-auto p-4.5`}>
+        <div className="grid min-w-190 grid-cols-[52px_repeat(6,1fr)] gap-1.25">
           <span />
           {heads.map((h, i) => (
             <span key={i} className="pb-1 text-center text-[11.5px] font-bold text-muted">

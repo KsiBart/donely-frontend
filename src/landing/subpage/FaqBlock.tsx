@@ -5,7 +5,7 @@ import type { FaqItem } from './types';
 export function FaqBlock({ items }: { items: FaqItem[] }) {
   const [open, setOpen] = useState<number | null>(null);
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-2.5">
       {items.map((it, i) => {
         const isOpen = open === i;
         return (

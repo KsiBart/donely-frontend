@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <div className="mb-[22px] grid grid-cols-4 gap-3.5">
+      <div className="mb-5.5 grid grid-cols-4 gap-3.5">
         <KpiCard
           label={t('admin.dashboard.kpiUsers')}
           value={stats ? stats.users.toLocaleString(locale) : '—'}
@@ -55,7 +55,7 @@ export default function Dashboard() {
         />
       </div>
       <div className="grid grid-cols-[1.2fr_1fr] gap-3.5">
-        <div className={`${CARD_CLASS} p-[18px]`}>
+        <div className={`${CARD_CLASS} p-4.5`}>
           <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.dashboard.pendingTitle')}</h2>
           <div className="flex flex-col gap-2.5">
             {pending.length === 0 && <div className="text-[13px] text-muted">{t('admin.dashboard.pendingEmpty')}</div>}
@@ -64,13 +64,13 @@ export default function Dashboard() {
             ))}
           </div>
         </div>
-        <div className={`${CARD_CLASS} p-[18px]`}>
+        <div className={`${CARD_CLASS} p-4.5`}>
           <h2 className="mb-3 text-[14.5px] font-bold">{t('admin.dashboard.feedTitle')}</h2>
           <div className="flex flex-col">
             {feed.map((f, i) => (
-              <div key={i} className="flex gap-2.5 border-b border-border py-[9px]">
+              <div key={i} className="flex gap-2.5 border-b border-border py-2.25">
                 <span
-                  className="mt-[5px] h-2 w-2 flex-none rounded-full"
+                  className="mt-1.25 h-2 w-2 flex-none rounded-full"
                   // eslint-disable-next-line react/no-inline-styles -- dynamic: f.dot is a per-feed-item color from backend data
                   style={{ background: f.dot }}
                 />

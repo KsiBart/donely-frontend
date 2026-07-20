@@ -3,4 +3,4 @@ export function shortCatLabel(name: string): string {
 }
 
 // Verified badge (short form) — Home.tsx list/grid/map rows share this exact pill shape.
-export const verifiedShortCls = 'bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-[7px] text-[10px] font-bold';
+export const verifiedShortCls = 'bg-ver-bg text-ver-fg rounded-[10px] py-0.5 px-1.75 text-[10px] font-bold';

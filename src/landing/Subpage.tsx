@@ -34,7 +34,7 @@ export default function Subpage({ pageKey }: { pageKey: string }) {
       <SiteHeader />
 
       <section className="bg-[var(--tint)] border-b border-border">
-        <div className="max-w-[920px] mx-auto p-[clamp(36px,5vw,64px)_22px]">
+        <div className="max-w-230 mx-auto p-[clamp(36px,5vw,64px)_22px]">
           <span
             {...clickable(() => navigate('/'))}
             className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--acc)] cursor-pointer"
@@ -44,11 +44,11 @@ export default function Subpage({ pageKey }: { pageKey: string }) {
           <h1 className="font-['Bricolage_Grotesque',sans-serif] text-[clamp(34px,5vw,52px)] font-extrabold text-[var(--ink)] m-[14px_0_0] tracking-[-0.01em]">
             {page.title}
           </h1>
-          <p className="text-[16.5px] text-muted m-[12px_0_0] max-w-[640px] leading-[1.55]">{page.sub}</p>
+          <p className="text-[16.5px] text-muted m-[12px_0_0] max-w-160 leading-[1.55]">{page.sub}</p>
         </div>
       </section>
 
-      <section className="max-w-[920px] mx-auto w-full box-border p-[clamp(30px,4vw,48px)_22px_80px] flex flex-col gap-10 flex-1">
+      <section className="max-w-230 mx-auto w-full box-border p-[clamp(30px,4vw,48px)_22px_80px] flex flex-col gap-10 flex-1">
         {page.blocks.map((block, i) => (
           <BlockRenderer key={i} block={block} />
         ))}

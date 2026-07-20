@@ -18,8 +18,8 @@ export default function ProfileTab() {
   const install = useInstallAction();
 
   return (
-    <div className={clsx(isDesktop ? 'max-w-[560px] mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-[18px]')}>
-      <div className="flex items-center gap-3.5 mx-0 mt-2 mb-[22px]">
+    <div className={clsx(isDesktop ? 'max-w-140 mx-auto pt-7 px-7 pb-12' : 'flex-1 overflow-auto pt-5 px-5 pb-4.5')}>
+      <div className="flex items-center gap-3.5 mx-0 mt-2 mb-5.5">
         <AvatarTile init={initials(me?.name)} size={60} fontSize={20} round />
         <div>
           {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
@@ -33,7 +33,7 @@ export default function ProfileTab() {
       <SettingsRows t={t} rows={rows} logout={logout} />
 
       {isDesktop && (
-        <div className="bg-[var(--app-tint)] rounded-[20px] pt-4 pb-4 px-[18px] mb-3.5">
+        <div className="bg-[var(--app-tint)] rounded-[20px] pt-4 pb-4 px-4.5 mb-3.5">
           <div className="font-bold text-sm mb-1">{t('profile.pushPromoTitle')}</div>
           <div className="text-[12.5px] text-muted2 leading-[1.45] mb-3">{t('profile.pushPromoBody')}</div>
           <div {...clickable(install)} className={ctaCls}>

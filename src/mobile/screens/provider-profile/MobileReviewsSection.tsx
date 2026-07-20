@@ -16,22 +16,22 @@ export default function MobileReviewsSection({ t, locale, rating, reviewCount, r
   return (
     <>
       {/* eslint-disable-next-line react/no-inline-styles -- dynamic: BRICO is a shared font-family constant with no Tailwind token mapping */}
-      <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold mx-0 mt-[22px] mb-2.5">
+      <h2 style={{ fontFamily: BRICO }} className="text-[17px] font-bold mx-0 mt-5.5 mb-2.5">
         {t('providerProfile.reviewsTitle')}{' '}
         <span className="text-[13px] text-muted font-semibold">
           <span aria-hidden="true">★</span> {formatRating(rating, locale)} ({reviewCount})
         </span>
       </h2>
-      <div className="flex flex-col gap-[9px]">
+      <div className="flex flex-col gap-2.25">
         {reviews.map((r) => (
-          <div key={r.id} className="bg-surface rounded-[18px] py-[13px] px-3.5 shadow-[var(--shadow)]">
+          <div key={r.id} className="bg-surface rounded-[18px] py-3.25 px-3.5 shadow-[var(--shadow)]">
             <div className="flex justify-between items-baseline">
               <span className={reviewNameCls}>{r.customerName ?? r.authorName ?? r.name ?? t('providerProfile.defaultCustomerName')}</span>
               <span aria-hidden="true" className={reviewStarsCls}>
                 {'★★★★★'.slice(0, Math.max(1, Math.min(5, r.rating)))}
               </span>
             </div>
-            <div className="text-[13px] text-muted2 leading-[1.5] mt-[5px]">{r.text}</div>
+            <div className="text-[13px] text-muted2 leading-[1.5] mt-1.25">{r.text}</div>
           </div>
         ))}
       </div>

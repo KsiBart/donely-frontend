@@ -33,7 +33,7 @@ export default function LocationPanelBody({ onDone }: { onDone: () => void }) {
           }}
           placeholder={t('auth.location.manualPlaceholder')}
           aria-label={t('auth.location.manualPlaceholder')}
-          className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-[13px] px-3.5 text-[14.5px] outline-none"
+          className="w-full box-border border-[1.5px] border-border bg-surface2 text-text rounded-[14px] py-3.25 px-3.5 text-[14.5px] outline-none"
         />
         <div
           {...clickable(() => void submitManual(), { disabled: busy })}
